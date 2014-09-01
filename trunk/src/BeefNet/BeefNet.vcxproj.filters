@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\err">
+      <UniqueIdentifier>{eef17442-90ec-4acf-8379-cabdc81c099b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nn">
+      <UniqueIdentifier>{5c2440f3-516c-4a89-85bc-c8e41e338d7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\reader">
+      <UniqueIdentifier>{99fb0cb2-68d3-43db-a01d-ad9a86f6bc47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utility">
+      <UniqueIdentifier>{fd93e9f7-2d73-41b7-988d-a8a97388f7fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\weight">
+      <UniqueIdentifier>{000ab751-7069-4fc6-9633-a02dcb1aa529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\xfer">
+      <UniqueIdentifier>{a60ddb9d-d8e0-4692-aed6-f82e5750fa86}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="err\err.hpp">
+      <Filter>Header Files\err</Filter>
+    </ClInclude>
+    <ClInclude Include="err\err_itf.hpp">
+      <Filter>Header Files\err</Filter>
+    </ClInclude>
+    <ClInclude Include="err\err_mae.hpp">
+      <Filter>Header Files\err</Filter>
+    </ClInclude>
+    <ClInclude Include="err\err_mse.hpp">
+      <Filter>Header Files\err</Filter>
+    </ClInclude>
+    <ClInclude Include="err\err_rmse.hpp">
+      <Filter>Header Files\err</Filter>
+    </ClInclude>
+    <ClInclude Include="xfer\xfer.hpp">
+      <Filter>Header Files\xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="xfer\xfer_itf.hpp">
+      <Filter>Header Files\xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="xfer\xfer_lnr.hpp">
+      <Filter>Header Files\xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="xfer\xfer_log_sig.hpp">
+      <Filter>Header Files\xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="weight\weight.hpp">
+      <Filter>Header Files\weight</Filter>
+    </ClInclude>
+    <ClInclude Include="weight\weight_bp.hpp">
+      <Filter>Header Files\weight</Filter>
+    </ClInclude>
+    <ClInclude Include="weight\weight_itf.hpp">
+      <Filter>Header Files\weight</Filter>
+    </ClInclude>
+    <ClInclude Include="weight\weight_qp.hpp">
+      <Filter>Header Files\weight</Filter>
+    </ClInclude>
+    <ClInclude Include="weight\weight_rp.hpp">
+      <Filter>Header Files\weight</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\bp_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\fp_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\input.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\input_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\neuron.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\output_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\target.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\type.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="reader\reader_binary.hpp">
+      <Filter>Header Files\reader</Filter>
+    </ClInclude>
+    <ClInclude Include="nn\nn.hpp">
+      <Filter>Header Files\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="nn\nn_1_layer.hpp">
+      <Filter>Header Files\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="nn\nn_2_layer.hpp">
+      <Filter>Header Files\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="nn\nn_3_layer.hpp">
+      <Filter>Header Files\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="nn\nn_itf.hpp">
+      <Filter>Header Files\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="nn\nn_recurrent.hpp">
+      <Filter>Header Files\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="demo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="package.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="predictor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tester.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="trainer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
