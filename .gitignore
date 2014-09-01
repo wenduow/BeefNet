@@ -2,6 +2,7 @@
 *.ilk
 *.pdb
 *.*sdf
+*.suo
 *.*log
 *.idb
 
