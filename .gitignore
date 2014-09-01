@@ -1,9 +1,14 @@
-# IDE files
+# IDE Files
 *.ilk
 *.pdb
 *.*sdf
 *.*log
 *.idb
+
+# Test Files
+*.pdf
+*.dat
+*.txt
 
 # Compiled Object files
 *.slo
