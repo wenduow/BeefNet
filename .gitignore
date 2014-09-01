@@ -1,3 +1,10 @@
+# IDE files
+*.ilk
+*.pdb
+*.*sdf
+*.*log
+*.idb
+
 # Compiled Object files
 *.slo
 *.lo
