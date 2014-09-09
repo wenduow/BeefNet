@@ -9,11 +9,11 @@ namespace wwd
 {
 
 template < class NN, class InputReader, class TargetReader >
-void train_img_fxn( INOUT NN &nn,
-                    IN const InputReader &input,
-                    IN const TargetReader &target,
-                    IN uint32 idx_beg,
-                    IN uint32 idx_end )
+void img_fxn( INOUT NN &nn,
+              IN const InputReader &input,
+              IN const TargetReader &target,
+              IN uint32 idx_beg,
+              IN uint32 idx_end )
 {
     for ( uint32 i = idx_beg; i < idx_end; ++i )
     {
@@ -59,15 +59,12 @@ public:
 
     ~CTrainer(void)
     {
+        m_input.close();
+        m_target.close();
     }
 
-    template < bool  StopEarly,
-               bool  PrintEpochErr,
-               uint32 OutputNum >
-    void train( OUT double            (&err)[OutputNum],
-                INOUT NN              &nn,
-                IN const InputReader  &input,
-                IN const TargetReader &target )
+    template < bool  StopEarly, bool  PrintEpochErr, uint32 OutputNum >
+    void train( OUT double (&err)[OutputNum], INOUT NN &nn )
     {
         m_valid_times = 0;
         m_gradient    = DOUBLE_MAX;
@@ -75,7 +72,7 @@ public:
 
         uint32 idx_beg[ImgNum];
         uint32 idx_end[ImgNum];
-        generate_pattern_idx( idx_beg, idx_end, target.get_pattern_num() );
+        generate_pattern_idx( idx_beg, idx_end, m_target.get_pattern_num() );
 
         NN          nn_img[ImgNum];
         std::thread img_thread[ImgNum];
@@ -85,14 +82,13 @@ public:
             for ( uint32 j = 0; j < ImgNum; ++j )
             {
                 nn >> nn_img[j];
-                img_thread[j] = std::thread( train_img_fxn< NN,
-                                                            InputReader,
-                                                            TargetReader >,
-                                             std::ref( nn_img[j] ),
-                                             std::cref(input),
-                                             std::cref(target),
-                                             idx_beg[j],
-                                             idx_end[j] );
+                img_thread[j] = std::thread
+                    ( img_fxn< NN, InputReader, TargetReader >,
+                      std::ref( nn_img[j] ),
+                      std::cref(m_input),
+                      std::cref(m_target),
+                      idx_beg[j],
+                      idx_end[j] );
             }
 
             for ( uint32 j = 0; j < ImgNum; ++j )
@@ -106,13 +102,24 @@ public:
                 break;
             }
 
-            print_epoch_error< PrintEpochErr, OutputNum >( nn, input, target );
+            print_epoch_error< PrintEpochErr, OutputNum >(nn);
 
             nn.update();
         }
 
-        CTester< NN, InputReader, TargetReader, Err > tester;
-        tester.test( err, nn, input, target );
+        m_tester.test( err, nn );
+    }
+
+    void open_input( IN const char *path )
+    {
+        m_input.open(path);
+        m_tester.open_input(path);
+    }
+
+    void open_target( IN const char *path )
+    {
+        m_target.open(path);
+        m_tester.open_target(path);
     }
 
 private:
@@ -167,17 +174,14 @@ private:
     }
 
     template < bool PrintEpochErr, uint32 OutputNum >
-    void print_epoch_error( INOUT NN              &nn,
-                            IN const InputReader  &input,
-                            IN const TargetReader &target )
+    void print_epoch_error( INOUT NN &nn )
     {
         bool choose_print = PrintEpochErr;
 
         if (choose_print)
         {
-            CTester< NN, InputReader, TargetReader, Err> tester;
             double epoch_err[OutputNum];
-            tester.test( epoch_err, nn, input, target );
+            m_tester.test( epoch_err, nn );
 
             //std::cout << "gradient: " << nn.get_gradient_abs() << '\t';
 
@@ -200,6 +204,10 @@ private:
     }
 
 private:
+
+    InputReader  m_input;
+    TargetReader m_target;
+    CTester< NN, InputReader, TargetReader, Err > m_tester;
 
     uint32       m_valid_times;
     double       m_gradient;

@@ -21,18 +21,15 @@ public:
 
     ~CTester(void)
     {
+        m_target.close();
     }
 
     template < uint32 OutputNum >
-    void test( OUT double            (&err)[OutputNum],
-               INOUT NN              &nn,
-               IN const InputReader  &input,
-               IN const TargetReader &target )
+    void test( OUT double (&err)[OutputNum], INOUT NN &nn ) const
     {
-        CPredictor< NN, InputReader > predictor;
-        uint32                        pattern_num = target.get_pattern_num();
-        double                        **predict_tmp = new double*[OutputNum];
-        double                        **target_tmp  = new double*[OutputNum];
+        uint32         pattern_num = m_target.get_pattern_num();
+        double         **predict_tmp = new double*[OutputNum];
+        double         **target_tmp  = new double*[OutputNum];
 
         for ( uint32 i = 0; i < OutputNum; ++i )
         {
@@ -43,12 +40,12 @@ public:
         for ( uint32 i = 0; i < pattern_num; ++i )
         {
             double predicted[OutputNum];
-            predictor.predict( predicted, nn, input, i );
+            m_predictor.predict( predicted, nn, i );
 
             for ( uint32 j = 0; j < OutputNum; ++j )
             {
                 predict_tmp[j][i] = predicted[j];
-                target_tmp[j][i]  = target.get_pattern(i)[j];
+                target_tmp[j][i]  = m_target.get_pattern(i)[j];
             }
         }
 
@@ -66,6 +63,16 @@ public:
         delete[] target_tmp;
     }
 
+    void open_input( IN const char *path )
+    {
+        m_predictor.open_input(path);
+    }
+
+    void open_target( IN const char *path )
+    {
+        m_target.open(path);
+    }
+
 private:
 
     CTester( IN const ThisType &other );
@@ -73,6 +80,9 @@ private:
 
 private:
 
+    InputReader m_input;
+    TargetReader m_target;
+    CPredictor< NN, InputReader > m_predictor;
     Err m_err_fxn;
 };
 

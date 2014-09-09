@@ -17,16 +17,16 @@ const uint32 hidden_num = 10;
  *  Validation Times
  *  Gradient Precision in 10 ^ x
  */
-const uint32 map_num       = 8;
-const uint32 max_epoch     = 1000;
+const uint32 image_num       = 4;
+const uint32 max_epoch     = 500;
 const uint32 valid_times   = 6;
-const int32 gradient_prec  = -6;
+const int32 gradient_prec  = -5;
 
 /** Weight Type *
  *  Back-Propagation,   Quick-Propagation,  Resilient-Propagation
  *  CWeightBP,          CWeightQP,          CWeightRP
  */
-typedef CWeightRP<> MyWeight;
+typedef CWeightBP<> MyWeight;
 
 /** NN Type
  *
@@ -60,7 +60,7 @@ typedef CTrainer< MyNN,
                   MyInput,
                   MyTarget,
                   MyErr,
-                  map_num,
+                  image_num,
                   max_epoch,
                   valid_times,
                   gradient_prec >                MyTrainer;

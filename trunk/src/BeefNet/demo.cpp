@@ -9,22 +9,23 @@ int32 main(void)
 {
     time_t beg = time(NULL);
 
-    MyInput  train_input( "../../data/train_input.dat" );
-    MyTarget train_target( "../../data/train_target.dat" );
-    MyInput  test_input( "../../data/test_input.dat" );
-    MyTarget test_target( "../../data/test_target.dat" );
-
     MyNN nn;
     double err[output_num];
 
     MyTrainer trainer;
-    trainer.train< false, true >( err, nn, train_input, train_target );
+    trainer.open_input( "../../data/train_input.dat" );
+    trainer.open_target( "../../data/train_target.dat" );
+
+    trainer.train< false, true >( err, nn );
     result << "training error: ";
     for ( const auto &i : err ) result << i << '\t';
     result << std::endl;
 
     MyTester tester;
-    tester.test( err, nn, test_input, test_target );
+    tester.open_input( "../../data/test_input.dat" );
+    tester.open_target( "../../data/test_target.dat" );
+
+    tester.test( err, nn );
     result << "testing error: ";
     for ( const auto &i : err ) result << i << '\t';
     result << std::endl;
