@@ -12,19 +12,15 @@ template < uint32 FactInc    = 1200,
 class CWeightRP
     : public IWeight
 {
-private:
-
-    typedef CWeightRP< FactInc, FactDec, UpdateInit > ThisType;
-
 public:
 
     CWeightRP(void)
         : IWeight()
+        , m_fact_inc( (double)FactInc / 1000.0 )
+        , m_fact_dec( (double)FactDec / 1000.0 )
         , m_gradient_prev(0.0)
         , m_update( (double)UpdateInit / 1000.0 )
         , m_delta_weight(0.0)
-        , m_fact_inc( (double)FactInc / 1000.0 )
-        , m_fact_dec( (double)FactDec / 1000.0 )
     {
     }
 
@@ -85,12 +81,12 @@ private:
 
 private:
 
+    const double m_fact_inc;
+    const double m_fact_dec;
+
     double m_gradient_prev;
     double m_update;
     double m_delta_weight;
-    
-    const double m_fact_inc;
-    const double m_fact_dec;
 };
 
 } // namespace wwd

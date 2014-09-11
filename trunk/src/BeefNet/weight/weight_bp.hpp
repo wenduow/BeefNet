@@ -15,11 +15,37 @@ public:
     CWeightBP(void)
         : IWeight()
         , m_learn_rate( (double)LearnRate / 1000.0 )
+        , m_pattern_num(0)
     {
     }
 
     ~CWeightBP(void)
     {
+    }
+
+    const CWeightBP &operator>>( OUT CWeightBP &other ) const
+    {
+        IWeight::operator>>(other);
+
+        other.m_pattern_num = 0;
+
+        return *this;
+    }
+
+    CWeightBP &operator<<( IN const CWeightBP &other )
+    {
+        IWeight::operator<<(other);
+
+        m_pattern_num += other.m_pattern_num;
+
+        return *this;
+    }
+
+    void backward(void)
+    {
+        IWeight::backward();
+
+        ++m_pattern_num;
     }
 
     inline void update(void)
@@ -39,6 +65,8 @@ private:
 private:
 
     const double m_learn_rate;
+
+    uint32 m_pattern_num;
 };
 
 } // namespace wwd

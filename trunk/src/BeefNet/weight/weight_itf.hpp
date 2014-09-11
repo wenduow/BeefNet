@@ -18,15 +18,13 @@ public:
     {
         other.m_weight = m_weight;
         other.m_gradient = 0.0;
-        other.m_pattern_num = 0;
 
         return *this;
     }
 
     inline IWeight &operator<<( IN const IWeight &other )
     {
-        m_gradient    += other.m_gradient;
-        m_pattern_num += other.m_pattern_num;
+        m_gradient += other.m_gradient;
 
         return *this;
     }
@@ -46,7 +44,6 @@ public:
         // where Sum through all input samples,
         // delta * f'(net) is calculated from next connected neuron.
         m_gradient -= ( m_backward_input * m_forward_input );
-        ++m_pattern_num;
     }
 
     inline double get_weight(void) const
@@ -66,7 +63,6 @@ protected:
         , IOutput<1>()
         , m_weight( (double)rand() / (double)RAND_MAX )
         , m_gradient(1.0)
-        , m_pattern_num(0)
     {
     }
 
@@ -83,7 +79,6 @@ protected:
 
     double m_weight;
     double m_gradient;
-    double m_pattern_num;
 };
 
 } // namespace wwd

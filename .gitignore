@@ -9,7 +9,9 @@
 # Test Files
 *.pdf
 *.dat
+*.mat
 *.txt
+*.url
 
 # Compiled Object files
 *.slo

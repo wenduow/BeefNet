@@ -48,6 +48,7 @@
     <ClInclude Include="weight\weight.hpp" />
     <ClInclude Include="weight\weight_bp.hpp" />
     <ClInclude Include="weight\weight_itf.hpp" />
+    <ClInclude Include="weight\weight_lm.hpp" />
     <ClInclude Include="weight\weight_qp.hpp" />
     <ClInclude Include="weight\weight_rp.hpp" />
     <ClInclude Include="xfer\xfer.hpp" />
