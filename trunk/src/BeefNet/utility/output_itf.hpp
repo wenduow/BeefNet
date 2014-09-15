@@ -34,8 +34,8 @@ public:
 
 protected:
 
-    IOutput(void)
-        : IBP()
+    IOutput( IN double val = 0.0 )
+        : IBP(val)
     {
         for ( auto &input_iter : m_input )
         {

@@ -17,8 +17,8 @@ const uint32 hidden_num = 10;
  *  Validation Times
  *  Gradient Precision in 10 ^ x
  */
-const uint32 image_num       = 4;
-const uint32 max_epoch     = 500;
+const uint32 image_num       = 1;
+const uint32 max_epoch     = 100;
 const uint32 valid_times   = 6;
 const int32 gradient_prec  = -5;
 
@@ -26,7 +26,7 @@ const int32 gradient_prec  = -5;
  *  Back-Propagation,   Quick-Propagation,  Resilient-Propagation
  *  CWeightBP,          CWeightQP,          CWeightRP
  */
-typedef CWeightBP<> MyWeight;
+typedef CWeightRP<> MyWeight;
 
 /** NN Type
  *
@@ -37,11 +37,10 @@ typedef CWeightBP<> MyWeight;
  *  Log-Sigmoid,    Linear
  *  FXferLogSig,    FXferLnr
  */
-typedef CNN3Layer< MyWeight,
+typedef CNN2Layer< MyWeight,
                    input_num,                       // input layer
                    hidden_num,  FXferLogSig,        // 1st layer
                    hidden_num,  FXferLogSig,        // 2nd layer
-                   hidden_num,  FXferLogSig,        // 3rd layer
                    output_num,  FXferLnr > MyNN;    // output layer
 
 /** Error Function

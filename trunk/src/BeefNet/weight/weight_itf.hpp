@@ -41,9 +41,11 @@ public:
         m_backward_output = m_weight * m_backward_input;
 
         // gradient = dE / dWi = - Sum( delta * f'(net) * Xi ),
-        // where Sum through all input samples,
-        // delta * f'(net) is calculated from next connected neuron.
-        m_gradient -= ( m_backward_input * m_forward_input );
+        // where Sum is through all input samples.
+        // get_backward_val here gets the f'(net) from next neuron.
+        m_gradient -= ( m_backward_input
+                      * m_output[0]->get_backward_val()
+                      * m_forward_input );
     }
 
     inline double get_weight(void) const
@@ -59,10 +61,10 @@ public:
 protected:
 
     IWeight(void)
-        : IInput<1>()
-        , IOutput<1>()
-        , m_weight( (double)rand() / (double)RAND_MAX )
-        , m_gradient(1.0)
+        : IInput<1>( (double)rand() / (double)RAND_MAX )
+        , IOutput<1>(1.0)
+        , m_weight(m_forward_val)
+        , m_gradient(m_backward_val)
     {
     }
 
@@ -77,8 +79,8 @@ private:
 
 protected:
 
-    double m_weight;
-    double m_gradient;
+    double & m_weight;
+    double & m_gradient;
 };
 
 } // namespace wwd

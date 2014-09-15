@@ -50,7 +50,8 @@ public:
 
     inline void update(void)
     {
-        double delta_weight = ( - m_learn_rate * m_gradient ) / (double)m_pattern_num;
+        double delta_weight = ( - m_learn_rate * m_gradient )
+                            / (double)m_pattern_num;
         m_weight += delta_weight;
 
         m_gradient = 0.0;

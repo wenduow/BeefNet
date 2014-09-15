@@ -53,27 +53,20 @@ public:
 
     inline void update(void)
     {
-        if ( m_delta_weight > - DOUBLE_EPSILON
-          && m_delta_weight < DOUBLE_EPSILON )
-        {
-            m_delta_weight = ( - m_learn_rate * m_gradient ) / (double)m_pattern_num;
-        }
-        else
-        {
-            double max_grow = m_fact_max_grow
-                            * ( m_delta_weight > 0.0 ? 1.0 : -1.0 )
-                            * m_delta_weight;
+        double abs_delta_weight = abs(m_delta_weight);
 
-            if ( m_gradient_prev - m_gradient < - DOUBLE_EPSILON
-              || m_gradient_prev - m_gradient > DOUBLE_EPSILON )
+        if ( abs_delta_weight > DOUBLE_EPSILON )
+        {
+            double max_grow = m_fact_max_grow * abs_delta_weight;
+            double gradient_update = m_gradient - m_gradient_prev;
+
+            if ( abs(gradient_update) > DOUBLE_EPSILON )
             {
-                m_delta_weight *= ( m_gradient
-                                  / ( m_gradient_prev - m_gradient ) );
+                m_delta_weight *= ( - m_gradient / gradient_update );
             }
             else
             {
-                m_delta_weight = ( m_delta_weight > 0.0 ? 1.0 : -1.0 )
-                               * max_grow;
+                m_delta_weight = abs_delta_weight * max_grow;
             }
 
             if ( m_delta_weight > max_grow )
@@ -84,6 +77,11 @@ public:
             {
                 m_delta_weight = -max_grow;
             }
+        }
+        else
+        {
+            m_delta_weight = ( - m_learn_rate * m_gradient )
+                           / (double)m_pattern_num;
         }
 
         m_weight += m_delta_weight;

@@ -32,8 +32,8 @@ public:
 
     inline void backward(void)
     {
-        m_backward_output = m_backward_input
-                          - m_input[0]->get_forward_output();
+        m_backward_val = m_backward_input;
+        m_backward_output = m_backward_val - m_input[0]->get_forward_output();
     }
 };
 

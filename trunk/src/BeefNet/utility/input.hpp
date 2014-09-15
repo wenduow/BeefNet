@@ -33,7 +33,8 @@ public:
 
     inline void forward(void)
     {
-        m_forward_output = m_forward_input;
+        m_forward_val = m_forward_input;
+        m_forward_output = m_forward_val;
     }
 };
 
