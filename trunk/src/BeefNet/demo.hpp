@@ -26,7 +26,7 @@ const int32 gradient_prec  = -5;
  *  Back-Propagation,   Quick-Propagation,  Resilient-Propagation
  *  CWeightBP,          CWeightQP,          CWeightRP
  */
-typedef CWeightRP<> MyWeight;
+typedef CWeightLM<> MyWeight;
 
 /** NN Type
  *

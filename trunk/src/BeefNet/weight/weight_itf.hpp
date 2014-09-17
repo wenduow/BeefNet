@@ -79,8 +79,8 @@ private:
 
 protected:
 
-    double & m_weight;
-    double & m_gradient;
+    double &m_weight;
+    double &m_gradient;
 };
 
 } // namespace wwd

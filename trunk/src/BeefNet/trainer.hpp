@@ -29,10 +29,10 @@ template < class NN,
            class InputReader,
            class TargetReader,
            class Err,
-           uint32 ImgNum,
-           uint32 MaxEpoch,
-           uint32 ValidTimes,
-           int32  MinGradientChange >
+           uint32 ImgNum = 4,
+           uint32 MaxEpoch = 2000,
+           uint32 ValidTimes = 6,
+           int32  MinGradientChange = -6 >
 class CTrainer
 {
 private:
@@ -183,23 +183,23 @@ private:
             double epoch_err[OutputNum];
             m_tester.test( epoch_err, nn );
 
-            //std::cout << "gradient: " << nn.get_gradient_abs() << '\t';
-
-            //for ( uint32 j = 0; j < OutputNum; ++j )
-            //{
-            //    std::cout << "error: " << epoch_err[j] << '\t';
-            //}
-
-            //std::cout << std::endl;
-
-            result << "gradient: " << nn.get_gradient_abs() << '\t';
+            std::cout << "gradient: " << nn.get_gradient_abs() << '\t';
 
             for ( uint32 j = 0; j < OutputNum; ++j )
             {
-                result << "error: " << epoch_err[j] << '\t';
+                std::cout << "error: " << epoch_err[j] << '\t';
             }
 
-            result << std::endl;
+            std::cout << std::endl;
+
+//             result << "gradient: " << nn.get_gradient_abs() << '\t';
+// 
+//             for ( uint32 j = 0; j < OutputNum; ++j )
+//             {
+//                 result << "error: " << epoch_err[j] << '\t';
+//             }
+// 
+//             result << std::endl;
         }
     }
 
