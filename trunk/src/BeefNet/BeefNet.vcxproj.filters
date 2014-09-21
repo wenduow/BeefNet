@@ -31,6 +31,12 @@
     <Filter Include="Header Files\xfer">
       <UniqueIdentifier>{a60ddb9d-d8e0-4692-aed6-f82e5750fa86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{a16babd0-6222-4789-8902-af013f0db288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{135740cb-c134-43f6-b559-66d1f852dda5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="err\err.hpp">
@@ -129,9 +135,6 @@
     <ClInclude Include="predictor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="test.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tester.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -141,13 +144,25 @@
     <ClInclude Include="weight\weight_lm.hpp">
       <Filter>Header Files\weight</Filter>
     </ClInclude>
+    <ClInclude Include="test\test_img.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\test_config.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\test_efficiency.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="test\test_img.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\test_efficiency.cpp">
+      <Filter>Source Files\test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -17,7 +17,6 @@ public:
         , m_lambda( (double)Lambda / 1000.0 )
         , m_beta( (double)Beta )
         , m_delta_weight_den(0.0)
-        , m_pattern_num(0)
         , m_err_prev(DOUBLE_MAX)
         , m_err(0.0)
     {
@@ -32,7 +31,6 @@ public:
         IWeight::operator>>(other);
 
         other.m_delta_weight_den = 0.0;
-        other.m_pattern_num = 0;
         other.m_err = 0.0;
 
         return *this;
@@ -43,7 +41,6 @@ public:
         IWeight::operator<<(other);
 
         m_delta_weight_den += other.m_delta_weight_den;
-        m_pattern_num += other.m_pattern_num;
         m_err += other.m_err;
 
         return *this;
@@ -62,7 +59,6 @@ public:
             m_delta_weight_den = DOUBLE_EPSILON;
         }
 
-        ++m_pattern_num;
         m_err += pow( m_backward_input, 2 );
     }
 
@@ -77,7 +73,6 @@ public:
 
         m_gradient = 0.0;
         m_delta_weight_den = 0.0;
-        m_pattern_num = 0;
         m_err_prev = m_err;
         m_err = 0.0;
     }
@@ -93,7 +88,6 @@ private:
     const double m_beta;
 
     double m_delta_weight_den;
-    uint32 m_pattern_num;
     double m_err_prev;
     double m_err;
 };

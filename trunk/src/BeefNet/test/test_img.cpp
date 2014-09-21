@@ -1,9 +1,7 @@
-#define TEST
-#ifdef  TEST
+#include "test_config.hpp"
+#include "test_img.hpp"
 
-#include <ctime>
-#include <iostream>
-#include "test.hpp"
+#ifdef TEST_IMG
 
 int32 main(void)
 {
@@ -92,16 +90,18 @@ int32 main(void)
     trainer9.train< false, false >( err, nn );
     end[9] = time(NULL);
 
-    std::ofstream result( "../../result/result_img.txt" );
+    std::ofstream result( "../../result/result_img.txt", std::ios::app );
 
     for ( uint32 i = 0; i < 10; ++i )
     {
-        result << end[i] - beg[i] << std::endl;
+        result << end[i] - beg[i] << ',';
     }
+
+    result << std::endl;
 
     result.close();
     return 0;
 }
 
-#endif // TEST
+#endif // TEST_IMG
 

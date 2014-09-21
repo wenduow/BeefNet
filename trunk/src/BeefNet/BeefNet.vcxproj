@@ -34,8 +34,10 @@
     <ClInclude Include="package.hpp" />
     <ClInclude Include="predictor.hpp" />
     <ClInclude Include="reader\reader_binary.hpp" />
-    <ClInclude Include="test.hpp" />
     <ClInclude Include="tester.hpp" />
+    <ClInclude Include="test\test_config.hpp" />
+    <ClInclude Include="test\test_efficiency.hpp" />
+    <ClInclude Include="test\test_img.hpp" />
     <ClInclude Include="trainer.hpp" />
     <ClInclude Include="utility\bp_itf.hpp" />
     <ClInclude Include="utility\fp_itf.hpp" />
@@ -58,7 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="demo.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="test\test_efficiency.cpp" />
+    <ClCompile Include="test\test_img.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{556AC06C-AAC9-47FC-844E-468FE245C1A8}</ProjectGuid>
@@ -196,7 +199,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <StackReserveSize>10000000</StackReserveSize>
+      <StackReserveSize>40000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
