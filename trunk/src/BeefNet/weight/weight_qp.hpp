@@ -66,7 +66,7 @@ public:
             }
             else
             {
-                m_delta_weight = abs_delta_weight * max_grow;
+                m_delta_weight *= max_grow;
             }
 
             if ( m_delta_weight > max_grow )

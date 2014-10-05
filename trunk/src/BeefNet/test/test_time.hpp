@@ -1,5 +1,5 @@
-#ifndef TEST_EFFICIENCY_HPP_
-#define TEST_EFFICIENCY_HPP_
+#ifndef TEST_TIME_HPP_
+#define TEST_TIME_HPP_
 
 #include "test_config.hpp"
 #include "../package.hpp"
@@ -36,5 +36,5 @@ typedef FErrMAE MyErr;
 typedef CReaderBinary<input_num>  MyInput;
 typedef CReaderBinary<output_num> MyTarget;
 
-#endif // TEST_EFFICIENCY_HPP_
+#endif // TEST_TIME_HPP_
 

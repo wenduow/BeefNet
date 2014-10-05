@@ -3,6 +3,7 @@
 
 #include <ctime>
 #include <iostream>
+#include "test_config.hpp"
 #include "../package.hpp"
 
 const uint32 input_num  = 8;

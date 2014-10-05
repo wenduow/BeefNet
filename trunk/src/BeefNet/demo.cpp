@@ -1,40 +1,50 @@
-//#define DEMO
+#define DEMO
 #ifdef  DEMO
 
-#include <ctime>
-#include <iostream>
 #include "demo.hpp"
 
 int32 main(void)
 {
-    time_t beg = time(NULL);
+    /** definition of node number
+        * (input, output and hidden node number)
+        */
+    const uint32 input_num  = 8;
+    const uint32 output_num = 1;
+    const uint32 hidden_num = 10;
 
-    MyNN nn;
-    double err[output_num];
+    /** definition of network type, err function
+        *  input and target file reader type
+        */
+    typedef CNN2Layer
+    <
+        CWeightLM<>, // default parameters for LM algorithm is
+                        // lambda = 10, beta = 10.
+        input_num,
+        hidden_num, FXferLogSig, // log-sigmoid function
+        hidden_num, FXferLogSig, // log-sigmoid function
+        output_num, FXferLnr     // linear function
+    > NN;
+    typedef FErrMAE ErrFunction; // use mean absolute error
+    typedef CReaderBinary<input_num>  Input;
+    typedef CReaderBinary<output_num> Target;
 
-    MyTrainer trainer;
-    trainer.open_input( "../../data/train_input.dat" );
-    trainer.open_target( "../../data/train_target.dat" );
+    srand( (uint32)time(NULL) ); // set random seed
+    NN nn;                       // create network structure
 
-    trainer.train< false, true >( err, nn );
-    result << "training error: ";
-    for ( const auto &i : err ) result << i << '\t';
-    result << std::endl;
+    /** neural networks training */
+    double train_err[output_num];
+    CTrainer< NN, Input, Target, ErrFunction > trainer;
+    trainer.open_input( "train_input.dat" );
+    trainer.open_target( "train_target.dat" );
+    trainer.train<true>( train_err, nn ); // true is stop early
 
-    MyTester tester;
+    /** neural networks testing */
+    double test_err[output_num];
+    CTester< NN, Input, Target, ErrFunction > tester;
     tester.open_input( "../../data/test_input.dat" );
     tester.open_target( "../../data/test_target.dat" );
+    tester.test( test_err, nn );
 
-    tester.test( err, nn );
-    result << "testing error: ";
-    for ( const auto &i : err ) result << i << '\t';
-    result << std::endl;
-
-    nn.save( "../../data/trained.dat" );
-
-    time_t end = time(NULL);
-    result << "running time: " << end - beg << 's' << std::endl;
-    result.close();
     return 0;
 }
 

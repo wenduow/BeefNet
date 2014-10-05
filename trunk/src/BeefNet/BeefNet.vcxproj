@@ -37,7 +37,9 @@
     <ClInclude Include="tester.hpp" />
     <ClInclude Include="test\test_config.hpp" />
     <ClInclude Include="test\test_efficiency.hpp" />
+    <ClInclude Include="test\test_hidden_node.hpp" />
     <ClInclude Include="test\test_img.hpp" />
+    <ClInclude Include="test\test_time.hpp" />
     <ClInclude Include="trainer.hpp" />
     <ClInclude Include="utility\bp_itf.hpp" />
     <ClInclude Include="utility\fp_itf.hpp" />
@@ -61,7 +63,9 @@
   <ItemGroup>
     <ClCompile Include="demo.cpp" />
     <ClCompile Include="test\test_efficiency.cpp" />
+    <ClCompile Include="test\test_hidden_node.cpp" />
     <ClCompile Include="test\test_img.cpp" />
+    <ClCompile Include="test\test_time.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{556AC06C-AAC9-47FC-844E-468FE245C1A8}</ProjectGuid>

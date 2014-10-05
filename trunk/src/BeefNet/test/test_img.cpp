@@ -1,7 +1,9 @@
-#include "test_config.hpp"
+#include <fstream>
 #include "test_img.hpp"
 
 #ifdef TEST_IMG
+
+std::ofstream result( "../../result/result_efficiency.txt", std::ios::app );
 
 int32 main(void)
 {
@@ -15,7 +17,7 @@ int32 main(void)
     trainer0.open_input( "../../data/train_input.dat" );
     trainer0.open_target( "../../data/train_target.dat" );
     beg[0] = time(NULL);
-    trainer0.train< false, false >( err, nn );
+    trainer0.train<false>( err, nn );
     end[0] = time(NULL);
 
     // test for 2 thread
@@ -23,7 +25,7 @@ int32 main(void)
     trainer1.open_input( "../../data/train_input.dat" );
     trainer1.open_target( "../../data/train_target.dat" );
     beg[1] = time(NULL);
-    trainer1.train< false, false >( err, nn );
+    trainer1.train<false>( err, nn );
     end[1] = time(NULL);
 
     // test for 4 thread
@@ -31,7 +33,7 @@ int32 main(void)
     trainer2.open_input( "../../data/train_input.dat" );
     trainer2.open_target( "../../data/train_target.dat" );
     beg[2] = time(NULL);
-    trainer2.train< false, false >( err, nn );
+    trainer2.train<false>( err, nn );
     end[2] = time(NULL);
 
     // test for 8 thread
@@ -39,7 +41,7 @@ int32 main(void)
     trainer3.open_input( "../../data/train_input.dat" );
     trainer3.open_target( "../../data/train_target.dat" );
     beg[3] = time(NULL);
-    trainer3.train< false, false >( err, nn );
+    trainer3.train<false>( err, nn );
     end[3] = time(NULL);
 
     // test for 16 thread
@@ -47,7 +49,7 @@ int32 main(void)
     trainer4.open_input( "../../data/train_input.dat" );
     trainer4.open_target( "../../data/train_target.dat" );
     beg[4] = time(NULL);
-    trainer4.train< false, false >( err, nn );
+    trainer4.train<false>( err, nn );
     end[4] = time(NULL);
 
     // test for 32 thread
@@ -55,7 +57,7 @@ int32 main(void)
     trainer5.open_input( "../../data/train_input.dat" );
     trainer5.open_target( "../../data/train_target.dat" );
     beg[5] = time(NULL);
-    trainer5.train< false, false >( err, nn );
+    trainer5.train<false>( err, nn );
     end[5] = time(NULL);
 
     // test for 64 thread
@@ -63,7 +65,7 @@ int32 main(void)
     trainer6.open_input( "../../data/train_input.dat" );
     trainer6.open_target( "../../data/train_target.dat" );
     beg[6] = time(NULL);
-    trainer6.train< false, false >( err, nn );
+    trainer6.train<false>( err, nn );
     end[6] = time(NULL);
 
     // test for 128 thread
@@ -71,7 +73,7 @@ int32 main(void)
     trainer7.open_input( "../../data/train_input.dat" );
     trainer7.open_target( "../../data/train_target.dat" );
     beg[7] = time(NULL);
-    trainer7.train< false, false >( err, nn );
+    trainer7.train<false>( err, nn );
     end[7] = time(NULL);
 
     // test for 256 thread
@@ -79,7 +81,7 @@ int32 main(void)
     trainer8.open_input( "../../data/train_input.dat" );
     trainer8.open_target( "../../data/train_target.dat" );
     beg[8] = time(NULL);
-    trainer8.train< false, false >( err, nn );
+    trainer8.train<false>( err, nn );
     end[8] = time(NULL);
 
     // test for 512 thread
@@ -87,10 +89,8 @@ int32 main(void)
     trainer9.open_input( "../../data/train_input.dat" );
     trainer9.open_target( "../../data/train_target.dat" );
     beg[9] = time(NULL);
-    trainer9.train< false, false >( err, nn );
+    trainer9.train<false>( err, nn );
     end[9] = time(NULL);
-
-    std::ofstream result( "../../result/result_img.txt", std::ios::app );
 
     for ( uint32 i = 0; i < 10; ++i )
     {

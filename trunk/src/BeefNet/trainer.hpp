@@ -62,7 +62,7 @@ public:
         m_target.close();
     }
 
-    template < bool  StopEarly, bool  PrintEpochErr, uint32 OutputNum >
+    template < bool  StopEarly, uint32 OutputNum >
     void train( OUT double (&err)[OutputNum], INOUT NN &nn )
     {
         m_valid_times = 0;
@@ -75,6 +75,8 @@ public:
 
         NN          nn_img[ImgNum];
         std::thread img_thread[ImgNum];
+
+//        uint32 epoch = 0;
 
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
@@ -96,16 +98,16 @@ public:
                 nn << nn_img[j];
             }
 
+//            ++epoch;
             if ( stop_early<StopEarly>( nn.get_gradient_abs() ) )
             {
                 break;
             }
 
-            print_epoch_error< PrintEpochErr, OutputNum >(nn);
-
             nn.update();
         }
-
+        
+//        result << epoch << ',';
         m_tester.test( err, nn );
     }
 
@@ -170,36 +172,6 @@ private:
         }
 
         return false;
-    }
-
-    template < bool PrintEpochErr, uint32 OutputNum >
-    void print_epoch_error( INOUT NN &nn )
-    {
-        bool choose_print = PrintEpochErr;
-
-        if (choose_print)
-        {
-            double epoch_err[OutputNum];
-            m_tester.test( epoch_err, nn );
-
-//             std::cout << "gradient: " << nn.get_gradient_abs() << '\t';
-// 
-//             for ( uint32 j = 0; j < OutputNum; ++j )
-//             {
-//                 std::cout << "error: " << epoch_err[j] << '\t';
-//             }
-// 
-//             std::cout << std::endl;
-
-            result << "gradient: " << nn.get_gradient_abs() << '\t';
-
-            for ( uint32 j = 0; j < OutputNum; ++j )
-            {
-                result << "error: " << epoch_err[j] << '\t';
-            }
-
-            result << std::endl;
-        }
     }
 
 private:

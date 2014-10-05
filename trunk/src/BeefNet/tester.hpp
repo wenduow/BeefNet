@@ -27,9 +27,9 @@ public:
     template < uint32 OutputNum >
     void test( OUT double (&err)[OutputNum], INOUT NN &nn ) const
     {
-        uint32         pattern_num = m_target.get_pattern_num();
-        double         **predict_tmp = new double*[OutputNum];
-        double         **target_tmp  = new double*[OutputNum];
+        uint32 pattern_num   = m_target.get_pattern_num();
+        double **predict_tmp = new double*[OutputNum];
+        double **target_tmp  = new double*[OutputNum];
 
         for ( uint32 i = 0; i < OutputNum; ++i )
         {
@@ -61,6 +61,11 @@ public:
         }
         delete[] predict_tmp;
         delete[] target_tmp;
+
+//         for ( uint32 i = 0; i < OutputNum; ++i )
+//         {
+//             result << err[i] << ',';
+//         }
     }
 
     void open_input( IN const char *path )
