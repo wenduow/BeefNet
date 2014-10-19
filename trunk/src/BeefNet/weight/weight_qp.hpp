@@ -53,35 +53,37 @@ public:
 
     inline void update(void)
     {
-        double abs_delta_weight = abs(m_delta_weight);
-
-        if ( abs_delta_weight > DOUBLE_EPSILON )
+        if ( abs(m_gradient_prev) < DOUBLE_EPSILON
+          && abs(m_gradient) > DOUBLE_EPSILON )
         {
-            double max_grow = m_fact_max_grow * abs_delta_weight;
+            m_delta_weight = ( - m_learn_rate * m_gradient )
+                           / (double)m_pattern_num;
+        }
+        else
+        {
             double gradient_update = m_gradient - m_gradient_prev;
 
             if ( abs(gradient_update) > DOUBLE_EPSILON )
             {
+                double abs_max_grow = abs(m_delta_weight);
                 m_delta_weight *= ( - m_gradient / gradient_update );
+
+                if ( abs(m_delta_weight) > abs_max_grow )
+                {
+                    if ( m_delta_weight >= 0.0 )
+                    {
+                        m_delta_weight = abs_max_grow;
+                    }
+                    else
+                    {
+                        m_delta_weight = - abs_max_grow;
+                    }
+                }
             }
             else
             {
-                m_delta_weight *= max_grow;
+                m_delta_weight *= m_fact_max_grow;
             }
-
-            if ( m_delta_weight > max_grow )
-            {
-                m_delta_weight = max_grow;
-            }
-            else if ( m_delta_weight < -max_grow )
-            {
-                m_delta_weight = -max_grow;
-            }
-        }
-        else
-        {
-            m_delta_weight = ( - m_learn_rate * m_gradient )
-                           / (double)m_pattern_num;
         }
 
         m_weight += m_delta_weight;

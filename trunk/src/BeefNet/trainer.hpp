@@ -76,8 +76,6 @@ public:
         NN          nn_img[ImgNum];
         std::thread img_thread[ImgNum];
 
-//        uint32 epoch = 0;
-
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
             for ( uint32 j = 0; j < ImgNum; ++j )
@@ -98,7 +96,6 @@ public:
                 nn << nn_img[j];
             }
 
-//            ++epoch;
             if ( stop_early<StopEarly>( nn.get_gradient_abs() ) )
             {
                 break;
@@ -106,8 +103,7 @@ public:
 
             nn.update();
         }
-        
-//        result << epoch << ',';
+
         m_tester.test( err, nn );
     }
 

@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="demo.hpp" />
     <ClInclude Include="err\err.hpp" />
     <ClInclude Include="err\err_itf.hpp" />
     <ClInclude Include="err\err_mae.hpp" />

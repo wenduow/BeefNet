@@ -126,9 +126,6 @@
     <ClInclude Include="nn\nn_recurrent.hpp">
       <Filter>Header Files\nn</Filter>
     </ClInclude>
-    <ClInclude Include="demo.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="package.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -1,7 +1,9 @@
 #define DEMO
 #ifdef  DEMO
 
-#include "demo.hpp"
+#include "package.hpp"
+
+std::ofstream result( "../../result/result_qp.txt", std::ios::app );
 
 int32 main(void)
 {
@@ -17,7 +19,7 @@ int32 main(void)
         */
     typedef CNN2Layer
     <
-        CWeightLM<>, // default parameters for LM algorithm is
+        CWeightQP<>, // default parameters for LM algorithm is
                         // lambda = 10, beta = 10.
         input_num,
         hidden_num, FXferLogSig, // log-sigmoid function
@@ -34,8 +36,8 @@ int32 main(void)
     /** neural networks training */
     double train_err[output_num];
     CTrainer< NN, Input, Target, ErrFunction > trainer;
-    trainer.open_input( "train_input.dat" );
-    trainer.open_target( "train_target.dat" );
+    trainer.open_input( "../../data/train_input.dat" );
+    trainer.open_target( "../../data/train_target.dat" );
     trainer.train<true>( train_err, nn ); // true is stop early
 
     /** neural networks testing */
@@ -44,6 +46,7 @@ int32 main(void)
     tester.open_input( "../../data/test_input.dat" );
     tester.open_target( "../../data/test_target.dat" );
     tester.test( test_err, nn );
+    result << std::endl;
 
     return 0;
 }

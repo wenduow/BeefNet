@@ -62,10 +62,10 @@ public:
         delete[] predict_tmp;
         delete[] target_tmp;
 
-//         for ( uint32 i = 0; i < OutputNum; ++i )
-//         {
-//             result << err[i] << ',';
-//         }
+        for ( uint32 i = 0; i < OutputNum; ++i )
+        {
+            result << err[i] << '\t';
+        }
     }
 
     void open_input( IN const char *path )
