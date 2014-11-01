@@ -8,44 +8,39 @@
 namespace wwd
 {
 
-template < class NN, class InputReader, class TargetReader >
-void img_fxn( INOUT NN &nn,
-              IN const InputReader &input,
-              IN const TargetReader &target,
+template < template <uint32> class Reader, class NN >
+void img_fxn( IN const Reader< NN::input_num >  &input,
+              IN const Reader< NN::output_num > &target,
+              INOUT NN &nn,
               IN uint32 idx_beg,
               IN uint32 idx_end )
 {
     for ( uint32 i = idx_beg; i < idx_end; ++i )
     {
         nn.set_input( input.get_pattern(i) );
-        nn.set_target( target.get_pattern(i) );
-
         nn.forward();
+
+        nn.set_target( target.get_pattern(i) );
         nn.backward();
     }
 }
 
-template < class NN,
-           class InputReader,
-           class TargetReader,
-           class Err,
+template < class Err,
+           bool StopEarly = true,
            uint32 ImgNum = 8,
            uint32 MaxEpoch = 2000,
            uint32 ValidTimes = 6,
-           int32  MinGradientChange = -6 >
+           int32  MinGradientChange = -5 >
 class CTrainer
 {
 private:
 
-    typedef CTrainer< NN,
-                      InputReader,
-                      TargetReader,
-                      Err,
+    typedef CTrainer< Err,
+                      StopEarly,
                       ImgNum,
                       MaxEpoch,
                       ValidTimes,
                       MinGradientChange > ThisType;
-
 public:
 
     CTrainer(void)
@@ -58,20 +53,24 @@ public:
 
     ~CTrainer(void)
     {
-        m_input.close();
-        m_target.close();
     }
 
-    template < bool  StopEarly, uint32 OutputNum >
-    void train( OUT double (&err)[OutputNum], INOUT NN &nn )
+    template < template <uint32> class Reader, class NN >
+    void train( OUT double (&err)[ NN::output_num ],
+                INOUT NN &nn,
+                IN const char *input_path,
+                IN const char *target_path )
     {
         m_valid_times = 0;
         m_gradient    = DOUBLE_MAX;
         m_err         = 0.0;
 
+        Reader< NN::input_num > input(input_path);
+        Reader< NN::output_num > target(target_path);
+
         uint32 idx_beg[ImgNum];
         uint32 idx_end[ImgNum];
-        generate_pattern_idx( idx_beg, idx_end, m_target.get_pattern_num() );
+        generate_pattern_idx( idx_beg, idx_end, target.get_pattern_num() );
 
         NN          nn_img[ImgNum];
         std::thread img_thread[ImgNum];
@@ -82,10 +81,10 @@ public:
             {
                 nn >> nn_img[j];
                 img_thread[j] = std::thread
-                    ( img_fxn< NN, InputReader, TargetReader >,
+                    ( img_fxn< Reader, NN >,
+                      std::cref(input),
+                      std::cref(target),
                       std::ref( nn_img[j] ),
-                      std::cref(m_input),
-                      std::cref(m_target),
                       idx_beg[j],
                       idx_end[j] );
             }
@@ -104,19 +103,11 @@ public:
             nn.update();
         }
 
-        m_tester.test( err, nn );
-    }
+        input.close();
+        target.close();
 
-    void open_input( IN const char *path )
-    {
-        m_input.open(path);
-        m_tester.open_input(path);
-    }
-
-    void open_target( IN const char *path )
-    {
-        m_target.open(path);
-        m_tester.open_target(path);
+        CTester<Err> tester;
+        tester.test<Reader>( err, nn, input_path, target_path );
     }
 
 private:
@@ -171,10 +162,6 @@ private:
     }
 
 private:
-
-    InputReader  m_input;
-    TargetReader m_target;
-    CTester< NN, InputReader, TargetReader, Err > m_tester;
 
     uint32       m_valid_times;
     double       m_gradient;

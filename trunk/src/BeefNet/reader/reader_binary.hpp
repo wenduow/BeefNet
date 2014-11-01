@@ -15,6 +15,13 @@ class CReaderBinary
 {
 public:
 
+    enum
+    {
+        feature_num = FeatureNum
+    };
+
+public:
+
     CReaderBinary(void)
         : m_file_buf(NULL)
         , m_pattern_num(0)
@@ -38,7 +45,7 @@ public:
 
         struct _stat64 file_stat;
         _stat64( path, &file_stat );
-        m_pattern_num = (uint32)( file_stat.st_size / sizeof(double) / FeatureNum );
+        m_pattern_num = (uint32)( file_stat.st_size / sizeof(double) / feature_num );
 
         HANDLE h_file = CreateFile( path,
                                     GENERIC_READ,
@@ -73,7 +80,7 @@ public:
 
     inline const double *get_pattern( IN uint32 pattern_idx ) const
     {
-        return m_file_buf + pattern_idx * FeatureNum;
+        return m_file_buf + pattern_idx * feature_num;
     }
 
     inline uint32 get_pattern_num(void) const

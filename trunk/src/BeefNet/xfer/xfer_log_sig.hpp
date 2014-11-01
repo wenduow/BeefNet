@@ -27,7 +27,7 @@ public:
 
     inline double derivative( IN double val ) const
     {
-        return ( operator()(val) * ( 1 - operator()(val) ) );
+        return ( operator()(val) * ( 1.0 - operator()(val) ) );
     }
 };
 

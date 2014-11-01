@@ -6,12 +6,8 @@
 namespace wwd
 {
 
-template < class NN, class InputReader >
 class CPredictor
 {
-private:
-
-    typedef CPredictor< NN, InputReader > ThisType;
 public:
 
     CPredictor(void)
@@ -20,32 +16,27 @@ public:
 
     ~CPredictor(void)
     {
-        m_input.close();
     }
 
-    template < uint32 OutputNum >
-    void predict( OUT double (&output)[OutputNum],
+    template < template <uint32> class Reader, class NN >
+    void predict( OUT double (&output)[ NN::output_num ],
                   INOUT NN &nn,
+                  IN const char *input_path,
                   IN uint32 idx ) const
     {
-        nn.set_input( m_input.get_pattern(idx) );
+        Reader< NN::input_num > input(input_path);
+
+        nn.set_input( input.get_pattern(idx) );
         nn.forward();
         nn.get_output(output);
-    }
 
-    void open_input( IN const char *path )
-    {
-        m_input.open(path);
+        input.close();
     }
 
 private:
 
     CPredictor( IN const CPredictor &other );
     inline CPredictor &operator=( IN const CPredictor &other );
-
-private:
-
-    InputReader m_input;
 };
 
 } // namespace wwd
