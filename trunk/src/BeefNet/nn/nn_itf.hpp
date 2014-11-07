@@ -1,7 +1,7 @@
 #ifndef NN_ITF_HPP_
 #define NN_ITF_HPP_
 
-#include <fstream>
+#include <iostream>
 #include "../utility/input.hpp"
 #include "../utility/neuron.hpp"
 #include "../utility/target.hpp"
@@ -396,7 +396,7 @@ protected:
                class WeightInput,
                uint32 InputNum,
                uint32 NeuronNum >
-    uint32 get_weight_num
+    inline uint32 get_weight_num
         ( IN const WeightBias  (&weight_bias)[NeuronNum],
           IN const WeightInput (&weight_input)[NeuronNum][InputNum] ) const
     {
@@ -407,7 +407,7 @@ protected:
     }
 
     template < class Weight, uint32 InputNum, uint32 NeuronNum >
-    uint32 get_weight_num
+    inline uint32 get_weight_num
         ( IN const Weight (&weight)[NeuronNum][InputNum] ) const
     {
         (void)weight;

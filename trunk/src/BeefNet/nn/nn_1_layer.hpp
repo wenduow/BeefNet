@@ -8,17 +8,26 @@ namespace wwd
 
 template < class Weight,
            uint32 InputNum,
-           uint32 NeuronNum, class Xfer,
+           uint32 HiddenNum, class Xfer,
            uint32 OutputNum, class XferOutput >
 class CNN1Layer
     : public INN
 {
+public:
+
+    enum
+    {
+        input_num  = InputNum,
+        hidden_num = HiddenNum,
+        output_num = OutputNum
+    };
+
 private:
 
     typedef CNN1Layer< Weight,
-                       InputNum,
-                       NeuronNum, Xfer,
-                       OutputNum, XferOutput > ThisType;
+                       input_num,
+                       hidden_num, Xfer,
+                       output_num, XferOutput > ThisType;
 
 public:
 
@@ -55,8 +64,7 @@ public:
         INN::set_target( m_target, target );
     }
 
-    template < uint32 OutputNum >
-    void get_output( OUT double (&output)[OutputNum] ) const
+    void get_output( OUT double (&output)[output_num] ) const
     {
         INN::get_output( output, m_output );
     }
@@ -153,19 +161,19 @@ private:
 
 private:
 
-    CInput<NeuronNum> m_input[InputNum];
+    CInput<hidden_num> m_input[input_num];
 
-    CInput<NeuronNum> m_bias;
-    Weight m_weight_bias[NeuronNum];
-    Weight m_weight_neuron[NeuronNum][InputNum];
-    CNeuron< InputNum + 1, OutputNum, Xfer > m_neuron[NeuronNum];
+    CInput<hidden_num> m_bias;
+    Weight m_weight_bias[hidden_num];
+    Weight m_weight_neuron[hidden_num][input_num];
+    CNeuron< input_num + 1, output_num, Xfer > m_neuron[hidden_num];
 
-    CInput<OutputNum> m_bias_output;
-    Weight m_weight_bias_output[OutputNum];
-    Weight m_weight_output[OutputNum][NeuronNum];
-    CNeuron< NeuronNum + 1, 1, XferOutput > m_output[OutputNum];
+    CInput<output_num> m_bias_output;
+    Weight m_weight_bias_output[output_num];
+    Weight m_weight_output[output_num][hidden_num];
+    CNeuron< hidden_num + 1, 1, XferOutput > m_output[output_num];
 
-    CTarget m_target[OutputNum];
+    CTarget m_target[output_num];
 };
 
 } // namespace wwd
