@@ -8,32 +8,21 @@ namespace wwd
 
 template < class Weight,
            uint32 InputNum,
-           uint32 HiddenNum0, class Xfer0,
-           uint32 HiddenNum1, class Xfer1,
-           uint32 HiddenNum2, class Xfer2,
+           uint32 NeuronNum0, class Xfer0,
+           uint32 NeuronNum1, class Xfer1,
+           uint32 NeuronNum2, class Xfer2,
            uint32 OutputNum,  class XferOutput >
 class CNN3Layer
     : public INN
 {
-public:
-
-    enum
-    {
-        input_num    = InputNum,
-        hidden_num_0 = HiddenNum0,
-        hidden_num_1 = HiddenNum1,
-        hidden_num_2 = HiddenNum2,
-        output_num   = OutputNum
-    };
-
 private:
 
     typedef CNN3Layer< Weight,
-                       input_num,
-                       hidden_num_0, Xfer0,
-                       hidden_num_1, Xfer1,
-                       hidden_num_2, Xfer2,
-                       output_num,   XferOutput > ThisType;
+                       InputNum,
+                       NeuronNum0, Xfer0,
+                       NeuronNum1, Xfer1,
+                       NeuronNum2, Xfer2,
+                       OutputNum,  XferOutput > ThisType;
 
 public:
 
@@ -70,7 +59,8 @@ public:
         INN::set_target( m_target, target );
     }
 
-    void get_output( OUT double (&output)[output_num] ) const
+    template < uint32 OutputNum >
+    void get_output( OUT double (&output)[OutputNum] ) const
     {
         INN::get_output( output, m_output );
     }
@@ -201,29 +191,29 @@ private:
 
 private:
 
-    CInput<hidden_num_0> m_input[input_num];
+    CInput<NeuronNum0> m_input[InputNum];
 
-    CInput<hidden_num_0> m_bias_0;
-    Weight m_weight_bias_0[hidden_num_0];
-    Weight m_weight_neuron_0[hidden_num_0][input_num];
-    CNeuron< input_num + 1, hidden_num_1, Xfer0 > m_neuron_0[hidden_num_0];
+    CInput<NeuronNum0> m_bias_0;
+    Weight m_weight_bias_0[NeuronNum0];
+    Weight m_weight_neuron_0[NeuronNum0][InputNum];
+    CNeuron< InputNum + 1, NeuronNum1, Xfer0 > m_neuron_0[NeuronNum0];
 
-    CInput<hidden_num_1> m_bias_1;
-    Weight m_weight_bias_1[hidden_num_1];
-    Weight m_weight_neuron_1[hidden_num_1][hidden_num_0];
-    CNeuron< hidden_num_0 + 1, hidden_num_2, Xfer1 > m_neuron_1[hidden_num_1];
+    CInput<NeuronNum1> m_bias_1;
+    Weight m_weight_bias_1[NeuronNum1];
+    Weight m_weight_neuron_1[NeuronNum1][NeuronNum0];
+    CNeuron< NeuronNum0 + 1, NeuronNum2, Xfer1 > m_neuron_1[NeuronNum1];
 
-    CInput<hidden_num_2> m_bias_2;
-    Weight m_weight_bias_2[hidden_num_2];
-    Weight m_weight_neuron_2[hidden_num_2][hidden_num_1];
-    CNeuron< hidden_num_1 + 1, output_num, Xfer2 > m_neuron_2[hidden_num_2];
+    CInput<NeuronNum2> m_bias_2;
+    Weight m_weight_bias_2[NeuronNum2];
+    Weight m_weight_neuron_2[NeuronNum2][NeuronNum1];
+    CNeuron< NeuronNum1 + 1, OutputNum, Xfer2 > m_neuron_2[NeuronNum2];
 
-    CInput<output_num> m_bias_output;
-    Weight m_weight_bias_output[output_num];
-    Weight m_weight_output[output_num][hidden_num_2];
-    CNeuron< hidden_num_2 + 1, 1, XferOutput > m_output[output_num];
+    CInput<OutputNum> m_bias_output;
+    Weight m_weight_bias_output[OutputNum];
+    Weight m_weight_output[OutputNum][NeuronNum2];
+    CNeuron< NeuronNum2 + 1, 1, XferOutput > m_output[OutputNum];
 
-    CTarget m_target[output_num];
+    CTarget m_target[OutputNum];
 };
 
 } // namespace wwd

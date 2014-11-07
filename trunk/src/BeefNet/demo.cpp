@@ -1,6 +1,6 @@
+#define DEMO
 #ifdef  DEMO
 
-#include "test/test_config.hpp"
 #include "package.hpp"
 
 std::ofstream result( "../../result/result_qp.txt", std::ios::app );

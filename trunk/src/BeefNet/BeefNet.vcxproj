@@ -34,7 +34,6 @@
     <ClInclude Include="predictor.hpp" />
     <ClInclude Include="reader\reader_binary.hpp" />
     <ClInclude Include="tester.hpp" />
-    <ClInclude Include="test\test_bp.hpp" />
     <ClInclude Include="test\test_config.hpp" />
     <ClInclude Include="test\test_efficiency.hpp" />
     <ClInclude Include="test\test_hidden_node.hpp" />
@@ -62,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="demo.cpp" />
-    <ClCompile Include="test\test_bp.cpp" />
     <ClCompile Include="test\test_efficiency.cpp" />
     <ClCompile Include="test\test_hidden_node.cpp" />
     <ClCompile Include="test\test_img.cpp" />
@@ -164,7 +162,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <StackReserveSize>40000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

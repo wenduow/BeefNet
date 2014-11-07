@@ -61,7 +61,7 @@ public:
 protected:
 
     IWeight(void)
-        : IInput<1>( (double)rand() / (double)RAND_MAX * 1.4 - 0.7 )
+        : IInput<1>( (double)rand() / (double)RAND_MAX )
         , IOutput<1>(1.0)
         , m_weight(m_forward_val)
         , m_gradient(m_backward_val)

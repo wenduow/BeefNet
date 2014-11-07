@@ -14,23 +14,13 @@ template < class Weight,
 class CNNRecurrent
     : public INN
 {
-public:
-
-    enum
-    {
-        input_num    = InputNum,
-        forward_num  = ForwardNum,
-        backward_num = BackwardNum,
-        output_num   = OutputNum
-    };
-
 private:
 
     typedef CNNRecurrent< Weight,
-                          input_num,
-                          forward_num,  XferForward,
-                          backward_num, XferBackward ,
-                          output_num,   XferOutput > ThisType;
+                          InputNum,
+                          ForwardNum,  XferForward,
+                          BackwardNum, XferBackward ,
+                          OutputNum,   XferOutput > ThisType;
 
 public:
 
@@ -67,7 +57,8 @@ public:
         INN::set_target( m_target, target );
     }
 
-    void get_output( OUT double (&output)[output_num] ) const
+    template < uint32 OutputNum >
+    void get_output( OUT double (&output)[OutputNum] ) const
     {
         INN::get_output( output, m_output );
     }
@@ -190,28 +181,28 @@ private:
 
 private:
 
-    CInput<forward_num> m_input[input_num];
+    CInput<ForwardNum> m_input[InputNum];
 
-    CInput<forward_num> m_bias_forward;
-    Weight m_weight_bias_forward[forward_num];
-    Weight m_weight_forward[forward_num][input_num];
-    CNeuron< input_num + backward_num + 1,
-             output_num + backward_num,
-             XferForward > m_forward[forward_num];
+    CInput<ForwardNum> m_bias_forward;
+    Weight m_weight_bias_forward[ForwardNum];
+    Weight m_weight_forward[ForwardNum][InputNum];
+    CNeuron< InputNum + BackwardNum + 1,
+             OutputNum + BackwardNum,
+             XferForward > m_forward[ForwardNum];
 
-    CInput<output_num> m_bias_output;
-    Weight m_weight_bias_output[output_num];
-    Weight m_weight_output[output_num][forward_num];
-    CNeuron< forward_num + 1, 1, XferOutput > m_output[output_num];
+    CInput<OutputNum> m_bias_output;
+    Weight m_weight_bias_output[OutputNum];
+    Weight m_weight_output[OutputNum][ForwardNum];
+    CNeuron< ForwardNum + 1, 1, XferOutput > m_output[OutputNum];
 
-    CTarget m_target[output_num];
+    CTarget m_target[OutputNum];
 
-    CInput<backward_num> m_bias_backward;
-    Weight m_weight_bias_backward[backward_num];
-    Weight m_weight_backward[backward_num][forward_num];
-    CNeuron< forward_num + 1, forward_num, XferOutput > m_backward[backward_num];
+    CInput<BackwardNum> m_bias_backward;
+    Weight m_weight_bias_backward[BackwardNum];
+    Weight m_weight_backward[BackwardNum][ForwardNum];
+    CNeuron< ForwardNum + 1, ForwardNum, XferOutput > m_backward[BackwardNum];
 
-    Weight m_weight_feedback[forward_num][backward_num];
+    Weight m_weight_feedback[ForwardNum][BackwardNum];
 };
 
 } // namespace wwd
