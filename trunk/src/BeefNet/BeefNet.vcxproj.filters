@@ -14,31 +14,51 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\err">
-      <UniqueIdentifier>{eef17442-90ec-4acf-8379-cabdc81c099b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\nn">
-      <UniqueIdentifier>{5c2440f3-516c-4a89-85bc-c8e41e338d7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\reader">
-      <UniqueIdentifier>{99fb0cb2-68d3-43db-a01d-ad9a86f6bc47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\utility">
-      <UniqueIdentifier>{fd93e9f7-2d73-41b7-988d-a8a97388f7fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\weight">
-      <UniqueIdentifier>{000ab751-7069-4fc6-9633-a02dcb1aa529}</UniqueIdentifier>
+      <UniqueIdentifier>{7ae946f8-2112-4491-9187-d68dde524305}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\xfer">
-      <UniqueIdentifier>{a60ddb9d-d8e0-4692-aed6-f82e5750fa86}</UniqueIdentifier>
+      <UniqueIdentifier>{c5a12280-5d91-4411-9bb3-ecad551b8697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utility">
+      <UniqueIdentifier>{58ca0a73-ff87-4dc7-a548-1de5dc50e81e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nn">
+      <UniqueIdentifier>{011c5462-77b7-4387-a803-16f038ffd993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\reader">
+      <UniqueIdentifier>{7a28f071-ac1b-4194-a1c2-6517b8f74dfa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\test">
-      <UniqueIdentifier>{a16babd0-6222-4789-8902-af013f0db288}</UniqueIdentifier>
+      <UniqueIdentifier>{836f6180-4688-47f9-9197-8f4d740149eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\test">
-      <UniqueIdentifier>{135740cb-c134-43f6-b559-66d1f852dda5}</UniqueIdentifier>
+    <Filter Include="Header Files\nn\net">
+      <UniqueIdentifier>{ddd989d8-5fd8-4c62-9b18-251313c661d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nn\layer">
+      <UniqueIdentifier>{e2382af4-4100-4973-aad3-298b418d2d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nn\weight">
+      <UniqueIdentifier>{4bc0af93-b709-452b-9891-87a1972bf5d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nn\neuron">
+      <UniqueIdentifier>{35dd1163-0ce6-41a1-87b6-31ae7a2e7681}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="predictor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tester.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="trainer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="err\err.hpp">
       <Filter>Header Files\err</Filter>
     </ClInclude>
@@ -54,6 +74,27 @@
     <ClInclude Include="err\err_rmse.hpp">
       <Filter>Header Files\err</Filter>
     </ClInclude>
+    <ClInclude Include="reader\reader_binary.hpp">
+      <Filter>Header Files\reader</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\backward_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\forward_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\input_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\node.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\output_itf.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\type.hpp">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
     <ClInclude Include="xfer\xfer.hpp">
       <Filter>Header Files\xfer</Filter>
     </ClInclude>
@@ -66,118 +107,59 @@
     <ClInclude Include="xfer\xfer_log_sig.hpp">
       <Filter>Header Files\xfer</Filter>
     </ClInclude>
-    <ClInclude Include="weight\weight.hpp">
-      <Filter>Header Files\weight</Filter>
+    <ClInclude Include="xfer\xfer_tan_sig.hpp">
+      <Filter>Header Files\xfer</Filter>
     </ClInclude>
-    <ClInclude Include="weight\weight_bp.hpp">
-      <Filter>Header Files\weight</Filter>
+    <ClInclude Include="nn\net\net_2_layer.hpp">
+      <Filter>Header Files\nn\net</Filter>
     </ClInclude>
-    <ClInclude Include="weight\weight_itf.hpp">
-      <Filter>Header Files\weight</Filter>
+    <ClInclude Include="nn\neuron\neuron.hpp">
+      <Filter>Header Files\nn\neuron</Filter>
     </ClInclude>
-    <ClInclude Include="weight\weight_qp.hpp">
-      <Filter>Header Files\weight</Filter>
+    <ClInclude Include="nn\neuron\neuron_input.hpp">
+      <Filter>Header Files\nn\neuron</Filter>
     </ClInclude>
-    <ClInclude Include="weight\weight_rp.hpp">
-      <Filter>Header Files\weight</Filter>
+    <ClInclude Include="nn\neuron\neuron_target.hpp">
+      <Filter>Header Files\nn\neuron</Filter>
     </ClInclude>
-    <ClInclude Include="utility\bp_itf.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\layer\layer.hpp">
+      <Filter>Header Files\nn\layer</Filter>
     </ClInclude>
-    <ClInclude Include="utility\fp_itf.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\layer\layer_input.hpp">
+      <Filter>Header Files\nn\layer</Filter>
     </ClInclude>
-    <ClInclude Include="utility\input.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\layer\layer_target.hpp">
+      <Filter>Header Files\nn\layer</Filter>
     </ClInclude>
-    <ClInclude Include="utility\input_itf.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\net\net_3_layer.hpp">
+      <Filter>Header Files\nn\net</Filter>
     </ClInclude>
-    <ClInclude Include="utility\neuron.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\net\net_1_layer.hpp">
+      <Filter>Header Files\nn\net</Filter>
     </ClInclude>
-    <ClInclude Include="utility\output_itf.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\net\net_recurrent.hpp">
+      <Filter>Header Files\nn\net</Filter>
     </ClInclude>
-    <ClInclude Include="utility\target.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\weight\weight.hpp">
+      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
-    <ClInclude Include="utility\type.hpp">
-      <Filter>Header Files\utility</Filter>
+    <ClInclude Include="nn\weight\update_bp.hpp">
+      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
-    <ClInclude Include="reader\reader_binary.hpp">
-      <Filter>Header Files\reader</Filter>
+    <ClInclude Include="nn\weight\update_lm.hpp">
+      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
-    <ClInclude Include="nn\nn.hpp">
-      <Filter>Header Files\nn</Filter>
+    <ClInclude Include="nn\weight\param_bp.hpp">
+      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
-    <ClInclude Include="nn\nn_1_layer.hpp">
-      <Filter>Header Files\nn</Filter>
+    <ClInclude Include="nn\weight\param_lm.hpp">
+      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
-    <ClInclude Include="nn\nn_2_layer.hpp">
-      <Filter>Header Files\nn</Filter>
+    <ClInclude Include="nn\layer\layer_weight.hpp">
+      <Filter>Header Files\nn\layer</Filter>
     </ClInclude>
-    <ClInclude Include="nn\nn_3_layer.hpp">
-      <Filter>Header Files\nn</Filter>
+    <ClInclude Include="nn\weight\weight_vector.hpp">
+      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
-    <ClInclude Include="nn\nn_itf.hpp">
-      <Filter>Header Files\nn</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\nn_recurrent.hpp">
-      <Filter>Header Files\nn</Filter>
-    </ClInclude>
-    <ClInclude Include="package.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="predictor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tester.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="trainer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="weight\weight_lm.hpp">
-      <Filter>Header Files\weight</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_img.hpp">
-      <Filter>Header Files\test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_config.hpp">
-      <Filter>Header Files\test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_efficiency.hpp">
-      <Filter>Header Files\test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_time.hpp">
-      <Filter>Header Files\test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_hidden_node.hpp">
-      <Filter>Header Files\test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_bp.hpp">
-      <Filter>Header Files\test</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\test_img.cpp">
-      <Filter>Source Files\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\test_efficiency.cpp">
-      <Filter>Source Files\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\test_time.cpp">
-      <Filter>Source Files\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\test_hidden_node.cpp">
-      <Filter>Source Files\test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\test_bp.cpp">
-      <Filter>Source Files\test</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ namespace wwd
 {
 
 template < template <uint32> class Reader, class NN >
-void img_fxn( IN const Reader< NN::input_num >  &input,
+void img_fxn( IN const Reader< NN::input_num > &input,
               IN const Reader< NN::output_num > &target,
               INOUT NN &nn,
               IN uint32 idx_beg,

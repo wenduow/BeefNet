@@ -18,58 +18,8 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="err\err.hpp" />
-    <ClInclude Include="err\err_itf.hpp" />
-    <ClInclude Include="err\err_mae.hpp" />
-    <ClInclude Include="err\err_mse.hpp" />
-    <ClInclude Include="err\err_rmse.hpp" />
-    <ClInclude Include="nn\nn.hpp" />
-    <ClInclude Include="nn\nn_1_layer.hpp" />
-    <ClInclude Include="nn\nn_2_layer.hpp" />
-    <ClInclude Include="nn\nn_3_layer.hpp" />
-    <ClInclude Include="nn\nn_itf.hpp" />
-    <ClInclude Include="nn\nn_recurrent.hpp" />
-    <ClInclude Include="package.hpp" />
-    <ClInclude Include="predictor.hpp" />
-    <ClInclude Include="reader\reader_binary.hpp" />
-    <ClInclude Include="tester.hpp" />
-    <ClInclude Include="test\test_bp.hpp" />
-    <ClInclude Include="test\test_config.hpp" />
-    <ClInclude Include="test\test_efficiency.hpp" />
-    <ClInclude Include="test\test_hidden_node.hpp" />
-    <ClInclude Include="test\test_img.hpp" />
-    <ClInclude Include="test\test_time.hpp" />
-    <ClInclude Include="trainer.hpp" />
-    <ClInclude Include="utility\bp_itf.hpp" />
-    <ClInclude Include="utility\fp_itf.hpp" />
-    <ClInclude Include="utility\input.hpp" />
-    <ClInclude Include="utility\input_itf.hpp" />
-    <ClInclude Include="utility\neuron.hpp" />
-    <ClInclude Include="utility\output_itf.hpp" />
-    <ClInclude Include="utility\target.hpp" />
-    <ClInclude Include="utility\type.hpp" />
-    <ClInclude Include="weight\weight.hpp" />
-    <ClInclude Include="weight\weight_bp.hpp" />
-    <ClInclude Include="weight\weight_itf.hpp" />
-    <ClInclude Include="weight\weight_lm.hpp" />
-    <ClInclude Include="weight\weight_qp.hpp" />
-    <ClInclude Include="weight\weight_rp.hpp" />
-    <ClInclude Include="xfer\xfer.hpp" />
-    <ClInclude Include="xfer\xfer_itf.hpp" />
-    <ClInclude Include="xfer\xfer_lnr.hpp" />
-    <ClInclude Include="xfer\xfer_log_sig.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="demo.cpp" />
-    <ClCompile Include="test\test_bp.cpp" />
-    <ClCompile Include="test\test_efficiency.cpp" />
-    <ClCompile Include="test\test_hidden_node.cpp" />
-    <ClCompile Include="test\test_img.cpp" />
-    <ClCompile Include="test\test_time.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{556AC06C-AAC9-47FC-844E-468FE245C1A8}</ProjectGuid>
+    <ProjectGuid>{B7CA7F8C-38AB-41FE-986F-CCC68840196B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BeefNet</RootNamespace>
   </PropertyGroup>
@@ -118,8 +68,6 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)/../bin/$(Platform)/debug/</OutDir>
-    <TargetName>$(ProjectName)D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -128,7 +76,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)/../bin/$(Platform)/release/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -138,12 +85,10 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,18 +103,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <StackReserveSize>40000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
@@ -177,8 +119,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -197,17 +137,56 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <StackReserveSize>40000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="demo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="err\err.hpp" />
+    <ClInclude Include="err\err_itf.hpp" />
+    <ClInclude Include="err\err_mae.hpp" />
+    <ClInclude Include="err\err_mse.hpp" />
+    <ClInclude Include="err\err_rmse.hpp" />
+    <ClInclude Include="nn\layer\layer.hpp" />
+    <ClInclude Include="nn\layer\layer_input.hpp" />
+    <ClInclude Include="nn\layer\layer_target.hpp" />
+    <ClInclude Include="nn\layer\layer_weight.hpp" />
+    <ClInclude Include="nn\net\net_1_layer.hpp" />
+    <ClInclude Include="nn\net\net_2_layer.hpp" />
+    <ClInclude Include="nn\net\net_3_layer.hpp" />
+    <ClInclude Include="nn\net\net_recurrent.hpp" />
+    <ClInclude Include="nn\neuron\neuron.hpp" />
+    <ClInclude Include="nn\neuron\neuron_input.hpp" />
+    <ClInclude Include="nn\neuron\neuron_target.hpp" />
+    <ClInclude Include="nn\weight\param_bp.hpp" />
+    <ClInclude Include="nn\weight\param_lm.hpp" />
+    <ClInclude Include="nn\weight\update_bp.hpp" />
+    <ClInclude Include="nn\weight\weight.hpp" />
+    <ClInclude Include="nn\weight\update_lm.hpp" />
+    <ClInclude Include="nn\weight\weight_vector.hpp" />
+    <ClInclude Include="predictor.hpp" />
+    <ClInclude Include="reader\reader_binary.hpp" />
+    <ClInclude Include="tester.hpp" />
+    <ClInclude Include="trainer.hpp" />
+    <ClInclude Include="utility\backward_itf.hpp" />
+    <ClInclude Include="utility\forward_itf.hpp" />
+    <ClInclude Include="utility\input_itf.hpp" />
+    <ClInclude Include="utility\node.hpp" />
+    <ClInclude Include="utility\output_itf.hpp" />
+    <ClInclude Include="utility\type.hpp" />
+    <ClInclude Include="xfer\xfer.hpp" />
+    <ClInclude Include="xfer\xfer_itf.hpp" />
+    <ClInclude Include="xfer\xfer_lnr.hpp" />
+    <ClInclude Include="xfer\xfer_log_sig.hpp" />
+    <ClInclude Include="xfer\xfer_tan_sig.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
