@@ -1,19 +1,19 @@
 #ifndef NEURON_INPUT_HPP_
 #define NEURON_INPUT_HPP_
 
-#include "../../utility/node.hpp"
+#include "../../Utility/input_itf.hpp"
 
 namespace wwd
 {
 
 template < uint32 OutputNum >
 class CNeuronInput
-    : public CNode< 0, OutputNum >
+    : public IInput<OutputNum>
 {
 public:
 
     CNeuronInput(void)
-        : CNode()
+        : IInput()
     {
     }
 
@@ -23,12 +23,12 @@ public:
 
     inline void forward(void)
     {
-        IForward::m_output = IForward::m_input;
+        m_output_val = m_input_val;
     }
 
     inline void set_input( IN double input )
     {
-        IForward::m_input = input;
+        m_input_val = input;
     }
 };
 

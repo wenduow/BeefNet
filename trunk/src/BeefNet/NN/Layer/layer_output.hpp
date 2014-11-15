@@ -1,53 +1,44 @@
-#ifndef LAYER_HPP_
-#define LAYER_HPP_
+#ifndef LAYER_OUTPUT_HPP_
+#define LAYER_OUTPUT_HPP_
 
-#include "../Neuron/neuron_input.hpp"
-#include "../Neuron/neuron.hpp"
-#include "../Weight/weight.hpp"
+#include "../Neuron/neuron_target.hpp"
 
 namespace wwd
 {
 
 template < uint32 InputNum,
-           uint32 NeuronNum,
            uint32 OutputNum,
            class Xfer,
            template < uint32, class > class Weight,
            class Param >
-class CLayer
+class CLayerOutput
 {
 public:
 
-    enum
-    {
-        hidden_num = NeuronNum
-    };
-
-public:
-
-    CLayer(void)
+    CLayerOutput(void)
     {
         connect_inner();
     }
 
-    ~CLayer(void)
+    ~CLayerOutput(void)
     {
     }
 
     void forward(void)
     {
-        for ( uint32 i = 0; i < NeuronNum; ++i )
+        for ( uint32 i = 0; i < OutputNum; ++i )
         {
             m_weight_vector[i].forward();
-            m_neuron[i].forward();
+            m_output[i].forward();
         }
     }
 
     void backward(void)
     {
-        for ( uint32 i = 0; i < NeuronNum; ++i )
+        for ( uint32 i = 0; i < OutputNum; ++i )
         {
-            m_neuron[i].backward();
+            m_target[i].backward();
+            m_output[i].backward();
             m_weight_vector[i].backward();
         }
     }
@@ -65,7 +56,7 @@ public:
     {
         for ( uint32 i = 0; i < Layer::hidden_num; ++i )
         {
-            for ( uint32 j = 0; j < NeuronNum; ++j )
+            for ( uint32 j = 0; j < OutputNum; ++j )
             {
                 m_weight_vector[j]
                     .connect_input_neuron( layer.get_hidden_node(i) );
@@ -73,10 +64,12 @@ public:
         }
     }
 
-    inline CNeuron< InputNum, OutputNum, Xfer> &
-        get_hidden_node( IN uint32 idx )
+    void set_target( IN const double *target )
     {
-        return m_neuron[idx];
+        for ( uint32 i = 0; i < OutputNum; ++i )
+        {
+            m_target[i].set_target( target[i] );
+        }
     }
 
 #ifdef _DEBUG
@@ -95,19 +88,21 @@ private:
 
     void connect_inner(void)
     {
-        for ( uint32 i = 0; i < NeuronNum; ++i )
+        for ( uint32 i = 0; i < OutputNum; ++i )
         {
-            m_weight_vector[i].connect_output_neuron( m_neuron[i] );
+            m_weight_vector[i].connect_output_neuron( m_output[i] );
+            m_target[i].connect_input_neuron( m_output[i] );
         }
     }
 
 private:
 
-    Weight< InputNum, Param > m_weight_vector[NeuronNum];
-    CNeuron< InputNum, OutputNum, Xfer> m_neuron[NeuronNum];
+    Weight< InputNum, Param > m_weight_vector[OutputNum];
+    CNeuron< InputNum, 1, Xfer> m_output[OutputNum];
+    CNeuronTarget m_target[OutputNum];
 };
 
 } // namespace wwd
 
-#endif // LAYER_HPP_
+#endif // LAYER_OUTPUT_HPP_
 

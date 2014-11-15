@@ -13,35 +13,32 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\err">
-      <UniqueIdentifier>{7ae946f8-2112-4491-9187-d68dde524305}</UniqueIdentifier>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{b2834585-066c-44b3-8ae4-9cec25aa544b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\xfer">
-      <UniqueIdentifier>{c5a12280-5d91-4411-9bb3-ecad551b8697}</UniqueIdentifier>
+    <Filter Include="Header Files\NN">
+      <UniqueIdentifier>{94226bf8-dee2-4250-b5c5-04dd6d48ecd0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\utility">
-      <UniqueIdentifier>{58ca0a73-ff87-4dc7-a548-1de5dc50e81e}</UniqueIdentifier>
+    <Filter Include="Header Files\NN\Neuron">
+      <UniqueIdentifier>{ee42c55a-0f88-49ab-befd-7f2020325a9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\nn">
-      <UniqueIdentifier>{011c5462-77b7-4387-a803-16f038ffd993}</UniqueIdentifier>
+    <Filter Include="Header Files\Xfer">
+      <UniqueIdentifier>{a343a8d5-2699-4a8e-bd78-085daa00a265}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\reader">
-      <UniqueIdentifier>{7a28f071-ac1b-4194-a1c2-6517b8f74dfa}</UniqueIdentifier>
+    <Filter Include="Header Files\Err">
+      <UniqueIdentifier>{bbafbfc1-c501-4498-8ee0-68b01609d241}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\test">
-      <UniqueIdentifier>{836f6180-4688-47f9-9197-8f4d740149eb}</UniqueIdentifier>
+    <Filter Include="Header Files\Reader">
+      <UniqueIdentifier>{599ae72a-42f1-4c1b-bd3a-986d369e761c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\nn\net">
-      <UniqueIdentifier>{ddd989d8-5fd8-4c62-9b18-251313c661d2}</UniqueIdentifier>
+    <Filter Include="Header Files\NN\Weight">
+      <UniqueIdentifier>{c693ed80-1e46-48f5-b739-cb835310264f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\nn\layer">
-      <UniqueIdentifier>{e2382af4-4100-4973-aad3-298b418d2d4b}</UniqueIdentifier>
+    <Filter Include="Header Files\NN\Layer">
+      <UniqueIdentifier>{c6230db7-6c66-40d8-864c-56848d6afb93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\nn\weight">
-      <UniqueIdentifier>{4bc0af93-b709-452b-9891-87a1972bf5d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\nn\neuron">
-      <UniqueIdentifier>{35dd1163-0ce6-41a1-87b6-31ae7a2e7681}</UniqueIdentifier>
+    <Filter Include="Header Files\NN\Net">
+      <UniqueIdentifier>{e3188c36-d62c-49f2-9a13-ecd8c9665851}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +47,87 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utility\type.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\forward_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\backward_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\input_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\output_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron_input.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron_target.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="Xfer\xfer.hpp">
+      <Filter>Header Files\Xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="Xfer\xfer_itf.hpp">
+      <Filter>Header Files\Xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="Xfer\xfer_lnr.hpp">
+      <Filter>Header Files\Xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="Xfer\xfer_log_sig.hpp">
+      <Filter>Header Files\Xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="Xfer\xfer_tan_sig.hpp">
+      <Filter>Header Files\Xfer</Filter>
+    </ClInclude>
+    <ClInclude Include="Err\err.hpp">
+      <Filter>Header Files\Err</Filter>
+    </ClInclude>
+    <ClInclude Include="Err\err_itf.hpp">
+      <Filter>Header Files\Err</Filter>
+    </ClInclude>
+    <ClInclude Include="Err\err_mae.hpp">
+      <Filter>Header Files\Err</Filter>
+    </ClInclude>
+    <ClInclude Include="Err\err_mse.hpp">
+      <Filter>Header Files\Err</Filter>
+    </ClInclude>
+    <ClInclude Include="Err\err_rmse.hpp">
+      <Filter>Header Files\Err</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_vector_itf.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer_input.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer_output.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Net\nn_2_layer.hpp">
+      <Filter>Header Files\NN\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_bp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\param_bp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="Reader\reader_binary.hpp">
+      <Filter>Header Files\Reader</Filter>
+    </ClInclude>
     <ClInclude Include="predictor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,108 +136,6 @@
     </ClInclude>
     <ClInclude Include="trainer.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="err\err.hpp">
-      <Filter>Header Files\err</Filter>
-    </ClInclude>
-    <ClInclude Include="err\err_itf.hpp">
-      <Filter>Header Files\err</Filter>
-    </ClInclude>
-    <ClInclude Include="err\err_mae.hpp">
-      <Filter>Header Files\err</Filter>
-    </ClInclude>
-    <ClInclude Include="err\err_mse.hpp">
-      <Filter>Header Files\err</Filter>
-    </ClInclude>
-    <ClInclude Include="err\err_rmse.hpp">
-      <Filter>Header Files\err</Filter>
-    </ClInclude>
-    <ClInclude Include="reader\reader_binary.hpp">
-      <Filter>Header Files\reader</Filter>
-    </ClInclude>
-    <ClInclude Include="utility\backward_itf.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="utility\forward_itf.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="utility\input_itf.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="utility\node.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="utility\output_itf.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="utility\type.hpp">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="xfer\xfer.hpp">
-      <Filter>Header Files\xfer</Filter>
-    </ClInclude>
-    <ClInclude Include="xfer\xfer_itf.hpp">
-      <Filter>Header Files\xfer</Filter>
-    </ClInclude>
-    <ClInclude Include="xfer\xfer_lnr.hpp">
-      <Filter>Header Files\xfer</Filter>
-    </ClInclude>
-    <ClInclude Include="xfer\xfer_log_sig.hpp">
-      <Filter>Header Files\xfer</Filter>
-    </ClInclude>
-    <ClInclude Include="xfer\xfer_tan_sig.hpp">
-      <Filter>Header Files\xfer</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\net\net_2_layer.hpp">
-      <Filter>Header Files\nn\net</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\neuron\neuron.hpp">
-      <Filter>Header Files\nn\neuron</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\neuron\neuron_input.hpp">
-      <Filter>Header Files\nn\neuron</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\neuron\neuron_target.hpp">
-      <Filter>Header Files\nn\neuron</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\layer\layer.hpp">
-      <Filter>Header Files\nn\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\layer\layer_input.hpp">
-      <Filter>Header Files\nn\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\layer\layer_target.hpp">
-      <Filter>Header Files\nn\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\net\net_3_layer.hpp">
-      <Filter>Header Files\nn\net</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\net\net_1_layer.hpp">
-      <Filter>Header Files\nn\net</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\net\net_recurrent.hpp">
-      <Filter>Header Files\nn\net</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\weight\weight.hpp">
-      <Filter>Header Files\nn\weight</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\weight\update_bp.hpp">
-      <Filter>Header Files\nn\weight</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\weight\update_lm.hpp">
-      <Filter>Header Files\nn\weight</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\weight\param_bp.hpp">
-      <Filter>Header Files\nn\weight</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\weight\param_lm.hpp">
-      <Filter>Header Files\nn\weight</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\layer\layer_weight.hpp">
-      <Filter>Header Files\nn\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="nn\weight\weight_vector.hpp">
-      <Filter>Header Files\nn\weight</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

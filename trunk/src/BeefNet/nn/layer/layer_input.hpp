@@ -1,7 +1,7 @@
 #ifndef LAYER_INPUT_HPP_
 #define LAYER_INPUT_HPP_
 
-#include "../neuron/neuron_input.hpp"
+#include "../Neuron/neuron_input.hpp"
 
 namespace wwd
 {
@@ -13,8 +13,7 @@ public:
 
     enum
     {
-        neuron_num = InputNum,
-        output_num = OutputNum,
+        hidden_num = InputNum
     };
 
 public:
@@ -29,30 +28,9 @@ public:
 
     void forward(void)
     {
-        for ( auto &i : m_neuron )
+        for ( auto &i : m_input )
         {
             i.forward();
-        }
-    }
-
-    template < class Output >
-    void connect_output( INOUT Output &output )
-    {
-        for ( uint32 i = 0; i < OutputNum; ++i )
-        {
-            for ( uint32 j = 0; j < InputNum; ++j )
-            {
-                for ( uint32 k = 0; k < InputNum; ++k )
-                {
-                    if ( output.get_weight( i, k )
-                            .connect_input( m_neuron[j] ) )
-                    {
-                        m_neuron[j]
-                            .connect_output( output.get_weight( i, k ) );
-                        break;
-                    }
-                }
-            }
         }
     }
 
@@ -60,18 +38,18 @@ public:
     {
         for ( uint32 i = 0; i < InputNum; ++i )
         {
-            m_neuron[i].set_input( input[i] );
+            m_input[i].set_input( input[i] );
         }
     }
 
-    inline CNeuronInput<OutputNum> &get_neuron( IN uint32 idx )
+    inline CNeuronInput<OutputNum> &get_hidden_node( IN uint32 idx )
     {
-        return m_neuron[idx];
+        return m_input[idx];
     }
 
 private:
 
-    CNeuronInput<OutputNum> m_neuron[InputNum];
+    CNeuronInput<OutputNum> m_input[InputNum];
 };
 
 } // namespace wwd

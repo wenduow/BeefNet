@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B7CA7F8C-38AB-41FE-986F-CCC68840196B}</ProjectGuid>
+    <ProjectGuid>{C18320CD-8B77-4386-887D-53344A9FAF8A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BeefNet</RootNamespace>
   </PropertyGroup>
@@ -71,7 +71,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)/../bin/$(Platform)/debug/</OutDir>
+    <OutDir>$(SolutionDir)/../bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(Platform)/$(Configuration)/</IntDir>
     <TargetName>$(ProjectName)D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,7 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)/../bin/$(Platform)/release/</OutDir>
+    <OutDir>$(SolutionDir)/../bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(Platform)/$(Configuration)/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -149,43 +151,36 @@
     <ClCompile Include="demo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="err\err.hpp" />
-    <ClInclude Include="err\err_itf.hpp" />
-    <ClInclude Include="err\err_mae.hpp" />
-    <ClInclude Include="err\err_mse.hpp" />
-    <ClInclude Include="err\err_rmse.hpp" />
-    <ClInclude Include="nn\layer\layer.hpp" />
-    <ClInclude Include="nn\layer\layer_input.hpp" />
-    <ClInclude Include="nn\layer\layer_target.hpp" />
-    <ClInclude Include="nn\layer\layer_weight.hpp" />
-    <ClInclude Include="nn\net\net_1_layer.hpp" />
-    <ClInclude Include="nn\net\net_2_layer.hpp" />
-    <ClInclude Include="nn\net\net_3_layer.hpp" />
-    <ClInclude Include="nn\net\net_recurrent.hpp" />
-    <ClInclude Include="nn\neuron\neuron.hpp" />
-    <ClInclude Include="nn\neuron\neuron_input.hpp" />
-    <ClInclude Include="nn\neuron\neuron_target.hpp" />
-    <ClInclude Include="nn\weight\param_bp.hpp" />
-    <ClInclude Include="nn\weight\param_lm.hpp" />
-    <ClInclude Include="nn\weight\update_bp.hpp" />
-    <ClInclude Include="nn\weight\weight.hpp" />
-    <ClInclude Include="nn\weight\update_lm.hpp" />
-    <ClInclude Include="nn\weight\weight_vector.hpp" />
+    <ClInclude Include="Err\err.hpp" />
+    <ClInclude Include="Err\err_itf.hpp" />
+    <ClInclude Include="Err\err_mae.hpp" />
+    <ClInclude Include="Err\err_mse.hpp" />
+    <ClInclude Include="Err\err_rmse.hpp" />
+    <ClInclude Include="NN\Layer\layer.hpp" />
+    <ClInclude Include="NN\Layer\layer_input.hpp" />
+    <ClInclude Include="NN\Layer\layer_output.hpp" />
+    <ClInclude Include="NN\Net\nn_2_layer.hpp" />
+    <ClInclude Include="NN\Neuron\neuron_input.hpp" />
+    <ClInclude Include="NN\Neuron\neuron.hpp" />
+    <ClInclude Include="NN\Neuron\neuron_target.hpp" />
+    <ClInclude Include="NN\Weight\param_bp.hpp" />
+    <ClInclude Include="NN\Weight\weight_bp.hpp" />
+    <ClInclude Include="NN\Weight\weight.hpp" />
+    <ClInclude Include="NN\Weight\weight_vector_itf.hpp" />
     <ClInclude Include="predictor.hpp" />
-    <ClInclude Include="reader\reader_binary.hpp" />
+    <ClInclude Include="Reader\reader_binary.hpp" />
     <ClInclude Include="tester.hpp" />
     <ClInclude Include="trainer.hpp" />
-    <ClInclude Include="utility\backward_itf.hpp" />
-    <ClInclude Include="utility\forward_itf.hpp" />
-    <ClInclude Include="utility\input_itf.hpp" />
-    <ClInclude Include="utility\node.hpp" />
-    <ClInclude Include="utility\output_itf.hpp" />
-    <ClInclude Include="utility\type.hpp" />
-    <ClInclude Include="xfer\xfer.hpp" />
-    <ClInclude Include="xfer\xfer_itf.hpp" />
-    <ClInclude Include="xfer\xfer_lnr.hpp" />
-    <ClInclude Include="xfer\xfer_log_sig.hpp" />
-    <ClInclude Include="xfer\xfer_tan_sig.hpp" />
+    <ClInclude Include="Utility\forward_itf.hpp" />
+    <ClInclude Include="Utility\backward_itf.hpp" />
+    <ClInclude Include="Utility\input_itf.hpp" />
+    <ClInclude Include="Utility\output_itf.hpp" />
+    <ClInclude Include="Utility\type.hpp" />
+    <ClInclude Include="Xfer\xfer.hpp" />
+    <ClInclude Include="Xfer\xfer_itf.hpp" />
+    <ClInclude Include="Xfer\xfer_lnr.hpp" />
+    <ClInclude Include="Xfer\xfer_log_sig.hpp" />
+    <ClInclude Include="Xfer\xfer_tan_sig.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,23 +1,26 @@
-#ifndef WEIGHT_ITF_HPP_
-#define WEIGHT_ITF_HPP_
+#ifndef WEIGHT_HPP_
+#define WEIGHT_HPP_
 
 #ifdef _DEBUG
-    #include <iostream>
+#include <iostream>
 #endif // _DEBUG
 
 #include <cstdlib>
-#include "../../utility/node.hpp"
+#include "../../Utility/input_itf.hpp"
+#include "../../Utility/output_itf.hpp"
 
 namespace wwd
 {
 
 class CWeight
-    : public CNode< 1, 1 >
+    : public IInput<1>
+    , public IOutput<1>
 {
 public:
 
     CWeight(void)
-        : CNode()
+        : IInput()
+        , IOutput()
         , m_weight( (double)rand() / (double)RAND_MAX * 1.4 - 0.7 )
         , m_gradient(0.0)
     {
@@ -27,38 +30,23 @@ public:
     {
     }
 
-    inline const CWeight &operator>>( OUT CWeight &other ) const
+    inline void forward(void)
     {
-        other.m_weight = m_weight;
-        other.m_gradient = 0.0;
-
-        return *this;
-    }
-
-    inline CWeight &operator<<( IN const CWeight &other )
-    {
-        m_gradient += other.m_gradient;
-
-        return *this;
-    }
-
-        inline void forward(void)
-    {
-        IForward::m_input = m_input_node[0]->get_output();
-        IForward::m_output = m_weight * IForward::m_input;
+        IForward::m_input_val = m_input_node[0]->get_output_val();
+        IForward::m_output_val = m_weight * IForward::m_input_val;
     }
 
     inline void backward(void)
     {
-        IBackward::m_input = m_output_node[0]->get_output();
-        IBackward::m_output = m_weight * IBackward::m_input;
+        IBackward::m_input_val = m_output_node[0]->get_output_val();
+        IBackward::m_output_val = m_weight * IBackward::m_input_val;
 
         // gradient = dE / dWi = - Sum( delta * f'(net) * Xi ),
         // where Sum is through all input samples.
         // get_backward_val here gets the f'(net) from next neuron.
-        m_gradient -= ( IBackward::m_input
-                    * m_output_node[0]->get_input()
-                    * IForward::m_input );
+        m_gradient -= ( IBackward::m_input_val
+                      * m_output_node[0]->get_input_val()
+                      * IForward::m_input_val );
     }
 
     inline void update( IN double delta_weight )
@@ -78,13 +66,13 @@ public:
     }
 
 #ifdef _DEBUG
-    void print_weight(void) const
+    void print_weight(void)
     {
         std::cout << m_weight << '\t';
     }
 #endif // _DEBUG
 
-protected:
+private:
 
     double m_weight;
     double m_gradient;
@@ -92,5 +80,5 @@ protected:
 
 } // namespace wwd
 
-#endif // WEIGHT_ITF_HPP_
+#endif // WEIGHT_HPP_
 

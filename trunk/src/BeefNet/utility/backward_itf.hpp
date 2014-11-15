@@ -10,21 +10,21 @@ class IBackward
 {
 public:
 
-    inline double get_input(void) const
+    inline double get_input_val(void) const
     {
-        return m_input;
+        return m_input_val;
     }
 
-    inline double get_output(void) const
+    inline double get_output_val(void) const
     {
-        return m_output;
+        return m_output_val;
     }
 
 protected:
 
     IBackward(void)
-        : m_input(0.0)
-        , m_output(0.0)
+        : m_input_val(0.0)
+        , m_output_val(0.0)
     {
     }
 
@@ -34,8 +34,8 @@ protected:
 
 protected:
 
-    double m_input;
-    double m_output;
+    double m_input_val;
+    double m_output_val;
 };
 
 } // namespace wwd
