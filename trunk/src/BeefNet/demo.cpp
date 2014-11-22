@@ -7,25 +7,43 @@ using namespace wwd;
 
 int32 main(void)
 {
-    CNN2Layer< 2,
-               2, FXferLnr,
-               2, FXferLnr,
-               1, FXferLnr,
-               CWeightBP, EParamBP<> > nn;
+    typedef CNN2Layer< 2,
+                       2, FXferLnr,
+                       2, FXferLnr,
+                       2, FXferLnr,
+                       CWeightBP, EParamBP<> > NN;
+
+    NN nn, nn_image_1, nn_image_2;
 
     for ( uint32 i = 0; i < 2000; ++i )
     {
-        for ( uint32 j = 1; j <= 100; ++j )
+        nn >> nn_image_1 >> nn_image_2;
+
+        for ( uint32 j = 1; j <= 50; ++j )
         {
-            double input[2] = { 0.01 * j / 3.0, 0.02 * j / 3.0 };
-            double target[1] = { 0.03 * j / 3.0 };
+            double input[2] = { 0.01 * j / 4.0, 0.02 * j / 4.0 };
+            double target[2] = { 0.03 * j / 4.0, 0.04 * j / 4.0 };
 
-            nn.set_input(input);
-            nn.set_target(target);
+            nn_image_1.set_input(input);
+            nn_image_1.set_target(target);
 
-            nn.forward();
-            nn.backward();
+            nn_image_1.forward();
+            nn_image_1.backward();
         }
+
+        for ( uint32 j = 51; j <= 100; ++j )
+        {
+            double input[2] = { 0.01 * j / 4.0, 0.02 * j / 4.0 };
+            double target[2] = { 0.03 * j / 4.0, 0.04 * j / 4.0 };
+
+            nn_image_2.set_input(input);
+            nn_image_2.set_target(target);
+
+            nn_image_2.forward();
+            nn_image_2.backward();
+        }
+
+        nn << nn_image_1 << nn_image_2;
 
         nn.update();
     }

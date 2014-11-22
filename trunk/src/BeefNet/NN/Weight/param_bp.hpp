@@ -9,18 +9,18 @@ namespace wwd
 template < uint32 LearnRate = 500 >
 class EParamBP
 {
-public:
-
-    enum
-    {
-        learn_rate = LearnRate
-    };
-
 private:
 
     EParamBP(void);
     ~EParamBP(void);
+
+public:
+
+    static const double learn_rate;
 };
+
+template < uint32 LearnRate /** = 500 */ >
+const double EParamBP<LearnRate>::learn_rate = (double)LearnRate / 1000.0;
 
 } // namespace wwd
 

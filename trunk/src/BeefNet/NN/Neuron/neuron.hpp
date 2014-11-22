@@ -1,25 +1,23 @@
 #ifndef NEURON_HPP_
 #define NEURON_HPP_
 
-#include "../../Utility/input_itf.hpp"
-#include "../../Utility/output_itf.hpp"
+#include "../../Utility/node_input_itf.hpp"
+#include "../../Utility/node_output_itf.hpp"
 
 namespace wwd
 {
 
 template < uint32 InputNum, uint32 OutputNum, class Xfer >
 class CNeuron
-    : public IInput<OutputNum>
-    , public IOutput<InputNum>
+    : public INodeInput<OutputNum>
+    , public INodeOutput<InputNum>
 {
 public:
 
     CNeuron(void)
-        : IInput()
-        , IOutput()
-        , m_xfer()
+        : INodeInput()
+        , INodeOutput()
     {
-
     }
 
     ~CNeuron(void)
@@ -28,25 +26,29 @@ public:
 
     void forward(void)
     {
-        IForward::m_input_val = 0.0;
+        IPathForward::m_input_val = 0.0;
 
         for ( auto &i : m_input_node )
         {
-            IForward::m_input_val += i->get_output_val();
+            IPathForward::m_input_val += i->get_output_value();
         }
 
-        IForward::m_output_val = m_xfer(IForward::m_input_val);
-        IBackward::m_input_val = m_xfer.derivative(IForward::m_input_val);
+        IPathForward::m_output_val = m_xfer( IPathForward::m_input_val );
     }
 
     void backward(void)
     {
-        IBackward::m_output_val = 0.0;
+        IPathBackward::m_input_val = 0.0;
 
         for ( auto &i : m_output_node )
         {
-            IBackward::m_output_val += i->get_output_val();
+            IPathBackward::m_input_val += i->get_output_value();
         }
+
+        // calculate delta = f'(net) * sum(delta) from next layer
+        IPathBackward::m_output_val
+            = m_xfer.derivative( IPathForward::m_input_val )
+                               * IPathBackward::m_input_val;
     }
 
 private:

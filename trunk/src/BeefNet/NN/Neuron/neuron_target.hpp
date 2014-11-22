@@ -1,18 +1,18 @@
 #ifndef NEURON_TARGET_HPP_
 #define NEURON_TARGET_HPP_
 
-#include "../../Utility/output_itf.hpp"
+#include "../../Utility/node_output_itf.hpp"
 
 namespace wwd
 {
 
 class CNeuronTarget
-    : public IOutput<1>
+    : public INodeOutput<1>
 {
 public:
 
     CNeuronTarget(void)
-        : IOutput()
+        : INodeOutput()
     {
     }
 
@@ -22,14 +22,14 @@ public:
 
     inline void backward(void)
     {
-        m_output_val = m_input_val - m_input_node[0]->get_output_val();
+        m_output_val = m_input_val - m_input_node[0]->get_output_value();
     }
 
-    template < class Input >
-    inline void connect_input_neuron( INOUT Input &input )
+    template < class Neuron >
+    void connect_input_neuron( INOUT Neuron &neuron )
     {
-        connect_input_node(input);
-        input.connect_output_node(*this);
+        connect_input_node(neuron);
+        neuron.connect_output_node(*this);
     }
 
     inline void set_target( IN double target )
@@ -40,5 +40,5 @@ public:
 
 } // namespace wwd
 
-#endif // TARGET_HPP_
+#endif // NEURON_TARGET_HPP_
 

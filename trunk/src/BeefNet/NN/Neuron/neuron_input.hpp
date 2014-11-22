@@ -1,19 +1,19 @@
 #ifndef NEURON_INPUT_HPP_
 #define NEURON_INPUT_HPP_
 
-#include "../../Utility/input_itf.hpp"
+#include "../../Utility/node_input_itf.hpp"
 
 namespace wwd
 {
 
 template < uint32 OutputNum >
 class CNeuronInput
-    : public IInput<OutputNum>
+    : public INodeInput<OutputNum>
 {
 public:
 
     CNeuronInput(void)
-        : IInput()
+        : INodeInput()
     {
     }
 

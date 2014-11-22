@@ -47,30 +47,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utility\type.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\forward_itf.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\backward_itf.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\input_itf.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\output_itf.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Neuron\neuron.hpp">
-      <Filter>Header Files\NN\Neuron</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Neuron\neuron_input.hpp">
-      <Filter>Header Files\NN\Neuron</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Neuron\neuron_target.hpp">
-      <Filter>Header Files\NN\Neuron</Filter>
-    </ClInclude>
     <ClInclude Include="Xfer\xfer.hpp">
       <Filter>Header Files\Xfer</Filter>
     </ClInclude>
@@ -101,30 +77,6 @@
     <ClInclude Include="Err\err_rmse.hpp">
       <Filter>Header Files\Err</Filter>
     </ClInclude>
-    <ClInclude Include="NN\Weight\weight.hpp">
-      <Filter>Header Files\NN\Weight</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Layer\layer.hpp">
-      <Filter>Header Files\NN\Layer</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Weight\weight_vector_itf.hpp">
-      <Filter>Header Files\NN\Weight</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Layer\layer_input.hpp">
-      <Filter>Header Files\NN\Layer</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Layer\layer_output.hpp">
-      <Filter>Header Files\NN\Layer</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Net\nn_2_layer.hpp">
-      <Filter>Header Files\NN\Net</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Weight\weight_bp.hpp">
-      <Filter>Header Files\NN\Weight</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Weight\param_bp.hpp">
-      <Filter>Header Files\NN\Weight</Filter>
-    </ClInclude>
     <ClInclude Include="Reader\reader_binary.hpp">
       <Filter>Header Files\Reader</Filter>
     </ClInclude>
@@ -136,6 +88,72 @@
     </ClInclude>
     <ClInclude Include="trainer.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\type.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Net\nn_2_layer.hpp">
+      <Filter>Header Files\NN\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer_output.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron_input.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron_target.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\path_backward_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\path_forward_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\node_input_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\node_output_itf.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer_input.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\param_bp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\param_lm.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\param_qp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\param_rp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_bp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_itf.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_lm.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_qp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_rp.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight_vector.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
