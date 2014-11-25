@@ -8,26 +8,26 @@
 namespace wwd
 {
 
-template < template <uint32> class Reader, class NN >
-void img_fxn( IN const Reader< NN::input_num > &input,
-              IN const Reader< NN::output_num > &target,
-              INOUT NN &nn,
-              IN uint32 idx_beg,
-              IN uint32 idx_end )
+template < class NN, template <uint32> class Reader >
+void image_function( INOUT NN &nn,
+                     IN const Reader< NN::input_num > &reader_input,
+                     IN const Reader< NN::output_num > &reader_target,
+                     IN uint32 idx_beg,
+                     IN uint32 idx_end )
 {
     for ( uint32 i = idx_beg; i < idx_end; ++i )
     {
-        nn.set_input( input.get_pattern(i) );
+        nn.set_input( reader_input.get_pattern(i) );
         nn.forward();
 
-        nn.set_target( target.get_pattern(i) );
+        nn.set_target( reader_target.get_pattern(i) );
         nn.backward();
     }
 }
 
 template < class Err,
+           uint32 ImageNum = 8,
            bool StopEarly = true,
-           uint32 ImgNum = 8,
            uint32 MaxEpoch = 2000,
            uint32 ValidTimes = 6,
            int32  MinGradientChange = -5 >
@@ -37,7 +37,7 @@ private:
 
     typedef CTrainer< Err,
                       StopEarly,
-                      ImgNum,
+                      ImageNum,
                       MaxEpoch,
                       ValidTimes,
                       MinGradientChange > ThisType;
@@ -68,37 +68,37 @@ public:
         Reader< NN::input_num > input(input_path);
         Reader< NN::output_num > target(target_path);
 
-        uint32 idx_beg[ImgNum];
-        uint32 idx_end[ImgNum];
+        uint32 idx_beg[ImageNum];
+        uint32 idx_end[ImageNum];
         generate_pattern_idx( idx_beg, idx_end, target.get_pattern_num() );
 
-        NN          nn_img[ImgNum];
-        std::thread img_thread[ImgNum];
+        NN          nn_img[ImageNum];
+        std::thread img_thread[ImageNum];
 
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
-            for ( uint32 j = 0; j < ImgNum; ++j )
+            for ( uint32 j = 0; j < ImageNum; ++j )
             {
                 nn >> nn_img[j];
                 img_thread[j] = std::thread
-                    ( img_fxn< Reader, NN >,
+                    ( image_function< NN, Reader >,
+                      std::ref( nn_img[j] ),
                       std::cref(input),
                       std::cref(target),
-                      std::ref( nn_img[j] ),
                       idx_beg[j],
                       idx_end[j] );
             }
 
-            for ( uint32 j = 0; j < ImgNum; ++j )
+            for ( uint32 j = 0; j < ImageNum; ++j )
             {
                 img_thread[j].join();
                 nn << nn_img[j];
             }
 
-            if ( stop_early<StopEarly>( nn.get_gradient_abs() ) )
-            {
-                break;
-            }
+//             if ( stop_early<StopEarly>( nn.get_gradient_abs() ) )
+//             {
+//                 break;
+//             }
 
             nn.update();
         }
@@ -112,19 +112,16 @@ public:
 
 private:
 
-    CTrainer( IN const ThisType &other );
-    inline ThisType &operator=( IN const ThisType &other );
-
-    void generate_pattern_idx( OUT uint32 (&idx_beg)[ImgNum],
-                               OUT uint32 (&idx_end)[ImgNum],
+    void generate_pattern_idx( OUT uint32 (&idx_beg)[ImageNum],
+                               OUT uint32 (&idx_end)[ImageNum],
                                IN uint32  pattern_num )
     {
-        for ( uint32 i = 0; i < ImgNum; ++i )
+        for ( uint32 i = 0; i < ImageNum; ++i )
         {
-            idx_beg[i] = pattern_num / ImgNum * i;
-            idx_end[i] = ( ImgNum == ( i + 1 ) )
+            idx_beg[i] = pattern_num / ImageNum * i;
+            idx_end[i] = ( ImageNum == ( i + 1 ) )
                        ? pattern_num
-                       : ( pattern_num / ImgNum * ( i + 1 ) );
+                       : ( pattern_num / ImageNum * ( i + 1 ) );
         }
     }
 
@@ -160,6 +157,11 @@ private:
 
         return false;
     }
+
+private:
+
+    CTrainer( IN const ThisType &other );
+    CTrainer &operator=( IN const ThisType &other );
 
 private:
 

@@ -93,12 +93,44 @@ public:
         }
     }
 
-    void set_target( IN const double (&target)[OutputNum] )
+    void set_target( IN const double *target )
     {
         for ( uint32 i = 0; i < OutputNum; ++i )
         {
             m_target[i].set_target( target[i] );
         }
+    }
+
+    void get_output( OUT double (&output)[OutputNum] ) const
+    {
+        for ( uint32 i = 0; i < OutputNum; ++i )
+        {
+            output[i] = m_output[i].IPathForward::get_output_value();
+        }
+    }
+
+    double get_gradient_sum(void) const
+    {
+        double gradient_sum = 0.0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_sum += i.get_gradient_sum();
+        }
+
+        return gradient_sum;
+    }
+
+    uint32 get_gradient_num(void) const
+    {
+        uint32 gradient_num = 0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_num += i.get_gradient_num();
+        }
+
+        return gradient_num;
     }
 
 #ifdef _DEBUG
@@ -240,6 +272,38 @@ public:
         m_target[idx].backward();
 
         return m_target[idx].get_output_value();
+    }
+
+    void get_output( OUT double (&output)[OutputNum] ) const
+    {
+        for ( uint32 i = 0; i < OutputNum; ++i )
+        {
+            output[i] = m_output[i].IPathForward::get_output_value();
+        }
+    }
+
+    double get_gradient_sum(void) const
+    {
+        double gradient_sum = 0.0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_sum += i.get_gradient_sum();
+        }
+
+        return gradient_sum;
+    }
+
+    uint32 get_gradient_num(void) const
+    {
+        uint32 gradient_num = 0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_num += i.get_gradient_num();
+        }
+
+        return gradient_num;
     }
 
 #ifdef _DEBUG

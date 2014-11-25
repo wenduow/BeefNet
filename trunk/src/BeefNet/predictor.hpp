@@ -32,11 +32,6 @@ public:
 
         input.close();
     }
-
-private:
-
-    CPredictor( IN const CPredictor &other );
-    inline CPredictor &operator=( IN const CPredictor &other );
 };
 
 } // namespace wwd

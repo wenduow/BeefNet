@@ -1,56 +1,30 @@
 #include "NN/Net/nn_2_layer.hpp"
-#include "NN/Weight/weight_bp.hpp"
-#include "NN/Weight/param_bp.hpp"
+#include "NN/Weight/weight_lm.hpp"
+#include "NN/Weight/param_lm.hpp"
+#include "Xfer/xfer_log_sig.hpp"
 #include "Xfer/xfer_lnr.hpp"
+#include "Err/err_mae.hpp"
+#include "Reader/reader_binary.hpp"
+#include "trainer.hpp"
 
 using namespace wwd;
 
 int32 main(void)
 {
-    typedef CNN2Layer< 2,
-                       2, FXferLnr,
-                       2, FXferLnr,
-                       2, FXferLnr,
-                       CWeightBP, EParamBP<> > NN;
+    srand( (uint32)time(NULL) );
 
-    NN nn, nn_image_1, nn_image_2;
-
-    for ( uint32 i = 0; i < 2000; ++i )
-    {
-        nn >> nn_image_1 >> nn_image_2;
-
-        for ( uint32 j = 1; j <= 50; ++j )
-        {
-            double input[2] = { 0.01 * j / 4.0, 0.02 * j / 4.0 };
-            double target[2] = { 0.03 * j / 4.0, 0.04 * j / 4.0 };
-
-            nn_image_1.set_input(input);
-            nn_image_1.set_target(target);
-
-            nn_image_1.forward();
-            nn_image_1.backward();
-        }
-
-        for ( uint32 j = 51; j <= 100; ++j )
-        {
-            double input[2] = { 0.01 * j / 4.0, 0.02 * j / 4.0 };
-            double target[2] = { 0.03 * j / 4.0, 0.04 * j / 4.0 };
-
-            nn_image_2.set_input(input);
-            nn_image_2.set_target(target);
-
-            nn_image_2.forward();
-            nn_image_2.backward();
-        }
-
-        nn << nn_image_1 << nn_image_2;
-
-        nn.update();
-    }
-
-#ifdef _DEBUG
-    nn.print_weight();
-#endif // _DEBUG
+    CNN2Layer< 1,
+               10, FXferLogSig,
+               10, FXferLogSig,
+               1, FXferLnr,
+               CWeightLM, EParamLM< 94, 1 > > nn;
+    
+    double err[1];
+    CTrainer< FErrMAE, 1 > trainer;
+    trainer.train<CReaderBinary>( err,
+                                  nn,
+                                  "../../data/train_input.dat",
+                                  "../../data/train_target.dat" );
 
     return 0;
 }

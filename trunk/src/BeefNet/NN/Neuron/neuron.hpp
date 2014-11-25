@@ -54,7 +54,7 @@ public:
 private:
 
     CNeuron( IN const CNeuron &other );
-    inline CNeuron &operator=( IN const CNeuron &other );
+    CNeuron &operator=( IN const CNeuron &other );
 
 private:
 

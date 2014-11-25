@@ -92,6 +92,30 @@ public:
         }
     }
 
+    double get_gradient_sum(void) const
+    {
+        double gradient_sum = 0.0;
+
+        for ( const auto &i : m_weight )
+        {
+            gradient_sum += i.get_gradient_sum();
+        }
+
+        return gradient_sum;
+    }
+
+    uint32 get_gradient_num(void) const
+    {
+        uint32 gradient_num = 0;
+
+        for ( const auto &i : m_weight )
+        {
+            gradient_num += i.get_gradient_num();
+        }
+
+        return gradient_num;
+    }
+
 #ifdef _DEBUG
     void print_weight(void) const
     {
@@ -199,18 +223,18 @@ public:
         // calculate J'J + lambda * diag(J'J)
         for ( uint32 i = 0; i < InputNum; ++i )
         {
-            hessian[i][i] *= ( 1.0 + Param::lambda );
+            hessian[i][i] += Param::lambda;
         }
 
         // calculate J'e
         double gradient[InputNum];
         multiply( gradient, jacobian_transpose, m_err );
 
-        // calculate ( J'J + lambda * diag(J'J) ) ^ -1
+        // calculate ( J'J + lambda * I ) ^ -1
         double hessian_inverse[InputNum][InputNum];
         invert( hessian_inverse, hessian );
 
-        // calculate ( J'J + lambda * diag(J'J) ) ^ -1 * (J'e)
+        // calculate ( J'J + lambda * I ) ^ -1 * (J'e)
         multiply( m_weight_update, hessian_inverse, gradient );
 
         // update each weight
@@ -255,12 +279,29 @@ public:
         }
     }
 
-    inline double get_jacobian_value( IN uint32 pattern_idx,
-                                      IN uint32 output_idx,
-                                      IN uint32 input_idx ) const
+    double get_gradient_sum(void) const
     {
-        return m_jacobian[ pattern_idx * Param::output_num + output_idx ]
-                         [input_idx];
+        // calculate J'e
+        double jacobian_transpose[InputNum][ Param::pattern_num
+                                           * Param::output_num ];
+        transpose( jacobian_transpose, m_jacobian );
+
+        double gradient[InputNum];
+        multiply( gradient, jacobian_transpose, m_err );
+
+        double ret = 0.0;
+
+        for ( const auto &i : gradient )
+        {
+            ret += i;
+        }
+
+        return ret;
+    }
+
+    inline uint32 get_gradient_num(void) const
+    {
+        return InputNum * m_vector_idx;
     }
 
 #ifdef _DEBUG
@@ -326,97 +367,48 @@ private:
     }
 
     template < uint32 N >
-    void invert( OUT double (&inv)[N][N],
+    bool invert( OUT double (&inverse)[N][N],
                  IN const double (&matrix)[N][N] ) const
     {
-        double det = determinant(matrix);
+        double copy[N][N];
 
         for ( uint32 i = 0; i < N; ++i )
         {
             for ( uint32 j = 0; j < N; ++j )
             {
-                double rest[ N - 1 ][ N - 1 ];
-                uint32 idx_i = 0;
-
-                for ( uint32 k = 0; k < N; ++k )
-                {
-                    if ( k != i )
-                    {
-                        uint32 idx_j = 0;
-
-                        for ( uint32 l = 0; l < N; ++l )
-                        {
-                            if ( l != j )
-                            {
-                                rest[idx_i][idx_j] = matrix[k][l];
-
-                                ++idx_j;
-                            }
-                        }
-
-                        ++idx_i;
-                    }
-                }
-
-                if ( ( i + j ) % 2 == 0 )
-                {
-                    inv[i][j] = determinant(rest) / det;
-                }
-                else
-                {
-                    inv[i][j] = - determinant(rest) / det;
-                }
+                copy[i][j] = matrix[i][j];
+                inverse[i][j] = ( i == j ) ? 1.0 : 0.0;
             }
         }
-    }
-
-    template <>
-    void invert( OUT double (&inv)[1][1],
-                 IN const double (&matrix)[1][1] ) const
-    {
-        inv[0][0] = 1.0 / matrix[0][0];
-    }
-
-    template < uint32 N >
-    double determinant( IN const double (&matrix)[N][N] ) const
-    {
-        double ret = 0.0;
 
         for ( uint32 i = 0; i < N; ++i )
         {
-            double rest[ N - 1 ][ N - 1 ];
-            uint32 idx = 0;
+            // regularize the i-th element in i-th row to 1.0
+            double rate = copy[i][i];
 
             for ( uint32 j = 0; j < N; ++j )
             {
-                if ( i != j )
+                copy[i][j] /= rate;
+                inverse[i][j] /= rate;
+            }
+
+            // eliminate the i-th element in other rows to 0.0
+            for ( uint32 j = 0; j < N; ++j )
+            {
+                if ( j != i )
                 {
-                    for ( uint32 k = 0; k < N - 1; ++k )
+                    double rate = copy[j][i];
+
+                    for ( uint32 k = 0; k < N; ++k )
                     {
-                        rest[idx][k] = matrix[j][k];
+                        copy[j][k] -= rate * copy[i][k];
+                        inverse[j][k] -= rate * inverse[i][k];
                     }
-
-                    ++idx;
                 }
-            }
-
-            if ( ( i + N ) % 2 == 1 )
-            {
-                ret += matrix[i][ N - 1 ] * determinant(rest);
-            }
-            else
-            {
-                ret -= matrix[i][ N - 1 ] * determinant(rest);
             }
         }
 
-        return ret;
-    }
-
-    template <>
-    double determinant( IN const double (&matrix)[1][1] ) const
-    {
-        return matrix[0][0];
+        return true;
     }
 
 private:

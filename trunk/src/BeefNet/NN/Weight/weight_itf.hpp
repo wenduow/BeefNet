@@ -62,6 +62,16 @@ public:
         m_pattern_num = 0;
     }
 
+    inline double get_gradient_sum(void) const
+    {
+        return m_gradient_sum;
+    }
+
+    inline uint32 get_gradient_num(void) const
+    {
+        return m_pattern_num;
+    }
+
 #ifdef _DEBUG
     void print_weight(void) const
     {

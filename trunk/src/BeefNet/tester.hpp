@@ -60,10 +60,10 @@ public:
             err[i] = m_err_fxn( predict_tmp[i], target_tmp[i], pattern_num );
         }
 
-        //for ( uint32 i = 0; i < pattern_num; ++i )
-        //{
-        //    result << target_tmp[0][i] << '\t' << predict_tmp[0][i] << ';' << std::endl;
-        //}
+//         for ( uint32 i = 0; i < pattern_num; ++i )
+//         {
+//             result << target_tmp[0][i] << '\t' << predict_tmp[0][i] << ';' << std::endl;
+//         }
 
         for ( uint32 i = 0; i < NN::output_num; ++i )
         {
@@ -73,16 +73,11 @@ public:
         delete[] predict_tmp;
         delete[] target_tmp;
 
-        for ( uint32 i = 0; i < NN::output_num; ++i )
-        {
-            result << err[i] << '\t';
-        }
+//         for ( uint32 i = 0; i < NN::output_num; ++i )
+//         {
+//             result << err[i] << '\t';
+//         }
     }
-
-private:
-
-    CTester( IN const ThisType &other );
-    inline ThisType &operator=( IN const ThisType &other );
 
 private:
 

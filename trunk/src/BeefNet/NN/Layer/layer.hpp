@@ -107,6 +107,30 @@ public:
         return m_neuron[idx];
     }
 
+    double get_gradient_sum(void) const
+    {
+        double gradient_sum = 0.0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_sum += i.get_gradient_sum();
+        }
+
+        return gradient_sum;
+    }
+
+    uint32 get_gradient_num(void) const
+    {
+        uint32 gradient_num = 0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_num += i.get_gradient_num();
+        }
+
+        return gradient_num;
+    }
+
 #ifdef _DEBUG
     void print_weight(void) const
     {
@@ -244,6 +268,30 @@ public:
         get_hidden_node( IN uint32 idx )
     {
         return m_neuron[idx];
+    }
+
+    double get_gradient_sum(void) const
+    {
+        double gradient_sum = 0.0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_sum += i.get_gradient_sum();
+        }
+
+        return gradient_sum;
+    }
+
+    uint32 get_gradient_num(void) const
+    {
+        uint32 gradient_num = 0;
+
+        for ( const auto &i : m_weight_vector )
+        {
+            gradient_num += i.get_gradient_num();
+        }
+
+        return gradient_num;
     }
 
 #ifdef _DEBUG

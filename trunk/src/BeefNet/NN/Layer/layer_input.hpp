@@ -34,7 +34,7 @@ public:
         }
     }
 
-    void set_input( IN const double (&input)[InputNum] )
+    void set_input( IN const double *input )
     {
         for ( uint32 i = 0; i < InputNum; ++i )
         {

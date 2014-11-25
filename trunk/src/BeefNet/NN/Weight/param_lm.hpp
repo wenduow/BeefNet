@@ -6,7 +6,10 @@
 namespace wwd
 {
 
-template < uint32 PatternNum, uint32 OutputNum, uint32 Lambda = 10, uint32 Beta = 10 >
+template < uint32 PatternNum,
+           uint32 OutputNum,
+           uint32 Lambda = 10,
+           uint32 Beta = 10 >
 class EParamLM
 {
 private:

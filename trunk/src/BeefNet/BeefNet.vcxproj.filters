@@ -77,18 +77,6 @@
     <ClInclude Include="Err\err_rmse.hpp">
       <Filter>Header Files\Err</Filter>
     </ClInclude>
-    <ClInclude Include="Reader\reader_binary.hpp">
-      <Filter>Header Files\Reader</Filter>
-    </ClInclude>
-    <ClInclude Include="predictor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tester.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="trainer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utility\type.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -154,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="NN\Weight\weight_vector.hpp">
       <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="predictor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tester.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="trainer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reader\reader_binary.hpp">
+      <Filter>Header Files\Reader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,6 +15,14 @@ template < uint32 InputNum,
            template <class> class WeightType, class Param >
 class CNN2Layer
 {
+public:
+
+    enum
+    {
+        input_num = InputNum,
+        output_num = OutputNum,
+    };
+
 private:
 
     typedef CNN2Layer< InputNum,
@@ -80,14 +88,29 @@ public:
         m_layer_output.update();
     }
 
-    void set_input( IN const double (&input)[InputNum] )
+    void set_input( IN const double *input )
     {
         m_input.set_input(input);
     }
 
-    void set_target( IN const double (&target)[OutputNum] )
+    void set_target( IN const double *target )
     {
         m_layer_output.set_target(target);
+    }
+
+    void get_output( OUT double (&output)[OutputNum] ) const
+    {
+        m_layer_output.get_output(output);
+    }
+
+    double get_gradient(void) const
+    {
+        return ( m_layer_0.get_gradient_sum()
+               + m_layer_1.get_gradient_sum()
+               + m_layer_output.get_gradient_sum() )
+             / (double)( m_layer_0.get_gradient_num()
+                       + m_layer_1.get_gradient_num()
+                       + m_layer_output.get_gradient_num() );
     }
 
 #ifdef _DEBUG
@@ -146,6 +169,14 @@ class CNN2Layer< InputNum,
                  OutputNum, XferOutput,
                  CWeightLM, Param >
 {
+public:
+
+    enum
+    {
+        input_num = InputNum,
+        output_num = OutputNum,
+    };
+
 private:
 
     typedef CNN2Layer< InputNum,
@@ -280,14 +311,29 @@ public:
         }
     }
 
-    void set_input( IN const double (&input)[InputNum] )
+    void set_input( IN const double *input )
     {
         m_input.set_input(input);
     }
 
-    void set_target( IN const double (&target)[OutputNum] )
+    void set_target( IN const double *target )
     {
         m_layer_output.set_target(target);
+    }
+
+    void get_output( OUT double (&output)[OutputNum] ) const
+    {
+        m_layer_output.get_output(output);
+    }
+
+    double get_gradient(void) const
+    {
+        return ( m_layer_0.get_gradient_sum()
+               + m_layer_1.get_gradient_sum()
+               + m_layer_output.get_gradient_sum() )
+             / (double)( m_layer_0.get_gradient_num()
+                       + m_layer_1.get_gradient_num()
+                       + m_layer_output.get_gradient_num() );
     }
 
 #ifdef _DEBUG

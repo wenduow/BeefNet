@@ -6,7 +6,7 @@
 namespace wwd
 {
 
-template < uint32 LearnRate = 500 >
+template < uint32 LearnRate = 50 >
 class EParamBP
 {
 private:
