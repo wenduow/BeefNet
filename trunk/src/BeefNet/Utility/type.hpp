@@ -18,9 +18,9 @@
 #define INVALID_INT_16 ( (uint16)~0 )
 #define INVALID_INT_8  ( (uint8)~0 )
 
-#define DOUBLE_MAX     (1e12)
-#define DOUBLE_MIN     (-DOUBLE_MAX)
-#define DOUBLE_EPSILON (1e-12)
+#define DOUBLE_MAX     (1e24)
+#define DOUBLE_MIN     ( - DOUBLE_MAX )
+#define DOUBLE_EPSILON (1e-24)
 
 namespace wwd
 {

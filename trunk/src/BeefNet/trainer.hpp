@@ -30,17 +30,19 @@ template < class Err,
            bool StopEarly = true,
            uint32 MaxEpoch = 2000,
            uint32 ValidTimes = 6,
-           int32  MinGradientChange = -5 >
+           int32 MinGradientChange = -6,
+           int32 MinError = -6 >
 class CTrainer
 {
 private:
 
     typedef CTrainer< Err,
-                      StopEarly,
                       ImageNum,
+                      StopEarly,
                       MaxEpoch,
                       ValidTimes,
-                      MinGradientChange > ThisType;
+                      MinGradientChange,
+                      MinError > ThisType;
 public:
 
     CTrainer(void)
@@ -48,6 +50,7 @@ public:
         , m_gradient(DOUBLE_MAX)
         , m_err(0.0)
         , m_min_gradient_change( pow( 10.0, MinGradientChange ) )
+        , m_min_err( pow( 10.0, MinError ) )
     {
     }
 
@@ -95,10 +98,10 @@ public:
                 nn << nn_img[j];
             }
 
-//             if ( stop_early<StopEarly>( nn.get_gradient_abs() ) )
-//             {
-//                 break;
-//             }
+            if ( stop_early<StopEarly>( nn.get_gradient() ) )
+            {
+                break;
+            }
 
             nn.update();
         }
@@ -126,13 +129,14 @@ private:
     }
 
     template < bool StopEarly >
-    bool stop_early( IN double gradient )
-    {
-        bool choose_stop_early = StopEarly;
+    bool stop_early( IN double gradient );
 
-        if (choose_stop_early)
+    template <>
+    bool stop_early<true>( IN double gradient )
+    {
+        if ( _finite(gradient) && gradient == gradient )
         {
-            if ( gradient < m_min_gradient_change )
+            if ( abs(gradient) < m_min_gradient_change )
             {
                 return true;
             }
@@ -158,17 +162,26 @@ private:
         return false;
     }
 
+    template <>
+    bool stop_early<false>( IN double gradient )
+    {
+        (void)gradient;
+        return false;
+    }
+
 private:
 
     CTrainer( IN const ThisType &other );
-    CTrainer &operator=( IN const ThisType &other );
+    ThisType &operator=( IN const ThisType &other );
 
 private:
 
     uint32       m_valid_times;
     double       m_gradient;
     double       m_err;
+
     const double m_min_gradient_change;
+    const double m_min_err;
 };
 
 } // namespace wwd

@@ -28,7 +28,7 @@ public:
         double rate = m_gradient_sum
                     / ( m_gradient_sum_prev - m_gradient_sum );
 
-        if ( isfinite(rate) )
+        if ( _finite(rate) )
         {
             if ( rate < - Param::fact_max )
             {

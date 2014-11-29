@@ -155,5 +155,8 @@
     <ClInclude Include="Reader\reader_binary.hpp">
       <Filter>Header Files\Reader</Filter>
     </ClInclude>
+    <ClInclude Include="demo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

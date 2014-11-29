@@ -150,12 +150,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <StackReserveSize>1000000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="demo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="demo.hpp" />
     <ClInclude Include="Err\err.hpp" />
     <ClInclude Include="Err\err_itf.hpp" />
     <ClInclude Include="Err\err_mae.hpp" />
