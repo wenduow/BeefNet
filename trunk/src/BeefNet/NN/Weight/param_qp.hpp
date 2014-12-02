@@ -6,7 +6,7 @@
 namespace wwd
 {
 
-template < uint32 LearnRate = 50, uint32 FactMax = 1750 >
+template < uint32 LearnRate = 500, uint32 FactMax = 1750 >
 class EParamQP
 {
 private:

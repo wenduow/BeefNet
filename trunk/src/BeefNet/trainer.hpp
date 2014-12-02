@@ -30,8 +30,7 @@ template < class Err,
            bool StopEarly = true,
            uint32 MaxEpoch = 2000,
            uint32 ValidTimes = 6,
-           int32 MinGradientChange = -6,
-           int32 MinError = -6 >
+           int32 MinGradientChange = -9 >
 class CTrainer
 {
 private:
@@ -41,8 +40,7 @@ private:
                       StopEarly,
                       MaxEpoch,
                       ValidTimes,
-                      MinGradientChange,
-                      MinError > ThisType;
+                      MinGradientChange > ThisType;
 public:
 
     CTrainer(void)
@@ -50,7 +48,6 @@ public:
         , m_gradient(DOUBLE_MAX)
         , m_err(0.0)
         , m_min_gradient_change( pow( 10.0, MinGradientChange ) )
-        , m_min_err( pow( 10.0, MinError ) )
     {
     }
 
@@ -78,6 +75,7 @@ public:
         NN          nn_img[ImageNum];
         std::thread img_thread[ImageNum];
 
+        uint32 epoch = 0;
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
             for ( uint32 j = 0; j < ImageNum; ++j )
@@ -98,6 +96,8 @@ public:
                 nn << nn_img[j];
             }
 
+            ++epoch;
+
             if ( stop_early<StopEarly>( nn.get_gradient() ) )
             {
                 break;
@@ -108,6 +108,8 @@ public:
 
         input.close();
         target.close();
+
+        result << epoch << '\t';
 
         CTester<Err> tester;
         tester.test<Reader>( err, nn, input_path, target_path );
@@ -140,7 +142,7 @@ private:
             {
                 return true;
             }
-            else if ( abs( gradient - m_gradient ) < m_min_gradient_change )
+            else if ( abs(gradient) - abs(m_gradient) > - m_min_gradient_change )
             {
                 if ( m_valid_times >= ValidTimes )
                 {
@@ -181,7 +183,6 @@ private:
     double       m_err;
 
     const double m_min_gradient_change;
-    const double m_min_err;
 };
 
 } // namespace wwd
