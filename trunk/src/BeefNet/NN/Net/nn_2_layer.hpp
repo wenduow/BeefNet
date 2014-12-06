@@ -113,6 +113,22 @@ public:
                        + m_layer_output.get_gradient_num() );
     }
 
+    template < class STREAM >
+    void save( OUT STREAM &stream ) const
+    {
+        m_layer_0.save(stream);
+        m_layer_1.save(stream);
+        m_layer_output.save(stream);
+    }
+
+    template < class STREAM >
+    void load( INOUT STREAM &stream )
+    {
+        m_layer_0.load(stream);
+        m_layer_1.load(stream);
+        m_layer_output.load(stream);
+    }
+
 #ifdef _DEBUG
     void print_weight(void) const
     {
@@ -334,6 +350,22 @@ public:
              / (double)( m_layer_0.get_gradient_num()
                        + m_layer_1.get_gradient_num()
                        + m_layer_output.get_gradient_num() );
+    }
+
+    template < class STREAM >
+    void save( OUT STREAM &stream ) const
+    {
+        m_layer_0.save(stream);
+        m_layer_1.save(stream);
+        m_layer_output.save(stream);
+    }
+
+    template < class STREAM >
+    void load( INOUT STREAM &stream )
+    {
+        m_layer_0.load(stream);
+        m_layer_1.load(stream);
+        m_layer_output.load(stream);
     }
 
 #ifdef _DEBUG

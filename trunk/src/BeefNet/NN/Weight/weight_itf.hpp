@@ -72,6 +72,18 @@ public:
         return m_pattern_num;
     }
 
+    template < class STREAM >
+    void save( OUT STREAM &stream ) const
+    {
+        stream.write( (const char*)&m_weight, sizeof(m_weight) );
+    }
+
+    template < class STREAM >
+    void load( INOUT STREAM &stream )
+    {
+        stream.read( (char*)&m_weight, sizeof(m_weight) );
+    }
+
 #ifdef _DEBUG
     void print_weight(void) const
     {

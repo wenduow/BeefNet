@@ -116,6 +116,24 @@ public:
         return gradient_num;
     }
 
+    template < class STREAM >
+    void save( OUT STREAM &stream ) const
+    {
+        for ( const auto &i : m_weight )
+        {
+            i.save(stream);
+        }
+    }
+
+    template < class STREAM >
+    void load( INOUT STREAM &stream )
+    {
+        for ( auto &i : m_weight )
+        {
+            i.load(stream);
+        }
+    }
+
 #ifdef _DEBUG
     void print_weight(void) const
     {
@@ -302,6 +320,24 @@ public:
     inline uint32 get_gradient_num(void) const
     {
         return InputNum * m_vector_idx;
+    }
+
+    template < class STREAM >
+    void save( OUT STREAM &stream ) const
+    {
+        for ( const auto &i : m_weight )
+        {
+            i.save(stream);
+        }
+    }
+
+    template < class STREAM >
+    void load( INOUT STREAM &stream )
+    {
+        for ( auto &i : m_weight )
+        {
+            i.load(stream);
+        }
     }
 
 #ifdef _DEBUG

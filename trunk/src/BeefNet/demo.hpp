@@ -3,8 +3,8 @@
 
 #include <fstream>
 #include "NN/Net/nn_2_layer.hpp"
-#include "NN/Weight/weight_lm.hpp"
-#include "NN/Weight/param_lm.hpp"
+#include "NN/Weight/weight_bp.hpp"
+#include "NN/Weight/param_bp.hpp"
 #include "Xfer/xfer_log_sig.hpp"
 #include "Xfer/xfer_lnr.hpp"
 #include "Err/err_mae.hpp"
@@ -21,12 +21,12 @@ const uint32 output_num = 1;
 
 const uint32 thread_num = 8;
 
-// template < class Param >
-// using MyWeight = CWeightRP<Param>;
-// 
-// typedef EParamRP<> MyParam;
+template < class Param >
+using MyWeight = CWeightBP<Param>;
 
-std::ofstream result( "../../result/test_algorithm.txt", std::ios::app );
+typedef EParamBP<> MyParam;
+
+std::ofstream result( "../../result/test_save_load.txt", std::ios::app );
 
 #endif // DEMO_HPP_
 

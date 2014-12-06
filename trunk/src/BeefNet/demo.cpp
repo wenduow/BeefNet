@@ -13,10 +13,10 @@ int32 main(void)
                hidden_num, FXferLogSig,
                hidden_num, FXferLogSig,
                output_num, FXferLnr,
-               CWeightLM, EParamLM< pattern_num, output_num > > nn;
+               MyWeight, MyParam > nn;
     
     double err[1];
-    CTrainer< FErrMAE, thread_num > trainer;
+    CTrainer< FErrMAE, thread_num, true > trainer;
 
     time_t time_beg = time(NULL);
     trainer.train<CReaderBinary>( err,
@@ -26,6 +26,14 @@ int32 main(void)
     time_t time_end = time(NULL);
 
     result << thread_num << '\t' << time_end - time_beg << '\t' << err[0] << '\t';
+
+    std::ofstream nn_save( "../../result/nn.dat" );
+    nn.save(nn_save);
+    nn_save.close();
+
+    std::ifstream nn_load( "../../result/nn.dat" );
+    nn.load(nn_load);
+    nn_load.close();
 
     CTester<FErrMAE> tester;
     tester.test<CReaderBinary>( err,

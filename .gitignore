@@ -12,6 +12,10 @@
 *.mat
 *.txt
 *.url
+*.csv
+*.m
+*.bat
+*.tmp
 
 # Compiled Object files
 *.slo
