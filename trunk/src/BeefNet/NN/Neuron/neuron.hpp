@@ -12,11 +12,15 @@ class CNeuron
     : public INodeInput<OutputNum>
     , public INodeOutput<InputNum>
 {
+private:
+
+    typedef INodeInput<OutputNum> BaseTypeInput;
+    typedef INodeOutput<InputNum> BaseTypeOutput;
 public:
 
     CNeuron(void)
-        : INodeInput()
-        , INodeOutput()
+        : BaseTypeInput()
+        , BaseTypeOutput()
     {
     }
 
@@ -28,7 +32,7 @@ public:
     {
         IPathForward::m_input_val = 0.0;
 
-        for ( auto &i : m_input_node )
+        for ( auto &i : BaseTypeOutput::m_input_node )
         {
             IPathForward::m_input_val += i->get_output_value();
         }
@@ -40,7 +44,7 @@ public:
     {
         IPathBackward::m_input_val = 0.0;
 
-        for ( auto &i : m_output_node )
+        for ( auto &i : BaseTypeInput::m_output_node )
         {
             IPathBackward::m_input_val += i->get_output_value();
         }

@@ -4,8 +4,17 @@
 #undef UNICODE
 
 #include <sys/stat.h>
-#include <Windows.h>
-#include "../utility/type.hpp"
+
+#ifdef __linux__
+    #include <sys/mman.h>
+    #include <fcntl.h>
+#elif ( defined _WIN32 )
+    #include <Windows.h>
+#else
+    #error "Any type of OS should be specified!"
+#endif // system compiler macro
+
+#include "../Utility/type.hpp"
 
 namespace wwd
 {
@@ -43,6 +52,20 @@ public:
     {
         close();
 
+#ifdef __linux__
+        int32 file_desc = ::open( path, O_RDONLY );
+        struct stat file_stat;
+
+        fstat( file_desc, &file_stat );
+        m_pattern_num = (uint32)( file_stat.st_size / sizeof(double) / feature_num );
+
+        m_file_buf = (double*)mmap( NULL,
+                                    file_stat.st_size,
+                                    PROT_READ,
+                                    MAP_PRIVATE,
+                                    file_desc,
+                                    0 );
+#elif ( defined _WIN32 )
         struct _stat64 file_stat;
         _stat64( path, &file_stat );
         m_pattern_num = (uint32)( file_stat.st_size / sizeof(double) / feature_num );
@@ -66,14 +89,24 @@ public:
 
         CloseHandle(h_mmap);
         CloseHandle(h_file);
+#else
+    #error "Any type of OS should be specified!"
+#endif // system compiler macro
     }
 
     void close(void)
     {
         if (m_file_buf)
         {
+#ifdef __linux__
+            munmap( m_file_buf, m_pattern_num * sizeof(double) * feature_num );
+#elif ( defined _WIN32 )
             UnmapViewOfFile(m_file_buf);
-            m_file_buf    = NULL;
+#else
+    #error "Any type of OS should be specified!"
+#endif // system compiler macro
+
+            m_file_buf = NULL;
             m_pattern_num = 0;
         }
     }
@@ -90,7 +123,13 @@ public:
 
 private:
 
+#ifdef __linux__
+    double *m_file_buf;
+#elif ( defined _WIN32 )
     const double *m_file_buf;
+#else
+    #error "Any type of OS should be specified!"
+#endif // system compiler macro
     uint32 m_pattern_num;
 };
 

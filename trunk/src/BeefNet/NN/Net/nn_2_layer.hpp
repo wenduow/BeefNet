@@ -1,6 +1,7 @@
 #ifndef NN_2_LAYER_HPP
 #define NN_2_LAYER_HPP
 
+#include <cmath>
 #include "../Layer/layer_input.hpp"
 #include "../Layer/layer.hpp"
 #include "../Layer/layer_output.hpp"
@@ -272,7 +273,7 @@ public:
         {
             for ( uint32 i = 0; i < OutputNum; ++i )
             {
-                m_se += pow( m_layer_output.get_error(i), 2 );
+                m_se += std::pow( m_layer_output.get_error(i), 2 );
             }
         }
         else

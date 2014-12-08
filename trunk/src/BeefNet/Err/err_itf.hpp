@@ -2,7 +2,7 @@
 #define ERR_ITF_HPP_
 
 #include <cmath>
-#include "../utility/type.hpp"
+#include "../Utility/type.hpp"
 
 namespace wwd
 {

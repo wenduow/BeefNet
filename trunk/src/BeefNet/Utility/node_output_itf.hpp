@@ -1,9 +1,8 @@
 #ifndef NODE_OUTPUT_ITF_HPP_
 #define NODE_OUTPUT_ITF_HPP_
 
+#include "path_forward_itf.hpp"
 #include "path_backward_itf.hpp"
-
-class IPathForward;
 
 namespace wwd
 {

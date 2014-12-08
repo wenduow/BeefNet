@@ -4,8 +4,8 @@ void data_transform(void);
 
 int32 main(void)
 {
-//     data_transform();
-//     return 0;
+    // data_transform();
+    // return 0;
 
     srand( (uint32)time(NULL) );
 
@@ -25,8 +25,6 @@ int32 main(void)
                                   "../../data/train_target.dat" );
     time_t time_end = time(NULL);
 
-    result << thread_num << '\t' << time_end - time_beg << '\t' << err[0] << '\t';
-
     std::ofstream nn_save( "../../result/nn.dat" );
     nn.save(nn_save);
     nn_save.close();
@@ -41,9 +39,6 @@ int32 main(void)
                                 "../../data/test_input.dat",
                                 "../../data/test_target.dat" );
 
-    result << err[0] << std::endl;
-
-    result.close();
     return 0;
 }
 

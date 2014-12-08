@@ -8,7 +8,7 @@
 namespace wwd
 {
 
-template < class NN, template <uint32> class Reader >
+template < template <uint32> class Reader, class NN >
 void image_function( INOUT NN &nn,
                      IN const Reader< NN::input_num > &reader_input,
                      IN const Reader< NN::output_num > &reader_target,
@@ -72,17 +72,16 @@ public:
         uint32 idx_end[ImageNum];
         generate_pattern_idx( idx_beg, idx_end, target.get_pattern_num() );
 
-        NN          nn_img[ImageNum];
+        NN nn_img[ImageNum];
         std::thread img_thread[ImageNum];
 
-        uint32 epoch = 0;
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
             for ( uint32 j = 0; j < ImageNum; ++j )
             {
                 nn >> nn_img[j];
                 img_thread[j] = std::thread
-                    ( image_function< NN, Reader >,
+                    ( image_function< Reader, NN >,
                       std::ref( nn_img[j] ),
                       std::cref(input),
                       std::cref(target),
@@ -96,8 +95,6 @@ public:
                 nn << nn_img[j];
             }
 
-            ++epoch;
-
             if ( stop_early<StopEarly>( nn.get_gradient() ) )
             {
                 break;
@@ -109,10 +106,8 @@ public:
         input.close();
         target.close();
 
-        result << epoch << '\t';
-
         CTester<Err> tester;
-        tester.test<Reader>( err, nn, input_path, target_path );
+        tester.template test<Reader>( err, nn, input_path, target_path );
     }
 
 private:
@@ -130,44 +125,37 @@ private:
         }
     }
 
-    template < bool StopEarly >
-    bool stop_early( IN double gradient );
-
-    template <>
-    bool stop_early<true>( IN double gradient )
+    template < bool DoStopEarly >
+    bool stop_early( IN double gradient )
     {
-        if ( _finite(gradient) && gradient == gradient )
+        if (DoStopEarly)
         {
-            if ( abs(gradient) < m_min_gradient_change )
+            if ( std::isfinite(gradient) && gradient == gradient )
             {
-                return true;
-            }
-            else if ( abs(gradient) - abs(m_gradient) > - m_min_gradient_change )
-            {
-                if ( m_valid_times >= ValidTimes )
+                if ( abs(gradient) < m_min_gradient_change )
                 {
                     return true;
                 }
+                else if ( abs(gradient) - abs(m_gradient) > - m_min_gradient_change )
+                {
+                    if ( m_valid_times >= ValidTimes )
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        ++m_valid_times;
+                    }
+                }
                 else
                 {
-                    ++m_valid_times;
+                    m_valid_times = 0;
                 }
-            }
-            else
-            {
-                m_valid_times = 0;
-            }
 
-            m_gradient = gradient;
+                m_gradient = gradient;
+            }
         }
 
-        return false;
-    }
-
-    template <>
-    bool stop_early<false>( IN double gradient )
-    {
-        (void)gradient;
         return false;
     }
 

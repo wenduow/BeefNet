@@ -26,7 +26,5 @@ using MyWeight = CWeightBP<Param>;
 
 typedef EParamBP<> MyParam;
 
-std::ofstream result( "../../result/test_save_load.txt", std::ios::app );
-
 #endif // DEMO_HPP_
 

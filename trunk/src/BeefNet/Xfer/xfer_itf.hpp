@@ -1,7 +1,7 @@
 #ifndef XFER_ITF_HPP_
 #define XFER_ITF_HPP_
 
-#include "../utility/type.hpp"
+#include "../Utility/type.hpp"
 
 namespace wwd
 {

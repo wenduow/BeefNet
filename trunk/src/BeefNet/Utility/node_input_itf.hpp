@@ -2,8 +2,7 @@
 #define NODE_INPUT_ITF_HPP_
 
 #include "path_forward_itf.hpp"
-
-class IPathBackward;
+#include "path_backward_itf.hpp"
 
 namespace wwd
 {

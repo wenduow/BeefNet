@@ -1,6 +1,7 @@
 #ifndef WEIGHT_QP_HPP_
 #define WEIGHT_QP_HPP_
 
+#include <cmath>
 #include "weight_itf.hpp"
 
 namespace wwd
@@ -28,7 +29,7 @@ public:
         double rate = m_gradient_sum
                     / ( m_gradient_sum_prev - m_gradient_sum );
 
-        if ( _finite(rate) )
+        if ( std::isfinite(rate) )
         {
             if ( rate < - Param::fact_max )
             {

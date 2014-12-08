@@ -10,10 +10,13 @@ template < uint32 OutputNum >
 class CNeuronInput
     : public INodeInput<OutputNum>
 {
+private:
+
+    typedef INodeInput<OutputNum> BaseType;
 public:
 
     CNeuronInput(void)
-        : INodeInput()
+        : BaseType()
     {
     }
 
@@ -23,12 +26,12 @@ public:
 
     inline void forward(void)
     {
-        m_output_val = m_input_val;
+        BaseType::m_output_val = BaseType::m_input_val;
     }
 
     inline void set_input( IN double input )
     {
-        m_input_val = input;
+        BaseType::m_input_val = input;
     }
 };
 
