@@ -8,6 +8,8 @@
 namespace wwd
 {
 
+std::ofstream result( "../../result/test_save_load.txt", std::ios::app );
+
 template < template <uint32> class Reader, class NN >
 void image_function( INOUT NN &nn,
                      IN const Reader< NN::input_num > &reader_input,
@@ -47,7 +49,7 @@ public:
         : m_valid_times(0)
         , m_gradient(DOUBLE_MAX)
         , m_err(0.0)
-        , m_min_gradient_change( pow( 10.0, MinGradientChange ) )
+        , m_min_gradient_change( std::pow( 10.0, MinGradientChange ) )
     {
     }
 
@@ -75,6 +77,8 @@ public:
         NN nn_img[ImageNum];
         std::thread img_thread[ImageNum];
 
+        uint32 epoch = 0;
+
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
             for ( uint32 j = 0; j < ImageNum; ++j )
@@ -95,6 +99,8 @@ public:
                 nn << nn_img[j];
             }
 
+            ++epoch;
+
             if ( stop_early<StopEarly>( nn.get_gradient() ) )
             {
                 break;
@@ -108,6 +114,8 @@ public:
 
         CTester<Err> tester;
         tester.template test<Reader>( err, nn, input_path, target_path );
+
+        result << ImageNum << '\t' << epoch << '\t';
     }
 
 private:
@@ -132,11 +140,12 @@ private:
         {
             if ( std::isfinite(gradient) && gradient == gradient )
             {
-                if ( abs(gradient) < m_min_gradient_change )
+                if ( std::abs(gradient) < m_min_gradient_change )
                 {
                     return true;
                 }
-                else if ( abs(gradient) - abs(m_gradient) > - m_min_gradient_change )
+                else if ( std::abs(gradient) - std::abs(m_gradient)
+                      > - m_min_gradient_change )
                 {
                     if ( m_valid_times >= ValidTimes )
                     {

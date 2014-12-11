@@ -65,8 +65,8 @@ public:
 
         m_gradient_sum_prev = m_gradient_sum;
 
-        if ( abs(m_delta_weight) < DOUBLE_EPSILON
-          && abs(rate) > DOUBLE_EPSILON )
+        if ( std::abs(m_delta_weight) < DOUBLE_EPSILON
+          && std::abs(rate) > DOUBLE_EPSILON )
         {
             m_delta_weight = - Param::learn_rate
                              * m_gradient_sum

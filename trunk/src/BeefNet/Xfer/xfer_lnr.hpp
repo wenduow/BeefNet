@@ -26,8 +26,7 @@ public:
 
     inline double derivative( IN double val ) const
     {
-        (double)val;
-
+        (void)val;
         return 1.0;
     }
 };

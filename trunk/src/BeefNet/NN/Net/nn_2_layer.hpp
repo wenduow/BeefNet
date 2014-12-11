@@ -286,7 +286,7 @@ public:
                 m_layer_1.backward(err);
                 m_layer_0.backward(err);
 
-                m_se_prev += pow( err, 2 );
+                m_se_prev += std::pow( err, 2 );
             }
         }
     }

@@ -8,6 +8,7 @@
 #ifdef __linux__
     #include <sys/mman.h>
     #include <fcntl.h>
+    #include <unistd.h>
 #elif ( defined _WIN32 )
     #include <Windows.h>
 #else
@@ -53,6 +54,7 @@ public:
         close();
 
 #ifdef __linux__
+
         int32 file_desc = ::open( path, O_RDONLY );
         struct stat file_stat;
 
@@ -65,7 +67,11 @@ public:
                                     MAP_PRIVATE,
                                     file_desc,
                                     0 );
+
+        ::close(file_desc);
+
 #elif ( defined _WIN32 )
+
         struct _stat64 file_stat;
         _stat64( path, &file_stat );
         m_pattern_num = (uint32)( file_stat.st_size / sizeof(double) / feature_num );
@@ -89,6 +95,7 @@ public:
 
         CloseHandle(h_mmap);
         CloseHandle(h_file);
+
 #else
     #error "Any type of OS should be specified!"
 #endif // system compiler macro
@@ -99,9 +106,13 @@ public:
         if (m_file_buf)
         {
 #ifdef __linux__
+
             munmap( m_file_buf, m_pattern_num * sizeof(double) * feature_num );
+
 #elif ( defined _WIN32 )
+
             UnmapViewOfFile(m_file_buf);
+
 #else
     #error "Any type of OS should be specified!"
 #endif // system compiler macro

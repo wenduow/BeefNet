@@ -28,7 +28,7 @@ public:
 
         for ( uint32 i = 0; i < num; ++i )
         {
-            err += fabs( x[i] - y[i] );
+            err += std::abs( x[i] - y[i] );
         }
 
         return err / (double)num;

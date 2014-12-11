@@ -22,12 +22,12 @@ public:
 
     inline double operator()( IN double val ) const
     {
-        return tanh(val);
+        return std::tanh(val);
     }
 
     inline double derivative( IN double val ) const
     {
-        return 1.0 - pow( tanh(val), 2 );
+        return 1.0 - std::pow( tanh(val), 2 );
     }
 };
 

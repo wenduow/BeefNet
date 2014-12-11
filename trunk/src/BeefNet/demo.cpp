@@ -1,4 +1,7 @@
+#include <fstream>
 #include "demo.hpp"
+
+using namespace wwd;
 
 void data_transform(void);
 
@@ -16,7 +19,7 @@ int32 main(void)
                MyWeight, MyParam > nn;
     
     double err[1];
-    CTrainer< FErrMAE, thread_num, true > trainer;
+    CTrainer< FErrMAE, thread_num, stop_early > trainer;
 
     time_t time_beg = time(NULL);
     trainer.train<CReaderBinary>( err,
@@ -25,11 +28,13 @@ int32 main(void)
                                   "../../data/train_target.dat" );
     time_t time_end = time(NULL);
 
-    std::ofstream nn_save( "../../result/nn.dat" );
+    result << err[0] << '\t';
+
+    std::ofstream nn_save( "../../result/nn.dat", std::ios::binary );
     nn.save(nn_save);
     nn_save.close();
 
-    std::ifstream nn_load( "../../result/nn.dat" );
+    std::ifstream nn_load( "../../result/nn.dat", std::ios::binary );
     nn.load(nn_load);
     nn_load.close();
 
@@ -39,6 +44,9 @@ int32 main(void)
                                 "../../data/test_input.dat",
                                 "../../data/test_target.dat" );
 
+    result << err[0] << '\t' << time_end - time_beg << std::endl;
+
+    result.close();
     return 0;
 }
 

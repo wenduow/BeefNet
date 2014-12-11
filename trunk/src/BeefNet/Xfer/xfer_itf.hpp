@@ -1,6 +1,7 @@
 #ifndef XFER_ITF_HPP_
 #define XFER_ITF_HPP_
 
+#include <cmath>
 #include "../Utility/type.hpp"
 
 namespace wwd

@@ -1,7 +1,6 @@
 #ifndef XFER_LOG_SIG_HPP_
 #define XFER_LOG_SIG_HPP_
 
-#include <cmath>
 #include "xfer_itf.hpp"
 
 namespace wwd
@@ -22,7 +21,7 @@ public:
 
     inline double operator()( IN double val ) const
     {
-        return ( 1.0 / ( 1.0 + exp(-val) ) );
+        return ( 1.0 / ( 1.0 + std::exp(-val) ) );
     }
 
     inline double derivative( IN double val ) const

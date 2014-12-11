@@ -28,7 +28,7 @@ public:
 
         for ( uint32 i = 0; i < num; ++i )
         {
-            err += pow( ( x[i] - y[i] ), 2 );
+            err += std::pow( ( x[i] - y[i] ), 2 );
         }
 
         return err / (double)num;

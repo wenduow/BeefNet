@@ -31,6 +31,7 @@ public:
     {
         Reader< NN::output_num > target(target_path);
         uint32 pattern_num   = target.get_pattern_num();
+
         double **predict_tmp = new double*[ NN::output_num ];
         double **target_tmp  = new double*[ NN::output_num ];
 
