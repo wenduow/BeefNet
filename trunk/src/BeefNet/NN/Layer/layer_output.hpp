@@ -169,7 +169,7 @@ private:
     {
         for ( uint32 i = 0; i < OutputNum; ++i )
         {
-            m_weight_vector[i].connect_output_neuron( m_output[i] );
+            m_output[i].connect_input_weight_vector( m_weight_vector[i] );
             m_target[i].connect_input_neuron( m_output[i] );
         }
     }
@@ -360,7 +360,7 @@ private:
     {
         for ( uint32 i = 0; i < OutputNum; ++i )
         {
-            m_weight_vector[i].connect_output_neuron( m_output[i] );
+            m_output[i].connect_input_weight_vector( m_weight_vector[i] );
             m_target[i].connect_input_neuron( m_output[i] );
         }
     }

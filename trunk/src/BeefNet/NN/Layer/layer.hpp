@@ -167,7 +167,7 @@ private:
     {
         for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            m_weight_vector[i].connect_output_neuron( m_neuron[i] );
+            m_neuron[i].connect_input_weight_vector( m_weight_vector[i] );
         }
     }
 
@@ -348,7 +348,7 @@ private:
     {
         for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            m_weight_vector[i].connect_output_neuron( m_neuron[i] );
+            m_neuron[i].connect_input_weight_vector( m_weight_vector[i] );
         }
     }
 

@@ -55,6 +55,16 @@ public:
                                * IPathBackward::m_input_val;
     }
 
+    template < class WeightVector >
+    void connect_input_weight_vector( INOUT WeightVector &weight_vector )
+    {
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            connect_input_node( weight_vector.get_weight(i) );
+            weight_vector.get_weight(i).connect_output_node(*this);
+        }
+    }
+
 private:
 
     CNeuron( IN const CNeuron &other );

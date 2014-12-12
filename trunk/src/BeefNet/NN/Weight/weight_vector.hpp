@@ -82,14 +82,9 @@ public:
         }
     }
 
-    template < class Neuron >
-    void connect_output_neuron( IN Neuron &neuron )
+    inline WeightType<Param> &get_weight( IN uint32 idx )
     {
-        for ( auto &i : m_weight )
-        {
-            i.connect_output_node(neuron);
-            neuron.connect_input_node(i);
-        }
+        return m_weight[idx];
     }
 
     double get_gradient_sum(void) const
@@ -287,14 +282,9 @@ public:
         }
     }
 
-    template < class Neuron >
-    void connect_output_neuron( IN Neuron &neuron )
+    inline CWeightLM<Param> &get_weight( IN uint32 idx )
     {
-        for ( auto &i : m_weight )
-        {
-            i.connect_output_node(neuron);
-            neuron.connect_input_node(i);
-        }
+        return m_weight[idx];
     }
 
     double get_gradient_sum(void) const
