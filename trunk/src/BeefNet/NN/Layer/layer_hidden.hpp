@@ -1,5 +1,5 @@
-#ifndef LAYER_OUTPUT_HPP_
-#define LAYER_OUTPUT_HPP_
+#ifndef LAYER_HIDDEN_HPP_
+#define LAYER_HIDDEN_HPP_
 
 #include "../Weight/weight_vector.hpp"
 #include "../Neuron/neuron.hpp"
@@ -8,15 +8,24 @@ namespace wwd
 {
 
 template < uint32 InputNum,
+           uint32 NeuronNum,
            uint32 OutputNum,
            class Xfer,
            template <class> class WeightType,
            class Param >
-class CLayerOutput
+class CLayerHidden
 {
+public:
+
+    enum
+    {
+        hidden_num = NeuronNum
+    };
+
 private:
 
-    typedef CLayerOutput< InputNum,
+    typedef CLayerHidden< InputNum,
+                          NeuronNum,
                           OutputNum,
                           Xfer,
                           WeightType,
@@ -26,7 +35,7 @@ public:
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_weight_vector[i] >> other.m_weight_vector[i];
         }
@@ -36,7 +45,7 @@ public:
 
     ThisType &operator<<( IN const ThisType &other )
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_weight_vector[i] << other.m_weight_vector[i];
         }
@@ -44,30 +53,29 @@ public:
         return *this;
     }
 
-    CLayerOutput(void)
+    CLayerHidden(void)
     {
         connect_inner();
     }
 
-    ~CLayerOutput(void)
+    ~CLayerHidden(void)
     {
     }
 
     void forward(void)
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_weight_vector[i].forward();
-            m_output[i].forward();
+            m_neuron[i].forward();
         }
     }
 
     void backward(void)
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            m_target[i].backward();
-            m_output[i].backward();
+            m_neuron[i].backward();
             m_weight_vector[i].backward();
         }
     }
@@ -92,20 +100,10 @@ public:
         }
     }
 
-    void set_target( IN const double *target )
+    inline CNeuronHidden< InputNum, OutputNum, Xfer > &
+        get_hidden_node( IN uint32 idx )
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
-        {
-            m_target[i].set_target( target[i] );
-        }
-    }
-
-    void get_output( OUT double (&output)[OutputNum] ) const
-    {
-        for ( uint32 i = 0; i < OutputNum; ++i )
-        {
-            output[i] = m_output[i].IPathForward::get_output_value();
-        }
+        return m_neuron[idx];
     }
 
     double get_gradient_sum(void) const
@@ -166,33 +164,41 @@ private:
 
     void connect_inner(void)
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            m_output[i].connect_input_weight_vector( m_weight_vector[i] );
-            m_target[i].connect_input_neuron( m_output[i] );
+            m_neuron[i].connect_input_weight_vector( m_weight_vector[i] );
         }
     }
 
 private:
 
-    CWeightVector< InputNum, WeightType, Param > m_weight_vector[OutputNum];
-    CNeuronHidden< InputNum, 1, Xfer > m_output[OutputNum];
-    CNeuronTarget m_target[OutputNum];
+    CWeightVector< InputNum, WeightType, Param > m_weight_vector[NeuronNum];
+    CNeuronHidden< InputNum, OutputNum, Xfer > m_neuron[NeuronNum];
 };
 
 template < uint32 InputNum,
+           uint32 NeuronNum,
            uint32 OutputNum,
            class Xfer,
            class Param >
-class CLayerOutput< InputNum,
+class CLayerHidden< InputNum,
+                    NeuronNum,
                     OutputNum,
                     Xfer,
                     CWeightLM,
                     Param >
 {
+public:
+
+    enum
+    {
+        hidden_num = NeuronNum
+    };
+
 private:
 
-    typedef CLayerOutput< InputNum,
+    typedef CLayerHidden< InputNum,
+                          NeuronNum,
                           OutputNum,
                           Xfer,
                           CWeightLM,
@@ -200,18 +206,18 @@ private:
 
 public:
 
-    CLayerOutput(void)
+    CLayerHidden(void)
     {
         connect_inner();
     }
 
-    ~CLayerOutput(void)
+    ~CLayerHidden(void)
     {
     }
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_weight_vector[i] >> other.m_weight_vector[i];
         }
@@ -221,7 +227,7 @@ public:
 
     ThisType &operator<<( IN const ThisType &other )
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_weight_vector[i] << other.m_weight_vector[i];
         }
@@ -231,19 +237,18 @@ public:
 
     void forward(void)
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_weight_vector[i].forward();
-            m_output[i].forward();
+            m_neuron[i].forward();
         }
     }
 
-    void backward( IN double err, IN uint32 output_idx )
+    void backward( IN double err )
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            m_target[i].set_output_value( ( i == output_idx ) ? 1.0 : 0.0 );
-            m_output[i].backward();
+            m_neuron[i].backward();
             m_weight_vector[i].backward(err);
         }
     }
@@ -276,27 +281,10 @@ public:
         }
     }
 
-    void set_target( IN const double *target )
+    inline CNeuronHidden< InputNum, OutputNum, Xfer > &
+        get_hidden_node( IN uint32 idx )
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
-        {
-            m_target[i].set_target( target[i] );
-        }
-    }
-
-    double get_error( IN uint32 idx )
-    {
-        m_target[idx].backward();
-
-        return m_target[idx].get_output_value();
-    }
-
-    void get_output( OUT double (&output)[OutputNum] ) const
-    {
-        for ( uint32 i = 0; i < OutputNum; ++i )
-        {
-            output[i] = m_output[i].IPathForward::get_output_value();
-        }
+        return m_neuron[idx];
     }
 
     double get_gradient_sum(void) const
@@ -357,21 +345,19 @@ private:
 
     void connect_inner(void)
     {
-        for ( uint32 i = 0; i < OutputNum; ++i )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            m_output[i].connect_input_weight_vector( m_weight_vector[i] );
-            m_target[i].connect_input_neuron( m_output[i] );
+            m_neuron[i].connect_input_weight_vector( m_weight_vector[i] );
         }
     }
 
 private:
 
-    CWeightVector< InputNum, CWeightLM, Param > m_weight_vector[OutputNum];
-    CNeuronHidden< InputNum, 1, Xfer > m_output[OutputNum];
-    CNeuronTarget m_target[OutputNum];
+    CWeightVector< InputNum, CWeightLM, Param > m_weight_vector[NeuronNum];
+    CNeuronHidden< InputNum, OutputNum, Xfer > m_neuron[NeuronNum];
 };
 
 } // namespace wwd
 
-#endif // LAYER_OUTPUT_HPP_
+#endif // LAYER_HIDDEN_HPP_
 

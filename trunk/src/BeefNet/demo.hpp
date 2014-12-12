@@ -1,12 +1,11 @@
 #ifndef DEMO_HPP_
 #define DEMO_HPP_
 
-#include "NN/Net/nn_2_layer.hpp"
-#include "NN/Weight/weight_bp.hpp"
-#include "NN/Weight/param_bp.hpp"
+#include "NN/Net/net.hpp"
+#include "NN/Weight/weight.hpp"
 #include "Xfer/xfer.hpp"
 #include "Err/err.hpp"
-#include "Reader/reader_binary.hpp"
+#include "Reader/reader.hpp"
 #include "trainer.hpp"
 #include "tester.hpp"
 

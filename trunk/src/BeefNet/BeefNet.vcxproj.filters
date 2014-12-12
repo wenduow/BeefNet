@@ -80,15 +80,6 @@
     <ClInclude Include="Utility\type.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="NN\Layer\layer.hpp">
-      <Filter>Header Files\NN\Layer</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Neuron\neuron.hpp">
-      <Filter>Header Files\NN\Neuron</Filter>
-    </ClInclude>
-    <ClInclude Include="NN\Net\nn_2_layer.hpp">
-      <Filter>Header Files\NN\Net</Filter>
-    </ClInclude>
     <ClInclude Include="NN\Layer\layer_output.hpp">
       <Filter>Header Files\NN\Layer</Filter>
     </ClInclude>
@@ -157,6 +148,36 @@
     </ClInclude>
     <ClInclude Include="demo.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Net\net_1_layer.hpp">
+      <Filter>Header Files\NN\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Net\net_2_layer.hpp">
+      <Filter>Header Files\NN\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Net\net_3_layer.hpp">
+      <Filter>Header Files\NN\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Net\net.hpp">
+      <Filter>Header Files\NN\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer_hidden.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Layer\layer.hpp">
+      <Filter>Header Files\NN\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron_hidden.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Neuron\neuron.hpp">
+      <Filter>Header Files\NN\Neuron</Filter>
+    </ClInclude>
+    <ClInclude Include="NN\Weight\weight.hpp">
+      <Filter>Header Files\NN\Weight</Filter>
+    </ClInclude>
+    <ClInclude Include="Reader\reader.hpp">
+      <Filter>Header Files\Reader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

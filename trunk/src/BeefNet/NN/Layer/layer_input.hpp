@@ -1,7 +1,7 @@
 #ifndef LAYER_INPUT_HPP_
 #define LAYER_INPUT_HPP_
 
-#include "../Neuron/neuron_input.hpp"
+#include "../Neuron/neuron.hpp"
 
 namespace wwd
 {
