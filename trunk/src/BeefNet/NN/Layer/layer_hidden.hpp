@@ -53,6 +53,28 @@ public:
         return *this;
     }
 
+    friend std::istream &operator>>( INOUT std::istream &is,
+                                     OUT ThisType &rhs )
+    {
+        for ( auto &i : rhs.m_weight_vector )
+        {
+            is >> i;
+        }
+
+        return is;
+    }
+
+    friend std::ostream &operator<<( INOUT std::ostream &os,
+                                     IN const ThisType &rhs )
+    {
+        for ( const auto &i : rhs.m_weight_vector )
+        {
+            os << i;
+        }
+
+        return os;
+    }
+
     CLayerHidden(void)
     {
         connect_inner();

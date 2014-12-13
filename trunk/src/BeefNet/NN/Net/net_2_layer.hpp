@@ -59,6 +59,22 @@ public:
         return *this;
     }
 
+    friend std::istream &operator>>( INOUT std::istream &is,
+                                     OUT ThisType &rhs )
+    {
+        is >> rhs.m_layer_0 >> rhs.m_layer_1 >> rhs.m_layer_output;
+
+        return is;
+    }
+
+    friend std::ostream &operator<<( INOUT std::ostream &os,
+                                     IN const ThisType &rhs )
+    {
+        os << rhs.m_layer_0 << rhs.m_layer_1 << rhs.m_layer_output;
+
+        return os;
+    }
+
     void forward(void)
     {
         m_input.forward();
@@ -239,7 +255,7 @@ public:
         m_layer_1 << other.m_layer_1;
         m_layer_output << other.m_layer_output;
 
-        if ( other.m_check )
+        if (m_check)
         {
             m_se += other.m_se;
         }

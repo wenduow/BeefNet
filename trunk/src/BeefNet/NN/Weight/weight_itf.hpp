@@ -1,10 +1,6 @@
 #ifndef WEIGHT_ITF_HPP_
 #define WEIGHT_ITF_HPP_
 
-#ifdef _DEBUG
-    #include <iostream>
-#endif // _DEBUG
-
 #include <cstdlib>
 #include "../../Utility/node_input_itf.hpp"
 #include "../../Utility/node_output_itf.hpp"
@@ -33,6 +29,28 @@ public:
         m_pattern_num += other.m_pattern_num;
 
         return *this;
+    }
+
+    friend std::istream &operator>>( INOUT std::istream &is,
+                                     OUT IWeight &rhs )
+    {
+        double gradient;
+        uint32 pattern;
+        char delimeter;
+        is >> gradient >> delimeter >> pattern >> delimeter;
+        
+        rhs.m_gradient_sum += gradient;
+        rhs.m_pattern_num += pattern;
+
+        return is;
+    }
+
+    friend std::ostream &operator<<( INOUT std::ostream &os,
+                                     IN const IWeight &rhs )
+    {
+        os << rhs.m_gradient_sum << '#' << rhs.m_pattern_num << '#';
+
+        return os;
     }
 
     inline void forward(void)
