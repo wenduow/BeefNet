@@ -9,10 +9,13 @@ namespace wwd
 class CNeuronTarget
     : public INodeOutput<1>
 {
+private:
+
+    typedef INodeOutput<1> BaseTypeOutput;
 public:
 
     CNeuronTarget(void)
-        : INodeOutput()
+        : BaseTypeOutput()
     {
     }
 
@@ -28,7 +31,7 @@ public:
     template < class Neuron >
     void connect_input_neuron( INOUT Neuron &neuron )
     {
-        connect_input_node(neuron);
+        BaseTypeOutput::connect_input_node(neuron);
         neuron.connect_output_node(*this);
     }
 

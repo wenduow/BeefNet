@@ -12,11 +12,11 @@ class CNeuronInput
 {
 private:
 
-    typedef INodeInput<OutputNum> BaseType;
+    typedef INodeInput<OutputNum> BaseTypeInput;
 public:
 
     CNeuronInput(void)
-        : BaseType()
+        : BaseTypeInput()
     {
     }
 
@@ -26,12 +26,12 @@ public:
 
     inline void forward(void)
     {
-        BaseType::m_output_val = BaseType::m_input_val;
+        BaseTypeInput::m_output_val = BaseTypeInput::m_input_val;
     }
 
     inline void set_input( IN double input )
     {
-        BaseType::m_input_val = input;
+        BaseTypeInput::m_input_val = input;
     }
 };
 
