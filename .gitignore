@@ -5,6 +5,8 @@
 *.suo
 *.*log
 *.idb
+*.sln
+*.vcxproj*
 
 # Test Files
 *.pdf
