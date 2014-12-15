@@ -60,7 +60,7 @@ public:
     {
         for ( uint32 i = 0; i < InputNum; ++i )
         {
-            connect_input_node( weight_vector.get_weight(i) );
+            BaseTypeOutput::connect_input_node( weight_vector.get_weight(i) );
             weight_vector.get_weight(i).connect_output_node(*this);
         }
     }
