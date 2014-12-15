@@ -352,7 +352,7 @@ private:
         double bias[1] = {1.0};
 
         m_bias.set_input(bias);
-        m_layer.connect_input_layer(m_bias_0);
+        m_layer.connect_input_layer(m_bias);
         m_layer.connect_input_layer(m_input);
 
         m_bias_output.set_input(bias);
@@ -364,9 +364,9 @@ private:
 
     CLayerInput< InputNum, HiddenNum > m_input;
 
-    CLayerInput< 1, HiddenNum > m_bias_0;
+    CLayerInput< 1, HiddenNum > m_bias;
     CLayerHidden< InputNum + 1, HiddenNum, OutputNum, Xfer,
-                  CWeightLM, Param > m_layer_0;
+                  CWeightLM, Param > m_layer;
 
     CLayerInput< 1, OutputNum > m_bias_output;
     CLayerOutput< HiddenNum + 1, OutputNum, XferOutput,

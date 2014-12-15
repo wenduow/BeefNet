@@ -17,7 +17,7 @@ const uint32 input_num = 10;
 const uint32 hidden_num = 10;
 const uint32 output_num = 1;
 
-const uint32 thread_num = 8;
+const uint32 thread_num = 16;
 const bool stop_early = true;
 
 template < class Param >

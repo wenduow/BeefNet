@@ -8,7 +8,7 @@
 namespace wwd
 {
 
-std::ofstream result( "../../result/test_save_load.txt", std::ios::app );
+std::ofstream result( "../../result/test_thread.txt", std::ios::app );
 
 template < template <uint32> class Reader, class NN >
 void image_function( INOUT NN &nn,
