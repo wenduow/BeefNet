@@ -1,8 +1,8 @@
-#ifndef NET_3_LAYER_HPP
-#define NET_3_LAYER_HPP
+#ifndef NET_3_LAYER_LM_HPP_
+#define NET_3_LAYER_LM_HPP_
 
 #include <cmath>
-#include "../Layer/layer.hpp"
+#include "../Layer/layer_lm.hpp"
 
 namespace wwd
 {
@@ -12,8 +12,13 @@ template < uint32 InputNum,
            uint32 HiddenNum1, class Xfer1,
            uint32 HiddenNum2, class Xfer2,
            uint32 OutputNum, class XferOutput,
-           template <class> class WeightType, class Param >
-class CNet3Layer
+           class Param >
+class CNet3Layer< InputNum,
+                  HiddenNum0, Xfer0,
+                  HiddenNum1, Xfer1,
+                  HiddenNum2, Xfer2,
+                  OutputNum, XferOutput,
+                  CWeightLM, Param >
 {
 public:
 
@@ -30,11 +35,14 @@ private:
                         HiddenNum1, Xfer1,
                         HiddenNum2, Xfer2,
                         OutputNum, XferOutput,
-                        WeightType, Param > ThisType;
+                        CWeightLM, Param > ThisType;
 
 public:
 
     CNet3Layer(void)
+        : m_check(false)
+        , m_se_prev(0.0)
+        , m_se(0.0)
     {
         connect_inner();
     }
@@ -50,6 +58,16 @@ public:
         m_layer_2 >> other.m_layer_2;
         m_layer_output >> other.m_layer_output;
 
+        if (m_check)
+        {
+            other.m_se = 0.0;
+        }
+        else
+        {
+            other.m_se_prev = 0.0;
+        }
+
+        other.m_check = m_check;
         return *this;
     }
 
@@ -59,6 +77,15 @@ public:
         m_layer_1 << other.m_layer_1;
         m_layer_2 << other.m_layer_2;
         m_layer_output << other.m_layer_output;
+
+        if ( other.m_check )
+        {
+            m_se += other.m_se;
+        }
+        else
+        {
+            m_se_prev += other.m_se_prev;
+        }
 
         return *this;
     }
@@ -82,18 +109,65 @@ public:
 
     void backward(void)
     {
-        m_layer_output.backward();
-        m_layer_2.backward();
-        m_layer_1.backward();
-        m_layer_0.backward();
+        if (m_check)
+        {
+            for ( uint32 i = 0; i < OutputNum; ++i )
+            {
+                m_se += std::pow( m_layer_output.get_error(i), 2 );
+            }
+        }
+        else
+        {
+            for ( uint32 i = 0; i < OutputNum; ++i )
+            {
+                double err = m_layer_output.get_error(i);
+
+                m_layer_output.backward( err, i );
+                m_layer_2.backward(err);
+                m_layer_1.backward(err);
+                m_layer_0.backward(err);
+
+                m_se_prev += std::pow( err, 2 );
+            }
+        }
     }
 
     void update(void)
     {
-        m_layer_0.update();
-        m_layer_1.update();
-        m_layer_2.update();
-        m_layer_output.update();
+        if (m_check)
+        {
+            if ( m_se < m_se_prev )
+            {
+                Param::lambda /= Param::beta;
+                if ( Param::lambda < DOUBLE_EPSILON )
+                {
+                    Param::lambda = DOUBLE_EPSILON;
+                }
+            }
+            else
+            {
+                revert();
+
+                Param::lambda *= Param::beta;
+                if ( Param::lambda > DOUBLE_MAX )
+                {
+                    Param::lambda = DOUBLE_MAX;
+                }
+            }
+
+            m_se_prev = 0.0;
+            m_check = false;
+        }
+        else
+        {
+            m_layer_0.update();
+            m_layer_1.update();
+            m_layer_2.update();
+            m_layer_output.update();
+
+            m_se = 0.0;
+            m_check = true;
+        }
     }
 
     void set_input( IN const double *input )
@@ -153,6 +227,14 @@ public:
 
 private:
 
+    void revert(void)
+    {
+        m_layer_0.revert();
+        m_layer_1.revert();
+        m_layer_2.revert();
+        m_layer_output.revert();
+    }
+
     void connect_inner(void)
     {
         double bias[1] = {1.0};
@@ -180,22 +262,26 @@ private:
 
     CLayerInput< 1, HiddenNum0 > m_bias_0;
     CLayerHidden< InputNum + 1, HiddenNum0, HiddenNum1, Xfer0,
-                  WeightType, Param > m_layer_0;
+                  CWeightLM, Param > m_layer_0;
 
     CLayerInput< 1, HiddenNum1 > m_bias_1;
     CLayerHidden< HiddenNum0 + 1, HiddenNum1, HiddenNum2, Xfer1,
-                  WeightType, Param > m_layer_1;
+                  CWeightLM, Param > m_layer_1;
 
     CLayerInput< 1, HiddenNum2 > m_bias_2;
     CLayerHidden< HiddenNum1 + 1, HiddenNum2, OutputNum, Xfer2,
-                  WeightType, Param > m_layer_2;
+                  CWeightLM, Param > m_layer_2;
 
     CLayerInput< 1, OutputNum > m_bias_output;
     CLayerOutput< HiddenNum2 + 1, OutputNum, XferOutput,
-                  WeightType, Param > m_layer_output;
+                  CWeightLM, Param > m_layer_output;
+
+    bool m_check;
+    double m_se_prev;
+    double m_se;
 };
 
 } // namespace wwd
 
-#endif // NET_3_LAYER_HPP
+#endif // NET_3_LAYER_LM_HPP_
 

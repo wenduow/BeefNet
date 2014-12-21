@@ -12,6 +12,7 @@ class CNeuronTarget
 private:
 
     typedef INodeOutput<1> BaseTypeOutput;
+
 public:
 
     CNeuronTarget(void)

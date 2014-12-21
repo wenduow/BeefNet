@@ -1,8 +1,8 @@
-#ifndef NET_1_LAYER_HPP
-#define NET_1_LAYER_HPP
+#ifndef NET_1_LAYER_LM_HPP_
+#define NET_1_LAYER_LM_HPP_
 
 #include <cmath>
-#include "../Layer/layer.hpp"
+#include "../Layer/layer_lm.hpp"
 
 namespace wwd
 {
@@ -10,8 +10,11 @@ namespace wwd
 template < uint32 InputNum,
            uint32 HiddenNum, class Xfer,
            uint32 OutputNum, class XferOutput,
-           template <class> class WeightType, class Param >
-class CNet1Layer
+           class Param >
+class CNet1Layer< InputNum,
+                  HiddenNum, Xfer,
+                  OutputNum, XferOutput,
+                  CWeightLM, Param >
 {
 public:
 
@@ -26,11 +29,14 @@ private:
     typedef CNet1Layer< InputNum,
                         HiddenNum, Xfer,
                         OutputNum, XferOutput,
-                        WeightType, Param > ThisType;
+                        CWeightLM, Param > ThisType;
 
 public:
 
     CNet1Layer(void)
+        : m_check(false)
+        , m_se_prev(0.0)
+        , m_se(0.0)
     {
         connect_inner();
     }
@@ -44,6 +50,16 @@ public:
         m_layer >> other.m_layer;
         m_layer_output >> other.m_layer_output;
 
+        if (m_check)
+        {
+            other.m_se = 0.0;
+        }
+        else
+        {
+            other.m_se_prev = 0.0;
+        }
+
+        other.m_check = m_check;
         return *this;
     }
 
@@ -51,6 +67,15 @@ public:
     {
         m_layer << other.m_layer;
         m_layer_output << other.m_layer_output;
+
+        if ( other.m_check )
+        {
+            m_se += other.m_se;
+        }
+        else
+        {
+            m_se_prev += other.m_se_prev;
+        }
 
         return *this;
     }
@@ -68,14 +93,61 @@ public:
 
     void backward(void)
     {
-        m_layer_output.backward();
-        m_layer.backward();
+        if (m_check)
+        {
+            for ( uint32 i = 0; i < OutputNum; ++i )
+            {
+                m_se += std::pow( m_layer_output.get_error(i), 2 );
+            }
+        }
+        else
+        {
+            for ( uint32 i = 0; i < OutputNum; ++i )
+            {
+                double err = m_layer_output.get_error(i);
+
+                m_layer_output.backward( err, i );
+                m_layer.backward(err);
+
+                m_se_prev += std::pow( err, 2 );
+            }
+        }
     }
 
     void update(void)
     {
-        m_layer.update();
-        m_layer_output.update();
+        if (m_check)
+        {
+            if ( m_se < m_se_prev )
+            {
+                Param::lambda /= Param::beta;
+                if ( Param::lambda < DOUBLE_EPSILON )
+                {
+                    Param::lambda = DOUBLE_EPSILON;
+                }
+            }
+            else
+            {
+                revert();
+
+                Param::lambda *= Param::beta;
+                if ( Param::lambda > DOUBLE_MAX )
+                {
+                    Param::lambda = DOUBLE_MAX;
+                }
+            }
+
+            m_se_prev = 0.0;
+            m_check = false;
+        }
+        else
+        {
+            m_layer.update();
+            m_layer_output.update();
+
+            m_se = 0.0;
+            m_check = true;
+        }
     }
 
     void set_input( IN const double *input )
@@ -125,6 +197,12 @@ public:
 
 private:
 
+    void revert(void)
+    {
+        m_layer.revert();
+        m_layer_output.revert();
+    }
+
     void connect_inner(void)
     {
         double bias[1] = {1.0};
@@ -144,14 +222,18 @@ private:
 
     CLayerInput< 1, HiddenNum > m_bias;
     CLayerHidden< InputNum + 1, HiddenNum, OutputNum, Xfer,
-                  WeightType, Param > m_layer;
+                  CWeightLM, Param > m_layer;
 
     CLayerInput< 1, OutputNum > m_bias_output;
     CLayerOutput< HiddenNum + 1, OutputNum, XferOutput,
-                  WeightType, Param > m_layer_output;
+                  CWeightLM, Param > m_layer_output;
+
+    bool m_check;
+    double m_se_prev;
+    double m_se;
 };
 
 } // namespace wwd
 
-#endif // NET_1_LAYER_HPP
+#endif // NET_1_LAYER_LM_HPP_
 

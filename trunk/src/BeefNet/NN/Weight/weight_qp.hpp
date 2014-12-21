@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "weight_itf.hpp"
+#include "param_qp.hpp"
 
 namespace wwd
 {

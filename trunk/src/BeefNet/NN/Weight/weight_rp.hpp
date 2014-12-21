@@ -2,6 +2,7 @@
 #define WEIGHT_RP_HPP_
 
 #include "weight_itf.hpp"
+#include "param_rp.hpp"
 
 namespace wwd
 {

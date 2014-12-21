@@ -13,6 +13,7 @@ class CNeuronInput
 private:
 
     typedef INodeInput<OutputNum> BaseTypeInput;
+
 public:
 
     CNeuronInput(void)

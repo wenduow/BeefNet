@@ -1,7 +1,7 @@
-#ifndef LAYER_HIDDEN_HPP_
-#define LAYER_HIDDEN_HPP_
+#ifndef LAYER_HIDDEN_LM_HPP_
+#define LAYER_HIDDEN_LM_HPP_
 
-#include "../Weight/weight_vector.hpp"
+#include "../Weight/weight_vector_lm.hpp"
 #include "../Neuron/neuron.hpp"
 
 namespace wwd
@@ -11,9 +11,13 @@ template < uint32 InputNum,
            uint32 NeuronNum,
            uint32 OutputNum,
            class Xfer,
-           template <class> class WeightType,
            class Param >
-class CLayerHidden
+class CLayerHidden< InputNum,
+                    NeuronNum,
+                    OutputNum,
+                    Xfer,
+                    CWeightLM,
+                    Param >
 {
 public:
 
@@ -28,10 +32,19 @@ private:
                           NeuronNum,
                           OutputNum,
                           Xfer,
-                          WeightType,
+                          CWeightLM,
                           Param > ThisType;
 
 public:
+
+    CLayerHidden(void)
+    {
+        connect_inner();
+    }
+
+    ~CLayerHidden(void)
+    {
+    }
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
@@ -53,15 +66,6 @@ public:
         return *this;
     }
 
-    CLayerHidden(void)
-    {
-        connect_inner();
-    }
-
-    ~CLayerHidden(void)
-    {
-    }
-
     void forward(void)
     {
         for ( uint32 i = 0; i < NeuronNum; ++i )
@@ -71,12 +75,12 @@ public:
         }
     }
 
-    void backward(void)
+    void backward( IN double err )
     {
         for ( uint32 i = 0; i < NeuronNum; ++i )
         {
             m_neuron[i].backward();
-            m_weight_vector[i].backward();
+            m_weight_vector[i].backward(err);
         }
     }
 
@@ -85,6 +89,14 @@ public:
         for ( auto &i : m_weight_vector )
         {
             i.update();
+        }
+    }
+
+    void revert(void)
+    {
+        for ( auto &i : m_weight_vector )
+        {
+            i.revert();
         }
     }
 
@@ -172,11 +184,11 @@ private:
 
 private:
 
-    CWeightVector< InputNum, WeightType, Param > m_weight_vector[NeuronNum];
+    CWeightVector< InputNum, CWeightLM, Param > m_weight_vector[NeuronNum];
     CNeuronHidden< InputNum, OutputNum, Xfer > m_neuron[NeuronNum];
 };
 
 } // namespace wwd
 
-#endif // LAYER_HIDDEN_HPP_
+#endif // LAYER_HIDDEN_LM_HPP_
 

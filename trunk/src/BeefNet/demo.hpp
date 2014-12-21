@@ -2,7 +2,7 @@
 #define DEMO_HPP_
 
 #include "NN/Net/net.hpp"
-#include "NN/Weight/weight.hpp"
+#include "NN/Net/net_lm.hpp"
 #include "Xfer/xfer.hpp"
 #include "Err/err.hpp"
 #include "Reader/reader.hpp"
@@ -19,11 +19,6 @@ const uint32 output_num = 1;
 
 const uint32 thread_num = 16;
 const bool stop_early = true;
-
-template < class Param >
-using MyWeight = CWeightBP<Param>;
-
-typedef EParamBP<> MyParam;
 
 } // namespace wwd
 

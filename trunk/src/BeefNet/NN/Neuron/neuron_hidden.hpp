@@ -16,6 +16,7 @@ private:
 
     typedef INodeInput<OutputNum> BaseTypeInput;
     typedef INodeOutput<InputNum> BaseTypeOutput;
+
 public:
 
     CNeuronHidden(void)

@@ -12,6 +12,11 @@ class IWeight
     : public INodeInput<1>
     , public INodeOutput<1>
 {
+private:
+
+    typedef INodeInput<1> BaseTypeInput;
+    typedef INodeOutput<1> BaseTypeOutput;
+
 public:
 
     inline const IWeight &operator>>( OUT IWeight &other ) const
@@ -29,28 +34,6 @@ public:
         m_pattern_num += other.m_pattern_num;
 
         return *this;
-    }
-
-    friend std::istream &operator>>( INOUT std::istream &is,
-                                     OUT IWeight &rhs )
-    {
-        double gradient;
-        uint32 pattern;
-        char delimeter;
-        is >> gradient >> delimeter >> pattern >> delimeter;
-        
-        rhs.m_gradient_sum += gradient;
-        rhs.m_pattern_num += pattern;
-
-        return is;
-    }
-
-    friend std::ostream &operator<<( INOUT std::ostream &os,
-                                     IN const IWeight &rhs )
-    {
-        os << rhs.m_gradient_sum << '#' << rhs.m_pattern_num << '#';
-
-        return os;
     }
 
     inline void forward(void)
@@ -112,8 +95,8 @@ public:
 protected:
 
     IWeight(void)
-        : INodeInput()
-        , INodeOutput()
+        : BaseTypeInput()
+        , BaseTypeOutput()
         , m_weight( (double)rand() / (double)RAND_MAX * 1.4 - 0.7 )
         , m_gradient_sum(0.0)
         , m_pattern_num(0)

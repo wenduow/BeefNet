@@ -1,8 +1,8 @@
-#ifndef NET_3_LAYER_HPP
-#define NET_3_LAYER_HPP
+#ifndef NET_2_LAYER_LM_HPP_
+#define NET_2_LAYER_LM_HPP_
 
 #include <cmath>
-#include "../Layer/layer.hpp"
+#include "../Layer/layer_lm.hpp"
 
 namespace wwd
 {
@@ -10,10 +10,13 @@ namespace wwd
 template < uint32 InputNum,
            uint32 HiddenNum0, class Xfer0,
            uint32 HiddenNum1, class Xfer1,
-           uint32 HiddenNum2, class Xfer2,
            uint32 OutputNum, class XferOutput,
-           template <class> class WeightType, class Param >
-class CNet3Layer
+           class Param >
+class CNet2Layer< InputNum,
+                  HiddenNum0, Xfer0,
+                  HiddenNum1, Xfer1,
+                  OutputNum, XferOutput,
+                  CWeightLM, Param >
 {
 public:
 
@@ -25,21 +28,23 @@ public:
 
 private:
 
-    typedef CNet3Layer< InputNum,
+    typedef CNet2Layer< InputNum,
                         HiddenNum0, Xfer0,
                         HiddenNum1, Xfer1,
-                        HiddenNum2, Xfer2,
                         OutputNum, XferOutput,
-                        WeightType, Param > ThisType;
+                        CWeightLM, Param > ThisType;
 
 public:
 
-    CNet3Layer(void)
+    CNet2Layer(void)
+        : m_check(false)
+        , m_se_prev(0.0)
+        , m_se(0.0)
     {
         connect_inner();
     }
 
-    ~CNet3Layer(void)
+    ~CNet2Layer(void)
     {
     }
 
@@ -47,9 +52,18 @@ public:
     {
         m_layer_0 >> other.m_layer_0;
         m_layer_1 >> other.m_layer_1;
-        m_layer_2 >> other.m_layer_2;
         m_layer_output >> other.m_layer_output;
 
+        if (m_check)
+        {
+            other.m_se = 0.0;
+        }
+        else
+        {
+            other.m_se_prev = 0.0;
+        }
+
+        other.m_check = m_check;
         return *this;
     }
 
@@ -57,8 +71,16 @@ public:
     {
         m_layer_0 << other.m_layer_0;
         m_layer_1 << other.m_layer_1;
-        m_layer_2 << other.m_layer_2;
         m_layer_output << other.m_layer_output;
+
+        if (m_check)
+        {
+            m_se += other.m_se;
+        }
+        else
+        {
+            m_se_prev += other.m_se_prev;
+        }
 
         return *this;
     }
@@ -73,27 +95,69 @@ public:
         m_bias_1.forward();
         m_layer_1.forward();
 
-        m_bias_2.forward();
-        m_layer_2.forward();
-
         m_bias_output.forward();
         m_layer_output.forward();
     }
 
     void backward(void)
     {
-        m_layer_output.backward();
-        m_layer_2.backward();
-        m_layer_1.backward();
-        m_layer_0.backward();
+        if (m_check)
+        {
+            for ( uint32 i = 0; i < OutputNum; ++i )
+            {
+                m_se += std::pow( m_layer_output.get_error(i), 2 );
+            }
+        }
+        else
+        {
+            for ( uint32 i = 0; i < OutputNum; ++i )
+            {
+                double err = m_layer_output.get_error(i);
+
+                m_layer_output.backward( err, i );
+                m_layer_1.backward(err);
+                m_layer_0.backward(err);
+
+                m_se_prev += std::pow( err, 2 );
+            }
+        }
     }
 
     void update(void)
     {
-        m_layer_0.update();
-        m_layer_1.update();
-        m_layer_2.update();
-        m_layer_output.update();
+        if (m_check)
+        {
+            if ( m_se < m_se_prev )
+            {
+                Param::lambda /= Param::beta;
+                if ( Param::lambda < DOUBLE_EPSILON )
+                {
+                    Param::lambda = DOUBLE_EPSILON;
+                }
+            }
+            else
+            {
+                revert();
+
+                Param::lambda *= Param::beta;
+                if ( Param::lambda > DOUBLE_MAX )
+                {
+                    Param::lambda = DOUBLE_MAX;
+                }
+            }
+
+            m_se_prev = 0.0;
+            m_check = false;
+        }
+        else
+        {
+            m_layer_0.update();
+            m_layer_1.update();
+            m_layer_output.update();
+
+            m_se = 0.0;
+            m_check = true;
+        }
     }
 
     void set_input( IN const double *input )
@@ -115,11 +179,9 @@ public:
     {
         return ( m_layer_0.get_gradient_sum()
                + m_layer_1.get_gradient_sum()
-               + m_layer_2.get_gradient_sum()
                + m_layer_output.get_gradient_sum() )
              / (double)( m_layer_0.get_gradient_num()
                        + m_layer_1.get_gradient_num()
-                       + m_layer_2.get_gradient_num()
                        + m_layer_output.get_gradient_num() );
     }
 
@@ -128,7 +190,6 @@ public:
     {
         m_layer_0.save(stream);
         m_layer_1.save(stream);
-        m_layer_2.save(stream);
         m_layer_output.save(stream);
     }
 
@@ -137,7 +198,6 @@ public:
     {
         m_layer_0.load(stream);
         m_layer_1.load(stream);
-        m_layer_2.load(stream);
         m_layer_output.load(stream);
     }
 
@@ -146,12 +206,18 @@ public:
     {
         m_layer_0.print_weight();
         m_layer_1.print_weight();
-        m_layer_2.print_weight();
         m_layer_output.print_weight();
     }
 #endif // _DEBUG
 
 private:
+
+    void revert(void)
+    {
+        m_layer_0.revert();
+        m_layer_1.revert();
+        m_layer_output.revert();
+    }
 
     void connect_inner(void)
     {
@@ -165,13 +231,9 @@ private:
         m_layer_1.connect_input_layer(m_bias_1);
         m_layer_1.connect_input_layer(m_layer_0);
 
-        m_bias_2.set_input(bias);
-        m_layer_2.connect_input_layer(m_bias_2);
-        m_layer_2.connect_input_layer(m_layer_1);
-
         m_bias_output.set_input(bias);
         m_layer_output.connect_input_layer(m_bias_output);
-        m_layer_output.connect_input_layer(m_layer_2);
+        m_layer_output.connect_input_layer(m_layer_1);
     }
 
 private:
@@ -180,22 +242,22 @@ private:
 
     CLayerInput< 1, HiddenNum0 > m_bias_0;
     CLayerHidden< InputNum + 1, HiddenNum0, HiddenNum1, Xfer0,
-                  WeightType, Param > m_layer_0;
+                  CWeightLM, Param > m_layer_0;
 
     CLayerInput< 1, HiddenNum1 > m_bias_1;
-    CLayerHidden< HiddenNum0 + 1, HiddenNum1, HiddenNum2, Xfer1,
-                  WeightType, Param > m_layer_1;
-
-    CLayerInput< 1, HiddenNum2 > m_bias_2;
-    CLayerHidden< HiddenNum1 + 1, HiddenNum2, OutputNum, Xfer2,
-                  WeightType, Param > m_layer_2;
+    CLayerHidden< HiddenNum0 + 1, HiddenNum1, OutputNum, Xfer1,
+                  CWeightLM, Param > m_layer_1;
 
     CLayerInput< 1, OutputNum > m_bias_output;
-    CLayerOutput< HiddenNum2 + 1, OutputNum, XferOutput,
-                  WeightType, Param > m_layer_output;
+    CLayerOutput< HiddenNum1 + 1, OutputNum, XferOutput,
+                  CWeightLM, Param > m_layer_output;
+
+    bool m_check;
+    double m_se_prev;
+    double m_se;
 };
 
 } // namespace wwd
 
-#endif // NET_3_LAYER_HPP
+#endif // NET_2_LAYER_LM_HPP_
 
