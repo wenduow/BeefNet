@@ -21,9 +21,8 @@ public:
 
     inline const IWeight &operator>>( OUT IWeight &other ) const
     {
+        other.init();
         other.m_weight = m_weight;
-        other.m_gradient_sum = 0.0;
-        other.m_pattern_num = 0;
 
         return *this;
     }
@@ -34,6 +33,12 @@ public:
         m_pattern_num += other.m_pattern_num;
 
         return *this;
+    }
+
+    inline void init(void)
+    {
+        m_gradient_sum = 0.0;
+        m_pattern_num = 0;
     }
 
     inline void forward(void)
@@ -59,8 +64,6 @@ public:
     inline void update( IN double delta_weight )
     {
         m_weight += delta_weight;
-        m_gradient_sum = 0.0;
-        m_pattern_num = 0;
     }
 
     inline double get_gradient_sum(void) const

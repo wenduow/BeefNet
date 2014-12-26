@@ -33,9 +33,9 @@ public:
     {
         IPathForward::m_input_val = 0.0;
 
-        for ( auto &i : BaseTypeOutput::m_input_node )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            IPathForward::m_input_val += i->get_output_value();
+            IPathForward::m_input_val += m_input_node[i]->get_output_value();
         }
 
         IPathForward::m_output_val = m_xfer( IPathForward::m_input_val );
@@ -45,9 +45,9 @@ public:
     {
         IPathBackward::m_input_val = 0.0;
 
-        for ( auto &i : BaseTypeInput::m_output_node )
+        for ( uint32 i = 0; i < OutputNum; ++i )
         {
-            IPathBackward::m_input_val += i->get_output_value();
+            IPathBackward::m_input_val += m_output_node[i]->get_output_value();
         }
 
         // calculate delta = f'(net) * sum(delta) from next layer

@@ -35,15 +35,25 @@ private:
                           CWeightLM,
                           Param > ThisType;
 
+    typedef CWeightVector< InputNum, CWeightLM, Param > WeightVector;
+    typedef CNeuronHidden< InputNum, OutputNum, Xfer > Neuron;
+
 public:
 
     CLayerHidden(void)
     {
+        m_weight_vector = new WeightVector[NeuronNum];
+        m_neuron = new Neuron[NeuronNum];
+
         connect_inner();
     }
 
     ~CLayerHidden(void)
     {
+        delete[] m_weight_vector;
+        m_weight_vector = NULL;
+        delete[] m_neuron;
+        m_neuron = NULL;
     }
 
     const ThisType &operator>>( OUT ThisType &other ) const
@@ -66,6 +76,14 @@ public:
         return *this;
     }
 
+    void init(void)
+    {
+        for ( uint32 i = 0; i < NeuronNum; ++i )
+        {
+            m_weight_vector[i].init();
+        }
+    }
+
     void forward(void)
     {
         for ( uint32 i = 0; i < NeuronNum; ++i )
@@ -86,17 +104,17 @@ public:
 
     void update(void)
     {
-        for ( auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            i.update();
+            m_weight_vector[i].update();
         }
     }
 
     void revert(void)
     {
-        for ( auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            i.revert();
+            m_weight_vector[i].revert();
         }
     }
 
@@ -105,9 +123,10 @@ public:
     {
         for ( uint32 i = 0; i < Layer::hidden_num; ++i )
         {
-            for ( auto &j : m_weight_vector )
+            for ( uint32 j = 0; j < NeuronNum; ++j )
             {
-                j.connect_input_neuron( layer.get_hidden_node(i) );
+                m_weight_vector[j]
+                    .connect_input_neuron( layer.get_hidden_node(i) );
             }
         }
     }
@@ -122,9 +141,9 @@ public:
     {
         double gradient_sum = 0.0;
 
-        for ( const auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            gradient_sum += i.get_gradient_sum();
+            gradient_sum += m_weight_vector[i].get_gradient_sum();
         }
 
         return gradient_sum;
@@ -134,9 +153,9 @@ public:
     {
         uint32 gradient_num = 0;
 
-        for ( const auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            gradient_num += i.get_gradient_num();
+            gradient_num += m_weight_vector[i].get_gradient_num();
         }
 
         return gradient_num;
@@ -145,27 +164,27 @@ public:
     template < class STREAM >
     void save( OUT STREAM &stream ) const
     {
-        for ( const auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            i.save(stream);
+            m_weight_vector[i].save(stream);
         }
     }
 
     template < class STREAM >
     void load( INOUT STREAM &stream )
     {
-        for ( auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            i.load(stream);
+            m_weight_vector[i].load(stream);
         }
     }
 
 #ifdef _DEBUG
     void print_weight(void) const
     {
-        for ( const auto &i : m_weight_vector )
+        for ( uint32 i = 0; i < NeuronNum; ++i )
         {
-            i.print_weight();
+            m_weight_vector[i].print_weight();
         }
 
         std::cout << std::endl;
@@ -184,8 +203,8 @@ private:
 
 private:
 
-    CWeightVector< InputNum, CWeightLM, Param > m_weight_vector[NeuronNum];
-    CNeuronHidden< InputNum, OutputNum, Xfer > m_neuron[NeuronNum];
+    WeightVector *m_weight_vector;
+    Neuron *m_neuron;
 };
 
 } // namespace wwd

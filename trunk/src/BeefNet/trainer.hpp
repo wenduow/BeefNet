@@ -81,6 +81,8 @@ public:
 
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
+            nn.init();
+
             for ( uint32 j = 0; j < ImageNum; ++j )
             {
                 nn >> nn_img[j];
@@ -101,12 +103,12 @@ public:
 
             ++epoch;
 
+            nn.update();
+
             if ( stop_early<StopEarly>( nn.get_gradient() ) )
             {
                 break;
             }
-
-            nn.update();
         }
 
         input.close();

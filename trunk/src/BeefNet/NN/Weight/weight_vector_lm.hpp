@@ -14,25 +14,85 @@ private:
 
     typedef CWeightVector< InputNum, CWeightLM, Param > ThisType;
 
+    typedef CWeightLM<Param> Weight;
+
 public:
 
     CWeightVector(void)
         : m_vector_idx(0)
     {
+        m_weight = new Weight[InputNum];
+
+        m_jacobian = new double *[ Param::pattern_num * Param::output_num ];
+        for ( uint32 i = 0; i < Param::pattern_num * Param::output_num; ++i )
+        {
+            m_jacobian[i] = new double[InputNum];
+        }
+
+        m_jacobian_transpose = new double*[InputNum];
+        m_hessian = new double*[InputNum];
+        m_hessian_inverse = new double*[InputNum];
+
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            m_jacobian_transpose[i] = new double[ Param::pattern_num
+                                                * Param::output_num ];
+            m_hessian[i] = new double[InputNum];
+            m_hessian_inverse[i] = new double[InputNum];
+        }
+
+        m_err = new double[ Param::pattern_num * Param::output_num ];
+        m_gradient = new double[InputNum];
+        m_weight_update = new double[InputNum];
     }
 
     ~CWeightVector(void)
     {
+        delete[] m_weight;
+        m_weight = NULL;
+
+        for ( uint32 i = 0; i < Param::pattern_num * Param::output_num; ++i )
+        {
+            delete[] m_jacobian[i];
+            m_jacobian[i] = NULL;
+        }
+        delete[] m_jacobian;
+        m_jacobian = NULL;
+
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            delete[] m_jacobian_transpose[i];
+            m_jacobian_transpose[i] = NULL;
+            delete[] m_hessian[i];
+            m_hessian[i] = NULL;
+            delete[] m_hessian_inverse[i];
+            m_hessian_inverse[i] = NULL;
+        }
+
+        delete[] m_jacobian_transpose;
+        m_jacobian_transpose = NULL;
+        delete[] m_hessian;
+        m_hessian = NULL;
+        delete[] m_hessian_inverse;
+        m_hessian_inverse = NULL;
+
+        delete[] m_err;
+        m_err = NULL;
+        delete[] m_gradient;
+        m_gradient = NULL;
+        delete[] m_weight_update;
+        m_weight_update = NULL;
     }
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
+        other.init();
+
         for ( uint32 i = 0; i < InputNum; ++i )
         {
             m_weight[i] >> other.m_weight[i];
         }
-
-        other.m_vector_idx = 0;
+        
         return *this;
     }
 
@@ -57,19 +117,56 @@ public:
         return *this;
     }
 
+    void init(void)
+    {
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            m_weight[i].init();
+        }
+
+        for ( uint32 i = 0; i < Param::pattern_num * Param::output_num; ++i )
+        {
+            for ( uint32 j = 0; j < InputNum; ++j )
+            {
+                m_jacobian[i][j] = 0.0;
+            }
+
+            m_err[i] = 0.0;
+        }
+
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            for ( uint32 j = 0; j < Param::pattern_num * Param::output_num; ++j )
+            {
+                m_jacobian_transpose[i][j] = 0.0;
+            }
+
+            for ( uint32 j = 0; j < InputNum; ++j )
+            {
+                m_hessian[i][j] = 0.0;
+                m_hessian_inverse[i][j] = 0.0;
+            }
+
+            m_gradient[i] = 0.0;
+            m_weight_update[i] = 0.0;
+        }
+
+        m_vector_idx = 0;
+    }
+
     void forward(void)
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.forward();
+            m_weight[i].forward();
         }
     }
 
     void backward( IN double err )
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.backward();
+            m_weight[i].backward();
         }
 
         for ( uint32 i = 0; i < InputNum; ++i )
@@ -87,37 +184,34 @@ public:
     void update(void)
     {
         // calculate J'J
-        double jacobian_transpose[InputNum][ Param::pattern_num
-                                           * Param::output_num ];
-        transpose( jacobian_transpose, m_jacobian );
+        transpose< Param::pattern_num * Param::output_num, InputNum >
+            ( m_jacobian_transpose, m_jacobian );
 
-        double hessian[InputNum][InputNum];
-        multiply( hessian, jacobian_transpose, m_jacobian );
+        multiply< InputNum, Param::pattern_num * Param::output_num, InputNum >
+            ( m_hessian, m_jacobian_transpose, m_jacobian );
 
         // calculate J'J + lambda * diag(J'J)
         for ( uint32 i = 0; i < InputNum; ++i )
         {
-            hessian[i][i] += Param::lambda;
+            m_hessian[i][i] += Param::lambda;
         }
 
         // calculate J'e
-        double gradient[InputNum];
-        multiply( gradient, jacobian_transpose, m_err );
+        multiply< InputNum, Param::pattern_num * Param::output_num >
+            ( m_gradient, m_jacobian_transpose, m_err );
 
         // calculate ( J'J + lambda * I ) ^ -1
-        double hessian_inverse[InputNum][InputNum];
-        invert( hessian_inverse, hessian );
+        invert<InputNum>( m_hessian_inverse, m_hessian );
 
         // calculate ( J'J + lambda * I ) ^ -1 * (J'e)
-        multiply( m_weight_update, hessian_inverse, gradient );
+        multiply< InputNum, InputNum >
+            ( m_weight_update, m_hessian_inverse, m_gradient );
 
         // update each weight
         for ( uint32 i = 0; i < InputNum; ++i )
         {
             m_weight[i].update( - m_weight_update[i] );
         }
-
-        m_vector_idx = 0;
     }
 
     void revert(void)
@@ -126,18 +220,16 @@ public:
         {
             m_weight[i].update( m_weight_update[i] );
         }
-
-        m_vector_idx = 0;
     }
 
     template < class Neuron >
     void connect_input_neuron( INOUT Neuron &neuron )
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            if ( i.connect_input_node(neuron) )
+            if ( m_weight[i].connect_input_node(neuron) )
             {
-                neuron.connect_output_node(i);
+                neuron.connect_output_node( m_weight[i] );
                 break;
             }
         }
@@ -151,18 +243,11 @@ public:
     double get_gradient_sum(void) const
     {
         // calculate J'e
-        double jacobian_transpose[InputNum][ Param::pattern_num
-                                           * Param::output_num ];
-        transpose( jacobian_transpose, m_jacobian );
-
-        double gradient[InputNum];
-        multiply( gradient, jacobian_transpose, m_err );
-
         double ret = 0.0;
 
-        for ( const auto &i : gradient )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            ret += i;
+            ret += m_gradient[i];
         }
 
         return ret;
@@ -176,27 +261,27 @@ public:
     template < class STREAM >
     void save( OUT STREAM &stream ) const
     {
-        for ( const auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.save(stream);
+            m_weight[i].save(stream);
         }
     }
 
     template < class STREAM >
     void load( INOUT STREAM &stream )
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.load(stream);
+            m_weight[i].load(stream);
         }
     }
 
 #ifdef _DEBUG
     void print_weight(void) const
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.print_weight();
+            m_weight[i].print_weight();
         }
 
         std::cout << std::endl;
@@ -206,8 +291,7 @@ public:
 private:
 
     template < uint32 R, uint32 C >
-    void transpose( OUT double (&trans)[C][R],
-                    IN const double (&matrix)[R][C] ) const
+    void transpose( OUT double **trans, IN double **matrix ) const
     {
         for ( uint32 i = 0; i < R; ++i )
         {
@@ -219,9 +303,9 @@ private:
     }
 
     template < uint32 R1, uint32 C, uint32 R2 >
-    void multiply( OUT double (&product)[R1][R2],
-                   IN const double (&multiplier)[R1][C],
-                   IN const double (&multiplicand)[C][R2] ) const
+    void multiply( OUT double **product,
+                   IN double **multiplier,
+                   IN double **multiplicand ) const
     {
         for ( uint32 i = 0; i < R1; ++i )
         {
@@ -237,12 +321,12 @@ private:
         }
     }
 
-    template < uint32 R1, uint32 C >
-    void multiply( OUT double (&product)[R1],
-                   IN const double (&multiplier)[R1][C],
-                   IN const double (&multiplicand)[C] ) const
+    template < uint32 R, uint32 C >
+    void multiply( OUT double *product,
+                   IN double **multiplier,
+                   IN double *multiplicand ) const
     {
-        for ( uint32 i = 0; i < R1; ++i )
+        for ( uint32 i = 0; i < R; ++i )
         {
             product[i] = 0.0;
 
@@ -254,8 +338,7 @@ private:
     }
 
     template < uint32 N >
-    bool invert( OUT double (&inverse)[N][N],
-                 IN const double (&matrix)[N][N] ) const
+    void invert( OUT double **inverse, IN double **matrix ) const
     {
         double copy[N][N];
 
@@ -294,17 +377,21 @@ private:
                 }
             }
         }
-
-        return true;
     }
 
 private:
 
-    CWeightLM<Param> m_weight[InputNum];
+    Weight *m_weight;
 
-    double m_jacobian[ Param::pattern_num * Param::output_num ][InputNum];
-    double m_err[ Param::pattern_num * Param::output_num ];
-    double m_weight_update[InputNum];
+    double **m_jacobian;
+    double **m_jacobian_transpose;
+    double **m_hessian;
+    double **m_hessian_inverse;
+
+    double *m_err;
+    double *m_gradient;
+    double *m_weight_update;
+
     uint32 m_vector_idx;
 };
 

@@ -55,6 +55,12 @@ public:
         return *this;
     }
 
+    void init(void)
+    {
+        m_layer.init();
+        m_layer_output.init();
+    }
+
     void forward(void)
     {
         m_input.forward();

@@ -16,21 +16,28 @@ public:
         hidden_num = InputNum
     };
 
+private:
+
+    typedef CNeuronInput<OutputNum> Input;
+
 public:
 
     CLayerInput(void)
     {
+        m_input = new Input[InputNum];
     }
 
     ~CLayerInput(void)
     {
+        delete[] m_input;
+        m_input = NULL;
     }
 
     void forward(void)
     {
-        for ( auto &i : m_input )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.forward();
+            m_input[i].forward();
         }
     }
 
@@ -49,7 +56,7 @@ public:
 
 private:
 
-    CNeuronInput<OutputNum> m_input[InputNum];
+    Input *m_input;
 };
 
 } // namespace wwd

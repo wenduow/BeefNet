@@ -15,7 +15,20 @@ private:
 
     typedef CWeightVector< InputNum, WeightType, Param > ThisType;
 
+    typedef WeightType<Param> Weight;
+
 public:
+
+    CWeightVector(void)
+    {
+        m_weight = new Weight[InputNum];
+    }
+
+    ~CWeightVector(void)
+    {
+        delete[] m_weight;
+        m_weight = NULL;
+    }
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
@@ -37,46 +50,46 @@ public:
         return *this;
     }
 
-    CWeightVector(void)
+    void init(void)
     {
-    }
-
-    ~CWeightVector(void)
-    {
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            m_weight[i].init();
+        }
     }
 
     void forward(void)
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.forward();
+            m_weight[i].forward();
         }
     }
 
     void backward(void)
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.backward();
+            m_weight[i].backward();
         }
     }
 
     void update(void)
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.update();
+            m_weight[i].update();
         }
     }
 
     template < class Neuron >
     void connect_input_neuron( INOUT Neuron &neuron )
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            if ( i.connect_input_node(neuron) )
+            if ( m_weight[i].connect_input_node(neuron) )
             {
-                neuron.connect_output_node(i);
+                neuron.connect_output_node( m_weight[i] );
                 break;
             }
         }
@@ -91,9 +104,9 @@ public:
     {
         double gradient_sum = 0.0;
 
-        for ( const auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            gradient_sum += i.get_gradient_sum();
+            gradient_sum += m_weight[i].get_gradient_sum();
         }
 
         return gradient_sum;
@@ -103,9 +116,9 @@ public:
     {
         uint32 gradient_num = 0;
 
-        for ( const auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            gradient_num += i.get_gradient_num();
+            gradient_num += m_weight[i].get_gradient_num();
         }
 
         return gradient_num;
@@ -114,27 +127,27 @@ public:
     template < class STREAM >
     void save( OUT STREAM &stream ) const
     {
-        for ( const auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.save(stream);
+            m_weight[i].save(stream);
         }
     }
 
     template < class STREAM >
     void load( INOUT STREAM &stream )
     {
-        for ( auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.load(stream);
+            m_weight[i].load(stream);
         }
     }
 
 #ifdef _DEBUG
     void print_weight(void) const
     {
-        for ( const auto &i : m_weight )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i.print_weight();
+            m_weight[i].print_weight();
         }
 
         std::cout << std::endl;
@@ -143,7 +156,7 @@ public:
 
 private:
 
-    WeightType<Param> m_weight[InputNum];
+    Weight *m_weight;
 };
 
 } // namespace wwd

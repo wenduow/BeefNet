@@ -16,11 +16,11 @@ public:
     template < class Input >
     bool connect_input_node( IN const Input &input )
     {
-        for ( auto &i : m_input_node )
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            if ( !i )
+            if ( !m_input_node[i] )
             {
-                i = &input;
+                m_input_node[i] = &input;
                 return true;
             }
         }
@@ -33,19 +33,27 @@ protected:
     INodeOutput(void)
         : IPathBackward()
     {
-        for ( auto &i : m_input_node )
+        m_input_node = new const IPathForward *[InputNum];
+
+        for ( uint32 i = 0; i < InputNum; ++i )
         {
-            i = NULL;
+            m_input_node[i] = NULL;
         }
     }
 
     ~INodeOutput(void)
     {
+        for ( uint32 i = 0; i < InputNum; ++i )
+        {
+            m_input_node[i] = NULL;
+        }
+        delete[] m_input_node;
+        m_input_node = NULL;
     }
 
 protected:
 
-    const IPathForward *m_input_node[InputNum];
+    const IPathForward **m_input_node;
 };
 
 } // namespace wwd
