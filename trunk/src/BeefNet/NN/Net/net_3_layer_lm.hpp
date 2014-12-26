@@ -58,16 +58,6 @@ public:
         m_layer_2 >> other.m_layer_2;
         m_layer_output >> other.m_layer_output;
 
-        if (m_check)
-        {
-            other.m_se = 0.0;
-        }
-        else
-        {
-            other.m_se_prev = 0.0;
-        }
-
-        other.m_check = m_check;
         return *this;
     }
 
@@ -92,6 +82,11 @@ public:
 
     void init(void)
     {
+        m_layer_0.init();
+        m_layer_1.init();
+        m_layer_2.init();
+        m_layer_output.init();
+
         m_check = !m_check;
 
         if (m_check)
@@ -100,11 +95,6 @@ public:
         }
         else
         {
-            m_layer_0.init();
-            m_layer_1.init();
-            m_layer_2.init();
-            m_layer_output.init();
-
             m_se_prev = 0.0;
         }
     }

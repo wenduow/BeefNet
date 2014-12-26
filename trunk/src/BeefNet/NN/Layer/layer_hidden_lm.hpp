@@ -131,8 +131,7 @@ public:
         }
     }
 
-    inline CNeuronHidden< InputNum, OutputNum, Xfer > &
-        get_hidden_node( IN uint32 idx )
+    inline Neuron &get_hidden_node( IN uint32 idx )
     {
         return m_neuron[idx];
     }

@@ -21,7 +21,6 @@ public:
 
     inline const IWeight &operator>>( OUT IWeight &other ) const
     {
-        other.init();
         other.m_weight = m_weight;
 
         return *this;

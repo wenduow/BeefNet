@@ -14,8 +14,7 @@ int32 main(void)
 
     srand( (uint32)time(NULL) );
 
-    CNet3Layer< input_num,
-                hidden_num, FXferLogSig,
+    CNet2Layer< input_num,
                 hidden_num, FXferLogSig,
                 hidden_num, FXferLogSig,
                 output_num, FXferLnr,

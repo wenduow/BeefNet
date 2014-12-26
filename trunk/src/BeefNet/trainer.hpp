@@ -17,6 +17,8 @@ void image_function( INOUT NN &nn,
                      IN uint32 idx_beg,
                      IN uint32 idx_end )
 {
+    nn.init();
+
     for ( uint32 i = idx_beg; i < idx_end; ++i )
     {
         nn.set_input( reader_input.get_pattern(i) );

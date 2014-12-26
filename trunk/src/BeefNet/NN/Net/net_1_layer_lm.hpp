@@ -50,16 +50,6 @@ public:
         m_layer >> other.m_layer;
         m_layer_output >> other.m_layer_output;
 
-        if (m_check)
-        {
-            other.m_se = 0.0;
-        }
-        else
-        {
-            other.m_se_prev = 0.0;
-        }
-
-        other.m_check = m_check;
         return *this;
     }
 
@@ -82,6 +72,9 @@ public:
 
     void init(void)
     {
+        m_layer.init();
+        m_layer_output.init();
+
         m_check = !m_check;
 
         if (m_check)
@@ -90,9 +83,6 @@ public:
         }
         else
         {
-            m_layer.init();
-            m_layer_output.init();
-
             m_se_prev = 0.0;
         }
     }

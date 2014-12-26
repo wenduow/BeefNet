@@ -86,8 +86,6 @@ public:
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
-        other.init();
-
         for ( uint32 i = 0; i < InputNum; ++i )
         {
             m_weight[i] >> other.m_weight[i];
@@ -122,33 +120,6 @@ public:
         for ( uint32 i = 0; i < InputNum; ++i )
         {
             m_weight[i].init();
-        }
-
-        for ( uint32 i = 0; i < Param::pattern_num * Param::output_num; ++i )
-        {
-            for ( uint32 j = 0; j < InputNum; ++j )
-            {
-                m_jacobian[i][j] = 0.0;
-            }
-
-            m_err[i] = 0.0;
-        }
-
-        for ( uint32 i = 0; i < InputNum; ++i )
-        {
-            for ( uint32 j = 0; j < Param::pattern_num * Param::output_num; ++j )
-            {
-                m_jacobian_transpose[i][j] = 0.0;
-            }
-
-            for ( uint32 j = 0; j < InputNum; ++j )
-            {
-                m_hessian[i][j] = 0.0;
-                m_hessian_inverse[i][j] = 0.0;
-            }
-
-            m_gradient[i] = 0.0;
-            m_weight_update[i] = 0.0;
         }
 
         m_vector_idx = 0;
@@ -235,7 +206,7 @@ public:
         }
     }
 
-    inline CWeightLM<Param> &get_weight( IN uint32 idx )
+    inline Weight &get_weight( IN uint32 idx )
     {
         return m_weight[idx];
     }
