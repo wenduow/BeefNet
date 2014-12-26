@@ -23,6 +23,10 @@ private:
                           Xfer,
                           CWeightLM,
                           Param > ThisType;
+    
+    typedef CWeightVector< InputNum, CWeightLM, Param > WeightVector;
+    typedef CNeuronHidden< InputNum, 1, Xfer > Output;
+    typedef CNeuronTarget Target;
 
 public:
 
@@ -53,6 +57,14 @@ public:
         }
 
         return *this;
+    }
+
+    void init(void)
+    {
+        for ( auto &i : m_weight_vector )
+        {
+            i.init();
+        }
     }
 
     void forward(void)
@@ -192,9 +204,9 @@ private:
 
 private:
 
-    CWeightVector< InputNum, CWeightLM, Param > m_weight_vector[OutputNum];
-    CNeuronHidden< InputNum, 1, Xfer > m_output[OutputNum];
-    CNeuronTarget m_target[OutputNum];
+    WeightVector m_weight_vector[OutputNum];
+    Output m_output[OutputNum];
+    Target m_target[OutputNum];
 };
 
 } // namespace wwd

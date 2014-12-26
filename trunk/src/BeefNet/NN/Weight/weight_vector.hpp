@@ -15,7 +15,17 @@ private:
 
     typedef CWeightVector< InputNum, WeightType, Param > ThisType;
 
+    typedef WeightType<Param> Weight;
+
 public:
+
+    CWeightVector(void)
+    {
+    }
+
+    ~CWeightVector(void)
+    {
+    }
 
     const ThisType &operator>>( OUT ThisType &other ) const
     {
@@ -37,12 +47,12 @@ public:
         return *this;
     }
 
-    CWeightVector(void)
+    void init(void)
     {
-    }
-
-    ~CWeightVector(void)
-    {
+        for ( auto &i : m_weight )
+        {
+            i.init();
+        }
     }
 
     void forward(void)
@@ -82,7 +92,7 @@ public:
         }
     }
 
-    inline WeightType<Param> &get_weight( IN uint32 idx )
+    inline Weight &get_weight( IN uint32 idx )
     {
         return m_weight[idx];
     }
@@ -143,7 +153,7 @@ public:
 
 private:
 
-    WeightType<Param> m_weight[InputNum];
+    Weight m_weight[InputNum];
 };
 
 } // namespace wwd

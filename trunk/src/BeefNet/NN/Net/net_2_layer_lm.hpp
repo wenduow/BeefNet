@@ -37,7 +37,7 @@ private:
 public:
 
     CNet2Layer(void)
-        : m_check(false)
+        : m_check(true)
         , m_se_prev(0.0)
         , m_se(0.0)
     {
@@ -54,16 +54,6 @@ public:
         m_layer_1 >> other.m_layer_1;
         m_layer_output >> other.m_layer_output;
 
-        if (m_check)
-        {
-            other.m_se = 0.0;
-        }
-        else
-        {
-            other.m_se_prev = 0.0;
-        }
-
-        other.m_check = m_check;
         return *this;
     }
 
@@ -83,6 +73,24 @@ public:
         }
 
         return *this;
+    }
+
+    void init(void)
+    {
+        m_layer_0.init();
+        m_layer_1.init();
+        m_layer_output.init();
+
+        m_check = !m_check;
+
+        if (m_check)
+        {
+            m_se = 0.0;
+        }
+        else
+        {
+            m_se_prev = 0.0;
+        }
     }
 
     void forward(void)
@@ -113,12 +121,11 @@ public:
             for ( uint32 i = 0; i < OutputNum; ++i )
             {
                 double err = m_layer_output.get_error(i);
+                m_se_prev += std::pow( err, 2 );
 
                 m_layer_output.backward( err, i );
                 m_layer_1.backward(err);
                 m_layer_0.backward(err);
-
-                m_se_prev += std::pow( err, 2 );
             }
         }
     }
@@ -145,18 +152,12 @@ public:
                     Param::lambda = DOUBLE_MAX;
                 }
             }
-
-            m_se_prev = 0.0;
-            m_check = false;
         }
         else
         {
             m_layer_0.update();
             m_layer_1.update();
             m_layer_output.update();
-
-            m_se = 0.0;
-            m_check = true;
         }
     }
 
@@ -177,12 +178,19 @@ public:
 
     double get_gradient(void) const
     {
-        return ( m_layer_0.get_gradient_sum()
-               + m_layer_1.get_gradient_sum()
-               + m_layer_output.get_gradient_sum() )
-             / (double)( m_layer_0.get_gradient_num()
-                       + m_layer_1.get_gradient_num()
-                       + m_layer_output.get_gradient_num() );
+        if (m_check)
+        {
+            return INFINITY;
+        }
+        else
+        {
+            return ( m_layer_0.get_gradient_sum()
+                   + m_layer_1.get_gradient_sum()
+                   + m_layer_output.get_gradient_sum() )
+                 / (double)( m_layer_0.get_gradient_num()
+                           + m_layer_1.get_gradient_num()
+                           + m_layer_output.get_gradient_num() );
+        }
     }
 
     template < class STREAM >

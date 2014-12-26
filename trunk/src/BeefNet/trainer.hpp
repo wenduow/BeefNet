@@ -17,6 +17,8 @@ void image_function( INOUT NN &nn,
                      IN uint32 idx_beg,
                      IN uint32 idx_end )
 {
+    nn.init();
+
     for ( uint32 i = idx_beg; i < idx_end; ++i )
     {
         nn.set_input( reader_input.get_pattern(i) );
@@ -81,6 +83,8 @@ public:
 
         for ( uint32 i = 0; i < MaxEpoch; ++i )
         {
+            nn.init();
+
             for ( uint32 j = 0; j < ImageNum; ++j )
             {
                 nn >> nn_img[j];
@@ -101,12 +105,12 @@ public:
 
             ++epoch;
 
+            nn.update();
+
             if ( stop_early<StopEarly>( nn.get_gradient() ) )
             {
                 break;
             }
-
-            nn.update();
         }
 
         input.close();

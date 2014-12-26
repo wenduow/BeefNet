@@ -35,6 +35,9 @@ private:
                           CWeightLM,
                           Param > ThisType;
 
+    typedef CWeightVector< InputNum, CWeightLM, Param > WeightVector;
+    typedef CNeuronHidden< InputNum, OutputNum, Xfer > Neuron;
+
 public:
 
     CLayerHidden(void)
@@ -64,6 +67,14 @@ public:
         }
 
         return *this;
+    }
+
+    void init(void)
+    {
+        for ( auto &i : m_weight_vector )
+        {
+            i.init();
+        }
     }
 
     void forward(void)
@@ -112,8 +123,7 @@ public:
         }
     }
 
-    inline CNeuronHidden< InputNum, OutputNum, Xfer > &
-        get_hidden_node( IN uint32 idx )
+    inline Neuron &get_hidden_node( IN uint32 idx )
     {
         return m_neuron[idx];
     }
@@ -184,8 +194,8 @@ private:
 
 private:
 
-    CWeightVector< InputNum, CWeightLM, Param > m_weight_vector[NeuronNum];
-    CNeuronHidden< InputNum, OutputNum, Xfer > m_neuron[NeuronNum];
+    WeightVector m_weight_vector[NeuronNum];
+    Neuron m_neuron[NeuronNum];
 };
 
 } // namespace wwd

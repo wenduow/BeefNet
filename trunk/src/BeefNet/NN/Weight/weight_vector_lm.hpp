@@ -14,6 +14,8 @@ private:
 
     typedef CWeightVector< InputNum, CWeightLM, Param > ThisType;
 
+    typedef CWeightLM<Param> Weight;
+
 public:
 
     CWeightVector(void)
@@ -32,7 +34,6 @@ public:
             m_weight[i] >> other.m_weight[i];
         }
 
-        other.m_vector_idx = 0;
         return *this;
     }
 
@@ -55,6 +56,16 @@ public:
         }
 
         return *this;
+    }
+
+    void init(void)
+    {
+        for ( auto &i : m_weight )
+        {
+            i.init();
+        }
+
+        m_vector_idx = 0;
     }
 
     void forward(void)
@@ -87,37 +98,30 @@ public:
     void update(void)
     {
         // calculate J'J
-        double jacobian_transpose[InputNum][ Param::pattern_num
-                                           * Param::output_num ];
-        transpose( jacobian_transpose, m_jacobian );
+        transpose( m_jacobian_transpose, m_jacobian );
 
-        double hessian[InputNum][InputNum];
-        multiply( hessian, jacobian_transpose, m_jacobian );
+        multiply( m_hessian, m_jacobian_transpose, m_jacobian );
 
         // calculate J'J + lambda * diag(J'J)
         for ( uint32 i = 0; i < InputNum; ++i )
         {
-            hessian[i][i] += Param::lambda;
+            m_hessian[i][i] += Param::lambda;
         }
 
         // calculate J'e
-        double gradient[InputNum];
-        multiply( gradient, jacobian_transpose, m_err );
+        multiply( m_gradient, m_jacobian_transpose, m_err );
 
         // calculate ( J'J + lambda * I ) ^ -1
-        double hessian_inverse[InputNum][InputNum];
-        invert( hessian_inverse, hessian );
+        invert( m_hessian_inverse, m_hessian );
 
         // calculate ( J'J + lambda * I ) ^ -1 * (J'e)
-        multiply( m_weight_update, hessian_inverse, gradient );
+        multiply( m_weight_update, m_hessian_inverse, m_gradient );
 
         // update each weight
         for ( uint32 i = 0; i < InputNum; ++i )
         {
             m_weight[i].update( - m_weight_update[i] );
         }
-
-        m_vector_idx = 0;
     }
 
     void revert(void)
@@ -126,8 +130,6 @@ public:
         {
             m_weight[i].update( m_weight_update[i] );
         }
-
-        m_vector_idx = 0;
     }
 
     template < class Neuron >
@@ -143,7 +145,7 @@ public:
         }
     }
 
-    inline CWeightLM<Param> &get_weight( IN uint32 idx )
+    inline Weight &get_weight( IN uint32 idx )
     {
         return m_weight[idx];
     }
@@ -151,16 +153,9 @@ public:
     double get_gradient_sum(void) const
     {
         // calculate J'e
-        double jacobian_transpose[InputNum][ Param::pattern_num
-                                           * Param::output_num ];
-        transpose( jacobian_transpose, m_jacobian );
-
-        double gradient[InputNum];
-        multiply( gradient, jacobian_transpose, m_err );
-
         double ret = 0.0;
 
-        for ( const auto &i : gradient )
+        for ( const auto &i : m_gradient )
         {
             ret += i;
         }
@@ -300,11 +295,17 @@ private:
 
 private:
 
-    CWeightLM<Param> m_weight[InputNum];
+    Weight m_weight[InputNum];
 
     double m_jacobian[ Param::pattern_num * Param::output_num ][InputNum];
+    double m_jacobian_transpose[InputNum][ Param::pattern_num * Param::output_num ];
+    double m_hessian[InputNum][InputNum];
+    double m_hessian_inverse[InputNum][InputNum];
+
     double m_err[ Param::pattern_num * Param::output_num ];
+    double m_gradient[InputNum];
     double m_weight_update[InputNum];
+
     uint32 m_vector_idx;
 };
 
