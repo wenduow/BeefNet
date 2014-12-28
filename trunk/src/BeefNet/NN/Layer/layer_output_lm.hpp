@@ -23,7 +23,7 @@ private:
                           Xfer,
                           CWeightLM,
                           Param > ThisType;
-    
+
     typedef CWeightVector< InputNum, CWeightLM, Param > WeightVector;
     typedef CNeuronHidden< InputNum, 1, Xfer > Output;
     typedef CNeuronTarget Target;

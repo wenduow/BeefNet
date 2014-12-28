@@ -11,21 +11,23 @@ namespace wwd
 std::ofstream result( "../../result/test_thread.txt", std::ios::app );
 
 template < template <uint32> class Reader, class NN >
-void image_function( INOUT NN &nn,
+void image_function( INOUT NN &nn_img,
+                     IN const NN &nn,
                      IN const Reader< NN::input_num > &reader_input,
                      IN const Reader< NN::output_num > &reader_target,
                      IN uint32 idx_beg,
                      IN uint32 idx_end )
 {
-    nn.init();
+    nn_img.init();
+    nn >> nn_img;
 
     for ( uint32 i = idx_beg; i < idx_end; ++i )
     {
-        nn.set_input( reader_input.get_pattern(i) );
-        nn.forward();
+        nn_img.set_input( reader_input.get_pattern(i) );
+        nn_img.forward();
 
-        nn.set_target( reader_target.get_pattern(i) );
-        nn.backward();
+        nn_img.set_target( reader_target.get_pattern(i) );
+        nn_img.backward();
     }
 }
 
@@ -87,10 +89,10 @@ public:
 
             for ( uint32 j = 0; j < ImageNum; ++j )
             {
-                nn >> nn_img[j];
                 img_thread[j] = std::thread
                     ( image_function< Reader, NN >,
                       std::ref( nn_img[j] ),
+                      std::cref(nn),
                       std::cref(input),
                       std::cref(target),
                       idx_beg[j],

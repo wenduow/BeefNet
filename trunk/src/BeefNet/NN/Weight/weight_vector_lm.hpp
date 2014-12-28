@@ -189,7 +189,7 @@ public:
 #ifdef _DEBUG
     void print_weight(void) const
     {
-        for ( auto &i : m_weight )
+        for ( const auto &i : m_weight )
         {
             i.print_weight();
         }
@@ -249,7 +249,7 @@ private:
     }
 
     template < uint32 N >
-    bool invert( OUT double (&inverse)[N][N],
+    void invert( OUT double (&inverse)[N][N],
                  IN const double (&matrix)[N][N] ) const
     {
         double copy[N][N];
@@ -289,8 +289,6 @@ private:
                 }
             }
         }
-
-        return true;
     }
 
 private:

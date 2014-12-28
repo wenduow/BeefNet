@@ -15,6 +15,10 @@ public:
     {
         hidden_num = InputNum
     };
+	
+private:
+
+    typedef CNeuronInput<OutputNum> Input;
 
 public:
 
@@ -49,7 +53,7 @@ public:
 
 private:
 
-    CNeuronInput<OutputNum> m_input[InputNum];
+    Input m_input[InputNum];
 };
 
 } // namespace wwd
