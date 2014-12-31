@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "demo.hpp"
-#include "NN/Weight/weight_lm.hpp"
+#include "NN/Weight/weight_bp.hpp"
 
 using namespace wwd;
 
@@ -18,7 +18,7 @@ int32 main(void)
                 hidden_num, FXferLogSig,
                 hidden_num, FXferLogSig,
                 output_num, FXferLnr,
-                CWeightLM, EParamLM< pattern_num, output_num > > nn;
+                CWeightBP, EParamBP<> > nn;
     
     double err[1];
     CTrainer< FErrMAE, thread_num, stop_early > trainer;
