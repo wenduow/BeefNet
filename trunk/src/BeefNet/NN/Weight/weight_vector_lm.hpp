@@ -58,6 +58,54 @@ public:
         return *this;
     }
 
+    friend std::istream &operator>>( INOUT std::istream &stream,
+                                     OUT ThisType &rhs )
+    {
+        for ( auto &i : rhs.m_weight )
+        {
+            stream >> i;
+        }
+
+        uint32 vector_idx;
+        stream >> vector_idx;
+
+        for ( uint32 i = 0; i < vector_idx; ++i )
+        {
+            for ( uint32 j = 0; j < InputNum; ++j )
+            {
+                stream >> rhs.m_jacobian[ rhs.m_vector_idx ][j];
+            }
+
+            stream >> rhs.m_err[ rhs.m_vector_idx ];
+            ++rhs.m_vector_idx;
+        }
+
+        return stream;
+    }
+
+    friend std::ostream &operator<<( OUT std::ostream &stream,
+                                     IN const ThisType &rhs )
+    {
+        for ( const auto &i : rhs.m_weight )
+        {
+            stream << i;
+        }
+
+        stream << rhs.m_vector_idx << '\t';
+
+        for ( uint32 i = 0; i < rhs.m_vector_idx; ++i )
+        {
+            for ( const auto &j : rhs.m_jacobian[i] )
+            {
+                stream << j << '\t';
+            }
+
+            stream << rhs.m_err[i] << '\t';
+        }
+
+        return stream;
+    }
+
     void init(void)
     {
         for ( auto &i : m_weight )

@@ -69,6 +69,28 @@ public:
         return *this;
     }
 
+    friend std::istream &operator>>( INOUT std::istream &stream,
+                                     OUT ThisType &rhs )
+    {
+        for ( auto &i : rhs.m_weight_vector )
+        {
+            stream >> i;
+        }
+
+        return stream;
+    }
+
+    friend std::ostream &operator<<( OUT std::ostream &stream,
+                                     IN const ThisType &rhs )
+    {
+        for ( const auto &i : rhs.m_weight_vector )
+        {
+            stream << i;
+        }
+
+        return stream;
+    }
+
     void init(void)
     {
         for ( auto &i : m_weight_vector )

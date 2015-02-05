@@ -1,6 +1,7 @@
 #ifndef NET_2_LAYER_HPP
 #define NET_2_LAYER_HPP
 
+#include <iostream>
 #include "../Layer/layer.hpp"
 
 namespace wwd
@@ -56,6 +57,22 @@ public:
         m_layer_output << other.m_layer_output;
 
         return *this;
+    }
+
+    friend std::istream &operator>>( INOUT std::istream &stream,
+                                     OUT ThisType &rhs )
+    {
+        stream >> rhs.m_layer_0 >> rhs.m_layer_1 >> rhs.m_layer_output;
+
+        return stream;
+    }
+
+    friend std::ostream &operator<<( OUT std::ostream &stream,
+                                     IN const ThisType &rhs )
+    {
+        stream << rhs.m_layer_0 << rhs.m_layer_1 << rhs.m_layer_output;
+
+        return stream;
     }
 
     void init(void)

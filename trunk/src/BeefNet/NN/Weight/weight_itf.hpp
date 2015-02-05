@@ -34,6 +34,27 @@ public:
         return *this;
     }
 
+    friend std::istream &operator>>( INOUT std::istream &stream,
+                                     OUT IWeight &rhs )
+    {
+        double gradient_sum;
+        uint32 pattern_num;
+
+        stream >> gradient_sum >> pattern_num;
+        rhs.m_gradient_sum += gradient_sum;
+        rhs.m_pattern_num += pattern_num;
+
+        return stream;
+    }
+
+    friend std::ostream &operator<<( OUT std::ostream &stream,
+                                     IN const IWeight &rhs )
+    {
+        stream << rhs.m_gradient_sum << '\t' << rhs.m_pattern_num << '\t';
+
+        return stream;
+    }
+
     inline void init(void)
     {
         m_gradient_sum = 0.0;

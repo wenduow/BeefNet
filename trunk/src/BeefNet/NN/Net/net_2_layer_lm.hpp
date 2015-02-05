@@ -75,6 +75,43 @@ public:
         return *this;
     }
 
+    friend std::istream &operator>>( INOUT std::istream &stream,
+                                     OUT ThisType &rhs )
+    {
+        stream >> rhs.m_layer_0 >> rhs.m_layer_1 >> rhs.m_layer_output;
+
+        double se;
+        stream >> se;
+
+        if ( rhs.m_check )
+        {
+            rhs.m_se += se;
+        }
+        else
+        {
+            rhs.m_se_prev += se;
+        }
+
+        return stream;
+    }
+
+    friend std::ostream &operator<<( OUT std::ostream &stream,
+                                     IN const ThisType &rhs )
+    {
+        stream << rhs.m_layer_0 << rhs.m_layer_1 << rhs.m_layer_output;
+
+        if ( rhs.m_check )
+        {
+            stream << rhs.m_se << '\t';
+        }
+        else
+        {
+            stream << rhs.m_se_prev << '\t';
+        }
+
+        return stream;
+    }
+
     void init(void)
     {
         m_layer_0.init();

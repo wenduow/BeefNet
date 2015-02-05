@@ -34,7 +34,7 @@ void image_function( INOUT NN &nn_img,
 template < class Err,
            uint32 ImageNum = 8,
            bool StopEarly = true,
-           uint32 MaxEpoch = 2000,
+           uint32 MaxEpoch = 20,
            uint32 ValidTimes = 6,
            int32 MinGradientChange = -9 >
 class CTrainer
@@ -102,7 +102,18 @@ public:
             for ( uint32 j = 0; j < ImageNum; ++j )
             {
                 img_thread[j].join();
+
+                // test on multi-thread
                 nn << nn_img[j];
+
+                // test on hadoop streaming
+//                 std::ofstream out_stream( "../../result/test_streaming.txt" );
+//                 out_stream << nn_img[j];
+//                 out_stream.close();
+// 
+//                 std::ifstream in_stream( "../../result/test_streaming.txt" );
+//                 in_stream >> nn;
+//                 in_stream.close();
             }
 
             ++epoch;

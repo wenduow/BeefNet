@@ -14,10 +14,10 @@ namespace wwd
 
 const uint32 pattern_num = 26304;
 const uint32 input_num = 10;
-const uint32 hidden_num = 50;
+const uint32 hidden_num = 5;
 const uint32 output_num = 1;
 
-const uint32 thread_num = 512;
+const uint32 thread_num = 8;
 const bool stop_early = false;
 
 } // namespace wwd
