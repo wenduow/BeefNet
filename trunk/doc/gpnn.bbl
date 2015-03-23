@@ -29,10 +29,20 @@ Scott~E Fahlman.
 \newblock An empirical study of learning speed in back-propagation networks.
 \newblock Technical report, Carnegie Mellon University, 1988.
 
+\bibitem{fan2013mining}
+Wei Fan and Albert Bifet.
+\newblock Mining big data: current status, and forecast to the future.
+\newblock {\em ACM SIGKDD Explorations Newsletter}, 14(2):1--5, 2013.
+
 \bibitem{hagan1994training}
 Martin~T Hagan and Mohammad~B Menhaj.
 \newblock Training feedforward networks with the marquardt algorithm.
 \newblock {\em Neural Networks, IEEE Transactions on}, 5(6):989--993, 1994.
+
+\bibitem{labrinidis2012challenges}
+Alexandros Labrinidis and HV~Jagadish.
+\newblock Challenges and opportunities with big data.
+\newblock {\em Proceedings of the VLDB Endowment}, 5(12):2032--2033, 2012.
 
 \bibitem{lopezopennn}
 R~Lopez.
@@ -61,6 +71,14 @@ Olena Schuessler and Diego Loyola.
   and multicore cpus.
 \newblock In {\em Adaptive and Natural Computing Algorithms}, pages 70--79.
   Springer, 2011.
+
+\bibitem{vavilapalli2013apache}
+Vinod~Kumar Vavilapalli, Arun~C Murthy, Chris Douglas, Sharad Agarwal, Mahadev
+  Konar, Robert Evans, Thomas Graves, Jason Lowe, Hitesh Shah, Siddharth Seth,
+  et~al.
+\newblock Apache hadoop yarn: Yet another resource negotiator.
+\newblock In {\em Proceedings of the 4th annual Symposium on Cloud Computing},
+  page~5. ACM, 2013.
 
 \bibitem{wiki:generic_programming}
 Wikipedia.
