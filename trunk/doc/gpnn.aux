@@ -26,43 +26,43 @@
 \citation{(}
 \citation{riedmiller1993direct}
 \citation{hagan1994training}
-\@writefile{toc}{\contentsline {section}{\numberline {2}A Computational Framework for Implementing Back-Propagation based Neural Learning Algorithms}{3}{section.2}}
-\newlabel{section:implementation}{{2}{3}{A Computational Framework for Implementing Back-Propagation based Neural Learning Algorithms}{section.2}{}}
 \citation{chu2007map}
 \citation{schuessler2011parallel}
+\@writefile{toc}{\contentsline {section}{\numberline {2}A Computational Framework for Implementing Back-Propagation based Neural Learning Algorithms}{3}{section.2}}
+\newlabel{section:implementation}{{2}{3}{A Computational Framework for Implementing Back-Propagation based Neural Learning Algorithms}{section.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces System diagram of multi-thread implementation of neural learning.}}{4}{figure.1}}
+\newlabel{fig:parallelization}{{1}{4}{System diagram of multi-thread implementation of neural learning}{figure.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Parallelization of Neural Learning Algorithm}{4}{subsection.2.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Abstraction of Neural Network Components}{4}{subsection.2.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Illustration of multi-thread implementation of neural learning process.}}{5}{figure.1}}
-\newlabel{fig:parallelization}{{1}{5}{Illustration of multi-thread implementation of neural learning process}{figure.1}{}}
 \citation{wiki:generic_programming}
 \citation{alexandrescu2001preface}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces One-layer of neural network topology represented by the abstraction layers (abs-layer). The abstracted layers inside the box in dash-line is the neural network layer.}}{6}{figure.2}}
-\newlabel{fig:nn_abstracted}{{2}{6}{One-layer of neural network topology represented by the abstraction layers (abs-layer). The abstracted layers inside the box in dash-line is the neural network layer}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces A one-layer of neural network represented by the abstraction layers (abs-layer). The interior of the dash line indicates the layer.}}{6}{figure.2}}
+\newlabel{fig:nn_abstracted}{{2}{6}{A one-layer of neural network represented by the abstraction layers (abs-layer). The interior of the dash line indicates the layer}{figure.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Communication between nodes during feed-forward and back-propagation.}}{6}{figure.3}}
 \newlabel{fig:microscopic}{{3}{6}{Communication between nodes during feed-forward and back-propagation}{figure.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Compile-Time Generalization}{6}{subsection.2.3}}
 \citation{alexandrescu2001policy}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Run-time generalization versus compile-time generalization during the processes of compiling code to running code for a neural learning algorithm. Note $n$ is epoch number and $m$ is number of experiment repeated.}}{7}{figure.4}}
-\newlabel{fig:run_vs_compile}{{4}{7}{Run-time generalization versus compile-time generalization during the processes of compiling code to running code for a neural learning algorithm. Note $n$ is epoch number and $m$ is number of experiment repeated}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Run-time generalization versus compile-time generalization during the processes of compiling code for a neural learning algorithm, where $n$ is epoch number and $m$ is the number of repeated experiments.}}{7}{figure.4}}
+\newlabel{fig:run_vs_compile}{{4}{7}{Run-time generalization versus compile-time generalization during the processes of compiling code for a neural learning algorithm, where $n$ is epoch number and $m$ is the number of repeated experiments}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Flexibility and Reusability of GPNN Framework}{7}{subsection.2.4}}
 \citation{fahlman1988empirical}
 \citation{riedmiller1993direct}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Flexibility and Reusability of GPNN Framework}{8}{subsection.2.4}}
+\citation{hagan1994training}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Building a recurrent neural network by modifying a one-layer neural network.}}{8}{figure.5}}
 \newlabel{fig:reusability}{{5}{8}{Building a recurrent neural network by modifying a one-layer neural network}{figure.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Performance and Experiment Result}{8}{section.3}}
 \newlabel{section:performance}{{3}{8}{Performance and Experiment Result}{section.3}{}}
-\citation{hagan1994training}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Features in Climate Dataset.}}{9}{table.1}}
 \newlabel{table:climate}{{1}{9}{Features in Climate Dataset}{table.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Evaluating Multi-Thread Efficiency}{9}{subsection.3.1}}
 \citation{yu2011levenberg}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Training time of BP for different hidden node numbers versus different numbers of threads.}}{10}{figure.6}}
-\newlabel{fig:thread_efficiency}{{6}{10}{Training time of BP for different hidden node numbers versus different numbers of threads}{figure.6}{}}
+\citation{matlab:neural_networks}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Training time of BP for different hidden node numbers versus numbers of threads and hidden neurons.}}{10}{figure.6}}
+\newlabel{fig:thread_efficiency}{{6}{10}{Training time of BP for different hidden node numbers versus numbers of threads and hidden neurons}{figure.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Comparing GPNN Implementation with Conventional Implementation}{10}{subsection.3.2}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Training Time at Different Thread Number.}}{10}{table.2}}
 \newlabel{table:algorithm_complexity}{{2}{10}{Training Time at Different Thread Number}{table.2}{}}
-\citation{matlab:neural_networks}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Algorithm Efficiency based on Dynamic Stopping Criteria}{11}{subsection.3.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Algorithm Efficiency based on Dynamic Stopping Criteria}{10}{subsection.3.3}}
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Neural Networks Configuration used in Algorithm Efficiency Analysis Experiments.}}{11}{table.3}}
 \newlabel{table:config_algorithm_efficiency}{{3}{11}{Neural Networks Configuration used in Algorithm Efficiency Analysis Experiments}{table.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Training Time of Neural Learning Algorithms with Dynamic Stopping Criteria.}}{11}{table.4}}
